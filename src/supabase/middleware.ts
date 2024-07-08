@@ -1,3 +1,4 @@
+// import { auth } from "@/auth";
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -30,7 +31,6 @@ export async function updateSession(request: NextRequest) {
     // IMPORTANT: Avoid writing any logic between createServerClient and
     // supabase.auth.getUser(). A simple mistake could make it very hard to debug
     // issues with users being randomly logged out.
-
     const {
         data: { user },
     } = await supabase.auth.getUser();
@@ -46,6 +46,14 @@ export async function updateSession(request: NextRequest) {
         url.pathname = "/login";
         return NextResponse.redirect(url);
     }
+
+    // // auth 미들웨어를 호출하고 결과를 처리
+    // const authResponse = await auth();
+
+    // // auth 미들웨어가 리다이렉트 등을 발생시키는 경우 즉시 반환
+    // if (authResponse instanceof NextResponse) {
+    //     return authResponse;
+    // }
 
     return supabaseResponse;
 }

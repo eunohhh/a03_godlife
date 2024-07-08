@@ -3,6 +3,7 @@
 import { Input } from "@/components/ui/Input";
 import { SubmitButton } from "@/components/ui/Submit-button";
 import { useAuth } from "@/context/auth.context";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
 import { FaGithub } from "react-icons/fa6";
@@ -22,6 +23,13 @@ export default function HomePage() {
     };
     const handleClickLogOut = async () => logOut();
     const handleClickSignUp = async () => signUp(email, password);
+
+    const handleKakao = async () => {
+        const result = await signIn("kakao", {
+            redirect: true,
+            callbackUrl: "/",
+        });
+    };
 
     return (
         <section className="h-dvh w-[440px] flex flex-col items-center justify-center my-0 mx-auto">
@@ -77,7 +85,10 @@ export default function HomePage() {
                 <div className="flex items-center justify-center gap-2">
                     <FaGithub className="w-10 h-10" />
                     <FcGoogle className="w-11 h-11" />
-                    <SiKakaotalk className="w-10 h-10 text-amber-300" />
+                    <SiKakaotalk
+                        className="w-10 h-10 text-amber-300 cursor-pointer"
+                        onClick={handleKakao}
+                    />
                 </div>
 
                 <p className="text-sm text-gray-500">
