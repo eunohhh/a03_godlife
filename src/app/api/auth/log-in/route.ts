@@ -2,15 +2,18 @@ import { createClient } from "@/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  const data = await request.json();
-  const email = data.email as string;
-  const password = data.password as string;
+    const { searchParams } = new URL(request.url);
+    const provider = searchParams.get("provider");
 
-  const supabase = createClient();
+    const supabase = createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: provider as any,
+    });
 
-  return NextResponse.json(user);
+    if (error) {
+        return NextResponse.json({ error: error?.message }, { status: 401 });
+    }
+
+    return NextResponse.json(data, { status: 200 });
 }
