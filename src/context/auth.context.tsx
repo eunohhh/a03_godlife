@@ -36,7 +36,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
         if (!email || !password) return alert("이메일, 비밀번호 모두 채워 주세요.");
 
         const data = { email, password };
-        const response = await fetch("http://localhost:3000/api/auth/log-in", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/log-in`, {
             method: "POST",
             body: JSON.stringify(data),
         });
@@ -48,7 +48,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
     const logOut = async () => {
         if (!me) return alert("로그인하고 눌러주세요");
 
-        await fetch("http://localhost:3000/api/auth/log-out", { method: "DELETE" });
+        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/log-out`, { method: "DELETE" });
 
         setMe(null);
     };
@@ -58,7 +58,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
         if (!email || !password) return alert("이메일, 비밀번호 모두 채워 주세요.");
 
         const data = { email, password };
-        const response = await fetch("http://localhost:3000/api/auth/sign-up", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/sign-up`, {
             method: "POST",
             body: JSON.stringify(data),
         });
@@ -68,7 +68,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
     };
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/auth/me").then(async (response) => {
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`).then(async (response) => {
             if (response.status === 200) {
                 const {
                     data: { user },
