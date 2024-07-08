@@ -47,13 +47,5 @@ export async function updateSession(request: NextRequest) {
         return NextResponse.redirect(url);
     }
 
-    // // auth 미들웨어를 호출하고 결과를 처리
-    // const authResponse = await auth();
-
-    // // auth 미들웨어가 리다이렉트 등을 발생시키는 경우 즉시 반환
-    // if (authResponse instanceof NextResponse) {
-    //     return authResponse;
-    // }
-
     return supabaseResponse;
 }
