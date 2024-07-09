@@ -10,13 +10,12 @@ import { FcGoogle } from "react-icons/fc";
 import { SiKakaotalk } from "react-icons/si";
 
 export default function HomePage() {
-    const { me, logIn, logOut, signUp, loginWithProvider, isPending } = useAuth();
+    const { me, logIn, signUp, loginWithProvider, isPending } = useAuth();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
     const handleClickLogIn = async () => logIn(email, password);
 
-    const handleClickLogOut = async () => logOut();
     const handleClickSignUp = async () => signUp(email, password);
 
     const handleClickKaKao = async () => loginWithProvider("kakao");
@@ -38,8 +37,8 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex flex-col items-center justify-center gap-2 pb-8">
-                    <h1 className="text-2xl font-bold">다시 만나 반갑습니다</h1>
-                    <p className="text-sm text-gray-500">계속 사용하시려면 로그인을 해주세요</p>
+                    <h1 className="text-2xl font-bold">로그인</h1>
+                    <p className="text-sm text-gray-500">Sign up to continue using our App</p>
                 </div>
 
                 <form className="w-full flex flex-col items-center justify-center gap-10">
@@ -57,9 +56,7 @@ export default function HomePage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-                            <p className="w-full text-sm text-right text-gray-500">
-                                비밀번호를 잊으셨나요?
-                            </p>
+                            <p className="w-full text-sm text-right text-gray-500">Forget Password?</p>
                         </div>
                     </div>
 
@@ -73,9 +70,9 @@ export default function HomePage() {
                 </form>
 
                 <div className="w-full flex items-center justify-center gap-2">
-                    <hr className="w-2 border-gray-400" />
+                    <hr className="w-28 border-gray-400" />
                     <p className="text-sm text-gray-500">SNS 계정으로 로그인</p>
-                    <hr className="w-2 border-gray-400" />
+                    <hr className="w-28 border-gray-400" />
                 </div>
 
                 <div className="flex items-center justify-center gap-2">
@@ -88,7 +85,7 @@ export default function HomePage() {
                 </div>
 
                 <p className="text-sm text-gray-500">
-                    아직 회원이 아니신가요? <span className="text-turtleGreen">회원가입</span>
+                    Create account? <span className="text-turtleGreen">Sign up</span>
                 </p>
 
                 {/* <h1>현재 로그인한 유저는</h1>

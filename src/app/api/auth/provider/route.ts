@@ -10,6 +10,9 @@ export async function GET(request: NextRequest) {
 
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: provider as Provider,
+        options: {
+            redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`,
+        },
     });
 
     if (error) {

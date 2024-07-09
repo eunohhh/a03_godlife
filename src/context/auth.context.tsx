@@ -1,7 +1,8 @@
 "use client";
 
 import { Provider, User } from "@supabase/supabase-js";
-import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 type AuthContextValue = {
     isLoggedIn: boolean;
@@ -35,6 +36,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
     const [me, setMe] = useState<AuthContextValue["me"]>(initialMe);
     const isLoggedIn = !!me;
     const [isPending, setIsPending] = useState(false);
+    const router = useRouter();
 
     const logIn: AuthContextValue["logIn"] = async (email, password) => {
         if (me) return alert("이미 로그인 되어 있어요");
@@ -96,25 +98,27 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/provider?provider=${provider}`
             );
-            const user = await response.json();
+            const data = await response.json();
 
-            setMe(user);
             setIsPending(false);
+            router.replace(data.url);
         } catch (error) {
             console.error(error);
         }
     };
 
-    useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`).then(async (response) => {
-            if (response.status === 200) {
-                const {
-                    data: { user },
-                } = await response.json();
-                setMe(user);
-            }
-        });
-    }, []);
+    // useEffect(() => {
+    //     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`).then(async (response) => {
+    //         if (response.status === 200) {
+    //             const {
+    //                 data: { user },
+    //             } = await response.json();
+    //             setMe(user);
+    //         }
+    //     });
+    // }, []);
+
+    console.log(me);
 
     const value: AuthContextValue = {
         isLoggedIn,
