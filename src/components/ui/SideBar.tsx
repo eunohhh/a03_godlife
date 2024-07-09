@@ -12,6 +12,7 @@ import {
 } from "./Sheet";
 import Link from "next/link";
 import Image from "next/image";
+import WeatherData from "./WeatherData";
 
 const SideBar = () => {
   return (
@@ -29,7 +30,8 @@ const SideBar = () => {
           <SheetDescription>@email</SheetDescription>
           <Link href="/">내 프로필</Link>
           <Link href="/">글 작성하기</Link>
-
+          {/* <h3>날씨</h3> */}
+          <WeatherData />
           <SheetFooter>
             <SheetClose asChild>
               <button>닫기</button>
