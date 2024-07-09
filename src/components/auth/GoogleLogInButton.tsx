@@ -1,11 +1,17 @@
 "use client";
 
 import { useAuth } from "@/context/auth.context";
+import { usePathname } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 
 function GoogleLogInButton() {
     const { loginWithProvider } = useAuth();
-    const handleClickGoogle = async () => loginWithProvider("google");
+    const pathname = usePathname();
+
+    const handleClickGoogle = async () => {
+        if (pathname === "/recover") return alert("비밀번호 복구 페이지에서는 소셜로그인이 불가합니다");
+        loginWithProvider("google");
+    };
 
     return <FcGoogle className="w-11 h-11 cursor-pointer" onClick={handleClickGoogle} />;
 }

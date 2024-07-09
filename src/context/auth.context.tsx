@@ -10,7 +10,7 @@ type AuthContextValue = {
     me: User | null;
     logIn: (email: string, password: string) => void;
     logOut: () => void;
-    signUp: (email: string, password: string) => void;
+    signUp: (name: string, email: string, password: string) => void;
     loginWithProvider: (provider: Provider) => void;
     resetPassword: (password: string) => void;
     sendingResetEmail: (email: string) => void;
@@ -79,22 +79,25 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
         router.replace("/login");
     };
 
-    const signUp: AuthContextValue["signUp"] = async (email, password) => {
+    const signUp: AuthContextValue["signUp"] = async (name, email, password) => {
         if (me) return alert("이미 로그인 되어 있어요");
-        if (!email || !password) return alert("이메일, 비밀번호 모두 채워 주세요.");
 
         try {
             setIsPending(true);
-            const data = { email, password };
+            const payload = { name, email, password };
             const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/sign-up`, {
                 method: "POST",
-                body: JSON.stringify(data),
+                body: JSON.stringify(payload),
             });
-            const { user } = await response.json();
+            const data = await response.json();
 
-            setMe(user);
-            setIsPending(false);
-            router.replace("/");
+            if (data.user) {
+                setMe(data.user);
+                setIsPending(false);
+                router.replace("/");
+            } else {
+                console.error(data.error);
+            }
         } catch (error) {
             console.error(error);
         }

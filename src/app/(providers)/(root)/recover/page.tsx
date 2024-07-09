@@ -12,7 +12,9 @@ export default async function RecoverPage() {
     return (
         <AuthPageWrapper>
             {!me ? (
-                <p className="text-sm min-h-[35%]text-gray-500">오류 발생! 다시 시도해주세요</p>
+                <p className="text-sm min-h-[35%]text-gray-500">
+                    이메일 링크를 통한 접근만 가능합니다! 다시 시도해주세요
+                </p>
             ) : (
                 <ResetForm />
             )}
