@@ -1,12 +1,9 @@
 import AuthPageBottom from "@/components/auth/AuthPageBottom";
 import AuthPageWrapper from "@/components/auth/AuthPageWrapper";
-import LogInForm from "@/components/auth/LogInForm";
 
-export default function LogInPage() {
+export default async function SignUpPage() {
     return (
         <AuthPageWrapper>
-            <LogInForm />
-
             <AuthPageBottom />
 
             <p className="text-sm text-gray-500">
@@ -15,7 +12,3 @@ export default function LogInPage() {
         </AuthPageWrapper>
     );
 }
-
-/* <h1>현재 로그인한 유저는</h1>
-{me ? me.email + "입니다" : "없습니다"}
-*/

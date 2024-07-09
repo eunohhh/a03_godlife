@@ -2,15 +2,13 @@
 import { useAuth } from "@/context/auth.context";
 import { emailRegex } from "@/lib/commonRegexs";
 import clsx from "clsx";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { Input } from "../ui/Input";
 import { SubmitButton } from "../ui/Submit-button";
 
 function LogInForm() {
     const { isPending, logIn, sendingResetEmail } = useAuth();
-    const router = useRouter();
-    const pathname = usePathname();
     const searchParams = useSearchParams();
     const search = searchParams.get("mode");
     const [isRecoverPassword, setIsRecoverPassword] = useState(search === "recover");
@@ -47,34 +45,6 @@ function LogInForm() {
         sendingResetEmail(email);
         form.reset();
     };
-
-    const createQueryString = useCallback(
-        (name: string, value: string) => {
-            const params = new URLSearchParams(searchParams.toString());
-            params.set(name, value);
-
-            return params.toString();
-        },
-        [searchParams]
-    );
-
-    // useEffect(() => {
-    //     if (!isRecoverPassword) router.push(pathname + "?" + createQueryString("mode", "login"));
-    //     else router.push(pathname + "?" + createQueryString("mode", "recover"));
-    // }, [pathname, createQueryString, router, isRecoverPassword]);
-
-    // // 이벤트
-    // useEffect(() => {
-    //     if (!router) return;
-    //     const handlePopState = () => {
-    //         router.push("/login?mode=login");
-    //         setIsRecoverPassword(false);
-    //     };
-    //     window.addEventListener("popstate", handlePopState);
-    //     return () => {
-    //         window.removeEventListener("popstate", handlePopState);
-    //     };
-    // }, [router]);
 
     return (
         <>
@@ -134,3 +104,31 @@ function LogInForm() {
 }
 
 export default LogInForm;
+
+// const createQueryString = useCallback(
+//     (name: string, value: string) => {
+//         const params = new URLSearchParams(searchParams.toString());
+//         params.set(name, value);
+
+//         return params.toString();
+//     },
+//     [searchParams]
+// );
+
+// useEffect(() => {
+//     if (!isRecoverPassword) router.push(pathname + "?" + createQueryString("mode", "login"));
+//     else router.push(pathname + "?" + createQueryString("mode", "recover"));
+// }, [pathname, createQueryString, router, isRecoverPassword]);
+
+// // 이벤트
+// useEffect(() => {
+//     if (!router) return;
+//     const handlePopState = () => {
+//         router.push("/login?mode=login");
+//         setIsRecoverPassword(false);
+//     };
+//     window.addEventListener("popstate", handlePopState);
+//     return () => {
+//         window.removeEventListener("popstate", handlePopState);
+//     };
+// }, [router]);
