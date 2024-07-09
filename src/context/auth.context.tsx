@@ -2,7 +2,7 @@
 
 import { Provider, User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
 type AuthContextValue = {
     isLoggedIn: boolean;
@@ -118,7 +118,9 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
     //     });
     // }, []);
 
-    console.log(me);
+    useEffect(() => {
+        console.log(me);
+    }, [me]);
 
     const value: AuthContextValue = {
         isLoggedIn,
