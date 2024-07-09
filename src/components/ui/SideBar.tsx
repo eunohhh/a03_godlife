@@ -10,6 +10,8 @@ import {
   SheetFooter,
   SheetDescription,
 } from "./Sheet";
+import Link from "next/link";
+import Image from "next/image";
 
 const SideBar = () => {
   return (
@@ -20,13 +22,17 @@ const SideBar = () => {
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>Sheet Title</SheetTitle>
+            <Image src="/next.svg" alt="tmp" width={30} height={30} />
+            <SheetTitle>nickname</SheetTitle>
           </SheetHeader>
-          <SheetDescription>This is the Sheet description.</SheetDescription>
-          <div>SideBar</div>
+          <SheetDescription>자기소개 글입니다.</SheetDescription>
+          <SheetDescription>@email</SheetDescription>
+          <Link href="/">내 프로필</Link>
+          <Link href="/">글 작성하기</Link>
+
           <SheetFooter>
             <SheetClose asChild>
-              <button>Close</button>
+              <button>닫기</button>
             </SheetClose>
           </SheetFooter>
         </SheetContent>
