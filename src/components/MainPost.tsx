@@ -42,7 +42,7 @@ export function MainPost() {
         {posts.map((post: Post) => (
           <div
             key={post.id}
-            className="post-card max-h-[200px] bg-white rounded-lg p-5 "
+            className="post-card max-h-[200px] bg-white rounded-lg p-5"
           >
             <div className="flex flex-row">
               <Avatar className="flex">
