@@ -22,7 +22,7 @@ const SideBar = () => {
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
-            <Image src="/next.svg" alt="tmp" width={30} height={30} />
+            <Image src="/profile icon.svg" alt="tmp" width={30} height={30} />
             <SheetTitle>nickname</SheetTitle>
           </SheetHeader>
           <SheetDescription>자기소개 글입니다.</SheetDescription>
