@@ -23,7 +23,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type,
             />
             {type === "password" && (
                 <div
-                    className="absolute right-3 cursor-pointer text-muted-foreground cursor-pointer"
+                    className="absolute right-3 cursor-pointer text-muted-foreground"
                     onClick={togglePasswordVisibility}
                 >
                     {showPassword ? <FaEye /> : <FaRegEyeSlash />}

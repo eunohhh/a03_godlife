@@ -1,22 +1,14 @@
 "use client";
 
-import { Input } from "@/components/ui/Input";
-import { SubmitButton } from "@/components/ui/Submit-button";
+import GithubLogInButton from "@/components/auth/GithubLogInButton";
+import GoogleLogInButton from "@/components/auth/GoogleLogInButton";
+import KaKaoLogInButton from "@/components/auth/KaKaoLogInButton";
+import LogInForm from "@/components/auth/LogInForm";
 import { useAuth } from "@/context/auth.context";
 import Image from "next/image";
-import { useState } from "react";
-import { FaGithub } from "react-icons/fa6";
-import { FcGoogle } from "react-icons/fc";
-import { SiKakaotalk } from "react-icons/si";
 
 export default function HomePage() {
-    const { me, logIn, signUp, loginWithProvider, isPending } = useAuth();
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-
-    const handleClickLogIn = async () => logIn(email, password);
-
-    const handleClickSignUp = async () => signUp(email, password);
+    const { loginWithProvider } = useAuth();
 
     const handleClickKaKao = async () => loginWithProvider("kakao");
     const handleClickGoogle = async () => loginWithProvider("google");
@@ -41,33 +33,7 @@ export default function HomePage() {
                     <p className="text-sm text-gray-500">Sign up to continue using our App</p>
                 </div>
 
-                <form className="w-full flex flex-col items-center justify-center gap-10">
-                    <div className="w-[90%] flex flex-col items-center justify-center gap-10">
-                        <Input
-                            type="text"
-                            placeholder="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <div className="w-full flex flex-col gap-1">
-                            <Input
-                                type="password"
-                                placeholder="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                            <p className="w-full text-sm text-right text-gray-500">Forget Password?</p>
-                        </div>
-                    </div>
-
-                    <SubmitButton
-                        className="bg-turtleGreen w-[70%] text-white rounded-lg px-4 py-2 text-foreground"
-                        pendingText="로그인 중..."
-                        pending={isPending}
-                    >
-                        로그인하기
-                    </SubmitButton>
-                </form>
+                <LogInForm />
 
                 <div className="w-full flex items-center justify-center gap-2">
                     <hr className="w-28 border-gray-400" />
@@ -76,12 +42,9 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex items-center justify-center gap-8">
-                    <FaGithub className="w-10 h-10 cursor-pointer" onClick={handleClickGithub} />
-                    <FcGoogle className="w-11 h-11 cursor-pointer" onClick={handleClickGoogle} />
-                    <SiKakaotalk
-                        className="w-10 h-10 text-amber-300 cursor-pointer"
-                        onClick={handleClickKaKao}
-                    />
+                    <GithubLogInButton />
+                    <GoogleLogInButton />
+                    <KaKaoLogInButton />
                 </div>
 
                 <p className="text-sm text-gray-500">
