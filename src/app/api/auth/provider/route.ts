@@ -1,4 +1,5 @@
 import { createClient } from "@/supabase/server";
+import { Provider } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -8,7 +9,7 @@ export async function GET(request: NextRequest) {
     const supabase = createClient();
 
     const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: provider as any,
+        provider: provider as Provider,
     });
 
     if (error) {

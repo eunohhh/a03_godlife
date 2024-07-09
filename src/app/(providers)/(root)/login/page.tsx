@@ -10,18 +10,18 @@ import { FcGoogle } from "react-icons/fc";
 import { SiKakaotalk } from "react-icons/si";
 
 export default function HomePage() {
-    const { me, logIn, logOut, signUp } = useAuth();
+    const { me, logIn, logOut, signUp, loginWithProvider, isPending } = useAuth();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [isPending, setIsPending] = useState(false);
 
-    const handleClickLogIn = async () => {
-        setIsPending(true);
-        logIn(email, password);
-        setIsPending(false);
-    };
+    const handleClickLogIn = async () => logIn(email, password);
+
     const handleClickLogOut = async () => logOut();
     const handleClickSignUp = async () => signUp(email, password);
+
+    const handleClickKaKao = async () => loginWithProvider("kakao");
+    const handleClickGoogle = async () => loginWithProvider("google");
+    const handleClickGithub = async () => loginWithProvider("github");
 
     return (
         <section className="h-dvh w-[440px] flex flex-col items-center justify-center my-0 mx-auto">
@@ -72,12 +72,19 @@ export default function HomePage() {
                     </SubmitButton>
                 </form>
 
-                <hr className="w-2 border-gray-400" />
+                <div className="w-full flex items-center justify-center gap-2">
+                    <hr className="w-2 border-gray-400" />
+                    <p className="text-sm text-gray-500">SNS 계정으로 로그인</p>
+                    <hr className="w-2 border-gray-400" />
+                </div>
 
                 <div className="flex items-center justify-center gap-2">
                     <FaGithub className="w-10 h-10" />
                     <FcGoogle className="w-11 h-11" />
-                    <SiKakaotalk className="w-10 h-10 text-amber-300 cursor-pointer" />
+                    <SiKakaotalk
+                        className="w-10 h-10 text-amber-300 cursor-pointer"
+                        onClick={handleClickKaKao}
+                    />
                 </div>
 
                 <p className="text-sm text-gray-500">
