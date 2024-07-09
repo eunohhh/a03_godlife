@@ -1,14 +1,14 @@
 "use client";
 import { useAuth } from "@/context/auth.context";
 import { emailRegex } from "@/lib/commonRegexs";
-import Link from "next/link";
+import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { Input } from "../ui/Input";
 import { SubmitButton } from "../ui/Submit-button";
 
 function LogInForm() {
-    const { isPending, logIn } = useAuth();
+    const { isPending, logIn, sendingResetEmail } = useAuth();
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -37,26 +37,16 @@ function LogInForm() {
     };
 
     const handleRecoverPassword = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
         const form = e.currentTarget;
-        form.reset();
         const formData = new FormData(form);
-        const passwordOne = formData.get("passwordOne") as string;
-        const passwordTwo = formData.get("passwordTwo") as string;
+        const email = formData.get("email") as string;
 
-        if (!passwordOne || !passwordTwo) return alert("비밀번호를 입력해주세요!");
-        if (passwordOne.length < 8 || passwordOne.length > 15)
-            return alert("비밀번호는 4~15 글자로 해야합니다!");
+        if (!email) return alert("빈 값이 없도록 해주세요");
+        if (/\s/.test(email)) return alert("공백을 포함할 수 없습니다!");
+        if (!emailRegex.test(email)) return alert("유효한 이메일 주소를 입력하세요!");
 
-        if (passwordOne !== passwordTwo) return alert("비밀번호가 일치하지 않습니다!");
-
+        sendingResetEmail(email);
         form.reset();
-    };
-
-    const handleForgetPassword = () => {
-        setIsRecoverPassword(true);
-        router.push("/login?mode=recover");
     };
 
     const createQueryString = useCallback(
@@ -97,46 +87,40 @@ function LogInForm() {
 
             <form
                 onSubmit={isRecoverPassword ? handleRecoverPassword : handleSubmit}
-                className="w-full flex flex-col items-center justify-center gap-10"
+                className="w-full h-fit min-h-[35%] flex flex-col items-center justify-center gap-10"
             >
                 <div className="w-[90%] flex flex-col items-center justify-center gap-10">
-                    {isRecoverPassword ? (
-                        <Input type="password" placeholder="password" name="passwordOne" />
-                    ) : (
-                        <Input type="text" placeholder="email" name="email" />
-                    )}
-                    <div className="w-full flex flex-col gap-1">
-                        <Input
-                            type="password"
-                            placeholder={isRecoverPassword ? "confirm password" : "password"}
-                            name="passwordTwo"
-                        />
-                        {isRecoverPassword ? (
-                            <p className="w-full text-sm text-right text-gray-500">비밀번호를 복구하세요</p>
-                        ) : (
-                            <Link
+                    <Input type="text" placeholder="email" name="email" />
+
+                    {isRecoverPassword ? null : (
+                        <div className={clsx("w-full flex flex-col gap-1", isRecoverPassword && "gap-4")}>
+                            <Input type="password" placeholder="password" name="password" />
+
+                            <Input type="password" placeholder="confirm password" name="passwordConfirm" />
+
+                            <button
                                 onClick={() => setIsRecoverPassword(true)}
-                                href="/login?mode=recover"
                                 className="w-full text-sm text-right text-gray-500"
                             >
                                 Forget Password?
-                            </Link>
-                            // <p
-                            //     onClick={handleForgetPassword}
-                            //     className="w-full text-sm text-right text-gray-500 cursor-pointer"
-                            // >
-                            //     Forget Password?
-                            // </p>
-                        )}
-                    </div>
+                            </button>
+                        </div>
+                    )}
+
+                    {isRecoverPassword && (
+                        <p className="w-full text-sm text-right text-gray-500">
+                            이메일로 복구 코드를 보내드립니다
+                        </p>
+                    )}
                 </div>
 
                 <SubmitButton
                     className="bg-turtleGreen w-[70%] text-white rounded-lg px-4 py-2 text-foreground"
-                    pendingText={isRecoverPassword ? "비밀번호 복구 중..." : "로그인 중..."}
+                    type="submit"
+                    pendingText="진행 중..."
                     pending={isPending}
                 >
-                    {isRecoverPassword ? "복구하기" : "로그인하기"}
+                    {isRecoverPassword ? "복구메일보내기" : "로그인하기"}
                 </SubmitButton>
             </form>
         </>

@@ -12,6 +12,8 @@ type AuthContextValue = {
     logOut: () => void;
     signUp: (email: string, password: string) => void;
     loginWithProvider: (provider: Provider) => void;
+    resetPassword: (password: string) => void;
+    sendingResetEmail: (email: string) => void;
 };
 
 const initialValue: AuthContextValue = {
@@ -22,6 +24,8 @@ const initialValue: AuthContextValue = {
     logOut: () => {},
     signUp: () => {},
     loginWithProvider: () => {},
+    resetPassword: () => {},
+    sendingResetEmail: () => {},
 };
 
 const AuthContext = createContext<AuthContextValue>(initialValue);
@@ -107,6 +111,37 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
         }
     };
 
+    const sendingResetEmail = async (email: string) => {
+        try {
+            setIsPending(true);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/recover-redirect`, {
+                method: "POST",
+                body: JSON.stringify({ email }),
+            });
+            const data = await response.json();
+
+            setIsPending(false);
+            console.log(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const resetPassword = async (password: string) => {
+        try {
+            setIsPending(true);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/recover`, {
+                method: "POST",
+                body: JSON.stringify({ password }),
+            });
+            const data = await response.json();
+            setIsPending(false);
+            console.log(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     // useEffect(() => {
     //     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`).then(async (response) => {
     //         if (response.status === 200) {
@@ -130,6 +165,8 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
         logOut,
         signUp,
         loginWithProvider,
+        resetPassword,
+        sendingResetEmail,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
