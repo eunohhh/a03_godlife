@@ -4,6 +4,7 @@ import supabase from "@/supabase/client";
 import React, { useState, useEffect } from "react";
 import { Separator } from "@/components/ui/Separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
+import CheerupButton from "@/components/Cheerup";
 
 // Post 인터페이스 정의
 interface Post {
@@ -59,6 +60,7 @@ export function MainPost() {
                 <div className="flex h-5 items-center space-x-4 text-sm">
                   <p>{post.contents}</p>
                 </div>
+                <CheerupButton postId={post.id} />
               </div>
             </div>
           </div>
