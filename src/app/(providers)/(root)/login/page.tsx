@@ -23,8 +23,8 @@ export default function HomePage() {
     const handleClickGithub = async () => loginWithProvider("github");
 
     return (
-        <section className="h-dvh w-[440px] flex flex-col items-center justify-center my-0 mx-auto">
-            <div className="w-[400px] flex flex-col items-center justify-center gap-10">
+        <section className="h-dvh w-[428px] flex flex-col items-center justify-center my-0 mx-auto">
+            <div className="h-[860px] w-[400px] flex flex-col items-center justify-center gap-10">
                 <div className="w-[110px] h-[110px] flex justify-center items-center rounded-full border border-turtleGreen">
                     <Image
                         src="/turtle.svg"
@@ -51,7 +51,7 @@ export default function HomePage() {
                         />
                         <div className="w-full flex flex-col gap-1">
                             <Input
-                                type="text"
+                                type="password"
                                 placeholder="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -75,9 +75,9 @@ export default function HomePage() {
                     <hr className="w-28 border-gray-400" />
                 </div>
 
-                <div className="flex items-center justify-center gap-2">
-                    <FaGithub className="w-10 h-10" />
-                    <FcGoogle className="w-11 h-11" />
+                <div className="flex items-center justify-center gap-8">
+                    <FaGithub className="w-10 h-10 cursor-pointer" onClick={handleClickGithub} />
+                    <FcGoogle className="w-11 h-11 cursor-pointer" onClick={handleClickGoogle} />
                     <SiKakaotalk
                         className="w-10 h-10 text-amber-300 cursor-pointer"
                         onClick={handleClickKaKao}
