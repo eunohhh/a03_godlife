@@ -1,3 +1,5 @@
+import SideBar from "@/components/ui/SideBar";
+
 import MainPost from "@/components/MainPost";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import {
@@ -10,6 +12,12 @@ import {
 
 function MainPage() {
   return (
+    <>
+      <div>
+      <p>사이드바 영역입니당</p>
+      <SideBar />
+    </div>
+    
     <div className="container w-full bg-turtleGreen max-w-[428px] p-2">
       <div className="navbar-center bg-#1d1d1d w-full h-[60px] text-center pt-[1rem] border-gray-500 border-b-2">
         <div className="text-white">Main Header</div>
@@ -41,6 +49,7 @@ function MainPage() {
       </div>
       <MainPost></MainPost>
     </div>
+    </>
   );
 }
 
