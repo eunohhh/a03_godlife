@@ -4,11 +4,11 @@ import { SubmitButton } from "@/components/ui/Submit-button";
 import { useAuth } from "@/context/auth.context";
 import { useRouter } from "next/navigation";
 
-function ResetForm() {
+function SignUpForm() {
     const { isPending, resetPassword } = useAuth();
     const router = useRouter();
 
-    const handleRecoverPassword = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const form = e.currentTarget;
@@ -30,34 +30,33 @@ function ResetForm() {
     return (
         <>
             <div className="flex flex-col items-center justify-center gap-2 pb-6">
-                <h1 className="text-2xl font-bold">비밀번호 변경</h1>
-                <p className="text-sm text-gray-500">Reset your password</p>
+                <h1 className="text-2xl font-bold">회원가입</h1>
+                <p className="text-sm text-gray-500">Please enter the details below to continue</p>
             </div>
 
             <form
-                onSubmit={handleRecoverPassword}
+                onSubmit={handleSubmit}
                 className="w-full h-fit min-h-[35%] flex flex-col items-center justify-center gap-10"
             >
                 <div className="w-[90%] flex flex-col items-center justify-center gap-10">
                     <div className="w-full flex flex-col gap-4">
+                        <Input type="text" placeholder="your name" name="name" />
+                        <Input type="text" placeholder="your email" name="email" />
                         <Input type="password" placeholder="password" name="password" />
-
                         <Input type="password" placeholder="repeat password" name="passwordConfirm" />
-
-                        <p className="w-full text-sm text-right text-gray-500">비밀번호를 변경하세요</p>
                     </div>
                 </div>
 
                 <SubmitButton
                     className="bg-turtleGreen w-[70%] text-white rounded-lg px-4 py-2 text-foreground"
-                    pendingText="변경 중..."
+                    pendingText="회원가입중..."
                     pending={isPending}
                 >
-                    변경
+                    회원가입
                 </SubmitButton>
             </form>
         </>
     );
 }
 
-export default ResetForm;
+export default SignUpForm;

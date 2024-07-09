@@ -48,7 +48,7 @@ function LogInForm() {
 
     return (
         <>
-            <div className="flex flex-col items-center justify-center gap-2 pb-8">
+            <div className="flex flex-col items-center justify-center gap-2 pb-6">
                 <h1 className="text-2xl font-bold">{isRecoverPassword ? "비밀번호 복구" : "로그인"}</h1>
                 <p className="text-sm text-gray-500">
                     {isRecoverPassword ? "Recover your password" : "Sign up to continue using our App"}

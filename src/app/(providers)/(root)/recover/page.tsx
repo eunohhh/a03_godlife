@@ -2,6 +2,7 @@ import AuthPageBottom from "@/components/auth/AuthPageBottom";
 import AuthPageWrapper from "@/components/auth/AuthPageWrapper";
 import ResetForm from "@/components/auth/ResetForm";
 import serverGetUser from "@/lib/severGetUser";
+import Link from "next/link";
 
 export default async function RecoverPage() {
     const me = await serverGetUser();
@@ -19,7 +20,10 @@ export default async function RecoverPage() {
             <AuthPageBottom />
 
             <p className="text-sm text-gray-500">
-                Create account? <span className="text-turtleGreen">Sign up</span>
+                Create account?{" "}
+                <Link href="/signup" className="text-turtleGreen">
+                    Sign up
+                </Link>
             </p>
         </AuthPageWrapper>
     );

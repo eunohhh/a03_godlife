@@ -46,7 +46,8 @@ export async function updateSession(request: NextRequest) {
         request.nextUrl.pathname !== "/" &&
         !request.nextUrl.pathname.startsWith("/api") &&
         !request.nextUrl.pathname.startsWith("/login") &&
-        !request.nextUrl.pathname.startsWith("/recover")
+        !request.nextUrl.pathname.startsWith("/recover") &&
+        !request.nextUrl.pathname.startsWith("/signup")
     ) {
         // no user, potentially respond by redirecting the user to the login page
         const url = request.nextUrl.clone();
@@ -57,7 +58,8 @@ export async function updateSession(request: NextRequest) {
     // 유저가 있으면서, login, recover 를 제외한 라우트는 무조건 홈으로 리다이렉트
     if (
         (request.nextUrl.pathname.startsWith("/login") && user) ||
-        (request.nextUrl.pathname.startsWith("/recover") && user)
+        (request.nextUrl.pathname.startsWith("/recover") && user) ||
+        (request.nextUrl.pathname.startsWith("/signup") && user)
     ) {
         const url = request.nextUrl.clone();
         url.pathname = "/";
