@@ -14,6 +14,7 @@ export async function POST(req: Request) {
     });
 
     if (error) {
+        // console.log("비번변경시 에러 서버에서 =>", error.message);
         return NextResponse.json({ error: error.message }, { status: 400 });
     }
 

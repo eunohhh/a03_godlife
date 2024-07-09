@@ -1,14 +1,12 @@
 import { AuthProvider } from "@/context/auth.context";
-import { createClient } from "@/supabase/server";
+import serverGetUser from "@/lib/severGetUser";
+// import serverGetUser from "@/lib/severGetUser";
 import React from "react";
 
 async function ProvidersLayout({ children }: { children: React.ReactNode }) {
-    const supabase = createClient();
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
+    const me = await serverGetUser();
 
-    const me = user || null;
+    // console.log("providers 에서 받은 user =>", me);
 
     return <AuthProvider initialMe={me}>{children}</AuthProvider>;
 }

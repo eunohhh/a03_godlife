@@ -3,9 +3,12 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
+    // console.log("request 그 자체 =>", request);
     let supabaseResponse = NextResponse.next({
         request,
     });
+
+    // console.log("first supabaseResponse =>", supabaseResponse);
 
     const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -39,13 +42,16 @@ export async function updateSession(request: NextRequest) {
         !user &&
         request.nextUrl.pathname !== "/" &&
         !request.nextUrl.pathname.startsWith("/api") &&
-        !request.nextUrl.pathname.startsWith("/login")
+        !request.nextUrl.pathname.startsWith("/login") &&
+        !request.nextUrl.pathname.startsWith("/recover")
     ) {
         // no user, potentially respond by redirecting the user to the login page
         const url = request.nextUrl.clone();
         url.pathname = "/login";
         return NextResponse.redirect(url);
     }
+
+    // console.log("last supabaseResponse =>", supabaseResponse);
 
     return supabaseResponse;
 }

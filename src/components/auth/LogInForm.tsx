@@ -41,6 +41,7 @@ function LogInForm() {
         const formData = new FormData(form);
         const email = formData.get("email") as string;
 
+        console.log(email);
         if (!email) return alert("빈 값이 없도록 해주세요");
         if (/\s/.test(email)) return alert("공백을 포함할 수 없습니다!");
         if (!emailRegex.test(email)) return alert("유효한 이메일 주소를 입력하세요!");
@@ -61,6 +62,7 @@ function LogInForm() {
 
     useEffect(() => {
         if (!isRecoverPassword) router.push(pathname + "?" + createQueryString("mode", "login"));
+        else router.push(pathname + "?" + createQueryString("mode", "recover"));
     }, [pathname, createQueryString, router, isRecoverPassword]);
 
     // 이벤트
@@ -96,7 +98,13 @@ function LogInForm() {
                         <div className={clsx("w-full flex flex-col gap-1", isRecoverPassword && "gap-4")}>
                             <Input type="password" placeholder="password" name="password" />
 
-                            <Input type="password" placeholder="confirm password" name="passwordConfirm" />
+                            {isRecoverPassword && (
+                                <Input
+                                    type="password"
+                                    placeholder="confirm password"
+                                    name="passwordConfirm"
+                                />
+                            )}
 
                             <button
                                 onClick={() => setIsRecoverPassword(true)}

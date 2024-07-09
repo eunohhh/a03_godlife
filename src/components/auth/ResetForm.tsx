@@ -3,15 +3,16 @@ import { Input } from "@/components/ui/Input";
 import { SubmitButton } from "@/components/ui/Submit-button";
 import { useAuth } from "@/context/auth.context";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 
 function ResetForm() {
     const { isPending, resetPassword } = useAuth();
+    const router = useRouter();
 
-    const handleRecoverPassword = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleRecoverPassword = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const form = e.currentTarget;
-        form.reset();
         const formData = new FormData(form);
         const passwordOne = formData.get("password") as string;
         const passwordTwo = formData.get("passwordConfirm") as string;
@@ -22,8 +23,14 @@ function ResetForm() {
 
         if (passwordOne !== passwordTwo) return alert("비밀번호가 일치하지 않습니다!");
 
-        resetPassword(passwordOne);
+        const isSuccess = await resetPassword(passwordOne);
+
         form.reset();
+
+        if (isSuccess) {
+            alert("비밀번호 변경 성공!");
+            router.push("/");
+        }
     };
 
     return (

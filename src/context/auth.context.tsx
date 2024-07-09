@@ -12,7 +12,7 @@ type AuthContextValue = {
     logOut: () => void;
     signUp: (email: string, password: string) => void;
     loginWithProvider: (provider: Provider) => void;
-    resetPassword: (password: string) => void;
+    resetPassword: (password: string) => Promise<boolean>;
     sendingResetEmail: (email: string) => void;
 };
 
@@ -24,7 +24,7 @@ const initialValue: AuthContextValue = {
     logOut: () => {},
     signUp: () => {},
     loginWithProvider: () => {},
-    resetPassword: () => {},
+    resetPassword: () => Promise.resolve(false),
     sendingResetEmail: () => {},
 };
 
@@ -33,11 +33,13 @@ const AuthContext = createContext<AuthContextValue>(initialValue);
 export const useAuth = () => useContext(AuthContext);
 
 interface AuthProviderProps {
-    initialMe: User | null;
+    initialMe: User | null | string;
 }
 
 export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProviderProps>) {
-    const [me, setMe] = useState<AuthContextValue["me"]>(initialMe);
+    const initializeMe = initialMe === "Auth session missing!" ? null : (initialMe as User);
+    const [me, setMe] = useState<AuthContextValue["me"]>(initializeMe);
+
     const isLoggedIn = !!me;
     const [isPending, setIsPending] = useState(false);
     const router = useRouter();
@@ -136,12 +138,20 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
             });
             const data = await response.json();
             setIsPending(false);
-            console.log(data);
+            if (data.error === "New password should be different from the old password.") {
+                alert("기존 비밀번호와 동일합니다!");
+                return false;
+            } else {
+                setMe(data.user);
+                return true;
+            }
         } catch (error) {
             console.error(error);
+            return false;
         }
     };
 
+    // 아래는 서버사이드에서 처리하기 때문에 주석처리
     // useEffect(() => {
     //     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`).then(async (response) => {
     //         if (response.status === 200) {
@@ -153,6 +163,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
     //     });
     // }, []);
 
+    // 여기는 나중에 지우기
     useEffect(() => {
         console.log(me);
     }, [me]);

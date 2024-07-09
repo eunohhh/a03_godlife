@@ -2,9 +2,14 @@ import GithubLogInButton from "@/components/auth/GithubLogInButton";
 import GoogleLogInButton from "@/components/auth/GoogleLogInButton";
 import KaKaoLogInButton from "@/components/auth/KaKaoLogInButton";
 import ResetForm from "@/components/auth/ResetForm";
+import serverGetUser from "@/lib/severGetUser";
 import Image from "next/image";
 
-export default function RecoverPage() {
+export default async function RecoverPage() {
+    const me = await serverGetUser();
+
+    // console.log("recover 에서 받은 user =>", me);
+
     return (
         <section className="h-dvh w-[428px] flex flex-col items-center justify-center my-0 mx-auto">
             <div className="h-[860px] w-[400px] flex flex-col items-center justify-center gap-10">
@@ -19,7 +24,11 @@ export default function RecoverPage() {
                     />
                 </div>
 
-                <ResetForm />
+                {!me ? (
+                    <p className="text-sm min-h-[35%]text-gray-500">오류 발생! 다시 시도해주세요</p>
+                ) : (
+                    <ResetForm />
+                )}
 
                 <div className="w-full flex items-center justify-center gap-2">
                     <hr className="w-28 border-gray-400" />
