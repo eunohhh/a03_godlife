@@ -1,41 +1,39 @@
-import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function WritePage() {
+export default function WritingPage() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <form className="bg-white p-6 rounded-lg shadow-lg w-full max-w-[480px] h-[860px]">
+      <form className="bg-white p-6 pt-[60px] rounded-lg shadow-lg w-full max-w-[428px] min-h-[860px] flex flex-col">
         <div className="flex justify-between items-center mb-4">
           <Link
             href="/"
-            className="text-turtleGreen hover:text-green-700 cursor-pointer"
+            className="text-turtleGreen hover:text-green-700 cursor-pointer w-[67px] h-[34px]"
           >
             Cancel
           </Link>
-          <button
-            type="submit"
-            className="bg-turtleGreen text-white px-4 py-2 w-[68px] rounded-[14px] hover:bg-green-700 cursor-pointer"
-          >
-            Post
-          </button>
+          <Image
+            src="/post_btn.svg"
+            alt="Post"
+            width={67}
+            height={34}
+            className=" hover:bg-green-700 cursor-pointer"
+          />
         </div>
         <textarea
-          className="w-full p-2 mb-4 border-none outline-none resize-none"
+          className="w-full p-2 mb-4 border-none outline-none resize-none flex-grow"
           placeholder="무슨 일이 일어나고 있나요?"
-          style={{ height: "calc(100% - 120px)" }}
         ></textarea>
-        {/* <Image
-            src="/"
-            alt="logo"
-            width={}
-            height={}
-        /> */}
-        <div className="flex justify-between items-center">
-          <div className="text-turtleGreen text-sm">0/280</div>
-          <button className="bg-turtleGreen text-white px-4 py-2 w-[68px] rounded-[14px] hover:bg-green-700 cursor-pointer">
-            🐢
-          </button>
+        <Image src="/big_logo.svg" alt="logo" width={100} height={100} className="mx-auto my-0" />
+        <div className="flex justify-between items-center mt-4">
+          <div className="text-turtleGreen">{0}/280</div>
+          <Image
+            src="/Image_upload_btn.svg"
+            alt="Image Uploader"
+            width={67}
+            height={34}
+            className=" hover:bg-green-700 cursor-pointer"
+          />
         </div>
       </form>
     </div>
