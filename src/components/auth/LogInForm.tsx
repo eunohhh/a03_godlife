@@ -3,7 +3,7 @@ import { useAuth } from "@/context/auth.context";
 import { emailRegex } from "@/lib/commonRegexs";
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { Input } from "../ui/Input";
 import { SubmitButton } from "../ui/Submit-button";
 
@@ -29,11 +29,9 @@ function LogInForm() {
 
         if (!emailRegex.test(email)) return alert("유효한 이메일 주소를 입력하세요!");
         if (password.length < 8 || password.length > 15) return alert("비밀번호는 4~15 글자로 해야합니다!");
+        form.reset();
 
         logIn(email, password);
-
-        form.reset();
-        router.replace("/");
     };
 
     const handleRecoverPassword = (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,7 +39,7 @@ function LogInForm() {
         const formData = new FormData(form);
         const email = formData.get("email") as string;
 
-        console.log(email);
+        // console.log(email);
         if (!email) return alert("빈 값이 없도록 해주세요");
         if (/\s/.test(email)) return alert("공백을 포함할 수 없습니다!");
         if (!emailRegex.test(email)) return alert("유효한 이메일 주소를 입력하세요!");
@@ -60,23 +58,23 @@ function LogInForm() {
         [searchParams]
     );
 
-    useEffect(() => {
-        if (!isRecoverPassword) router.push(pathname + "?" + createQueryString("mode", "login"));
-        else router.push(pathname + "?" + createQueryString("mode", "recover"));
-    }, [pathname, createQueryString, router, isRecoverPassword]);
+    // useEffect(() => {
+    //     if (!isRecoverPassword) router.push(pathname + "?" + createQueryString("mode", "login"));
+    //     else router.push(pathname + "?" + createQueryString("mode", "recover"));
+    // }, [pathname, createQueryString, router, isRecoverPassword]);
 
-    // 이벤트
-    useEffect(() => {
-        if (!router) return;
-        const handlePopState = () => {
-            router.push("/login?mode=login");
-            setIsRecoverPassword(false);
-        };
-        window.addEventListener("popstate", handlePopState);
-        return () => {
-            window.removeEventListener("popstate", handlePopState);
-        };
-    }, [router]);
+    // // 이벤트
+    // useEffect(() => {
+    //     if (!router) return;
+    //     const handlePopState = () => {
+    //         router.push("/login?mode=login");
+    //         setIsRecoverPassword(false);
+    //     };
+    //     window.addEventListener("popstate", handlePopState);
+    //     return () => {
+    //         window.removeEventListener("popstate", handlePopState);
+    //     };
+    // }, [router]);
 
     return (
         <>

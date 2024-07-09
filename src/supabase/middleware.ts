@@ -38,6 +38,9 @@ export async function updateSession(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser();
 
+    // console.log("미들웨어에서 유저 =>", user);
+
+    // 유저가 없으면서, api, login, recover 를 제외한 라우트는 무조건 login 으로 리다이렉트
     if (
         !user &&
         request.nextUrl.pathname !== "/" &&
@@ -48,6 +51,16 @@ export async function updateSession(request: NextRequest) {
         // no user, potentially respond by redirecting the user to the login page
         const url = request.nextUrl.clone();
         url.pathname = "/login";
+        return NextResponse.redirect(url);
+    }
+
+    // 유저가 있으면서, login, recover 를 제외한 라우트는 무조건 홈으로 리다이렉트
+    if (
+        (request.nextUrl.pathname.startsWith("/login") && user) ||
+        (request.nextUrl.pathname.startsWith("/recover") && user)
+    ) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/";
         return NextResponse.redirect(url);
     }
 

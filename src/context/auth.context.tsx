@@ -12,7 +12,7 @@ type AuthContextValue = {
     logOut: () => void;
     signUp: (email: string, password: string) => void;
     loginWithProvider: (provider: Provider) => void;
-    resetPassword: (password: string) => Promise<boolean>;
+    resetPassword: (password: string) => void;
     sendingResetEmail: (email: string) => void;
 };
 
@@ -24,7 +24,7 @@ const initialValue: AuthContextValue = {
     logOut: () => {},
     signUp: () => {},
     loginWithProvider: () => {},
-    resetPassword: () => Promise.resolve(false),
+    resetPassword: () => {},
     sendingResetEmail: () => {},
 };
 
@@ -55,10 +55,11 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
                 method: "POST",
                 body: JSON.stringify(data),
             });
-            const user = await response.json();
+            const { user } = await response.json();
 
             setMe(user);
             setIsPending(false);
+            router.replace("/");
         } catch (error) {
             console.error(error);
         }
@@ -74,8 +75,8 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
         } catch (error) {
             console.error(error);
         }
-
         setMe(null);
+        router.replace("/login");
     };
 
     const signUp: AuthContextValue["signUp"] = async (email, password) => {
@@ -89,10 +90,11 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
                 method: "POST",
                 body: JSON.stringify(data),
             });
-            const user = await response.json();
+            const { user } = await response.json();
 
             setMe(user);
             setIsPending(false);
+            router.replace("/");
         } catch (error) {
             console.error(error);
         }
@@ -139,15 +141,15 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
             const data = await response.json();
             setIsPending(false);
             if (data.error === "New password should be different from the old password.") {
-                alert("기존 비밀번호와 동일합니다!");
-                return false;
+                return alert("기존 비밀번호와 동일합니다!");
             } else {
+                alert("비밀번호 변경 성공!");
                 setMe(data.user);
-                return true;
+                router.replace("/");
             }
         } catch (error) {
             console.error(error);
-            return false;
+            router.refresh();
         }
     };
 

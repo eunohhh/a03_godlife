@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
-    console.log("callback 에서 받은 request =>", request);
+    // console.log("callback 에서 받은 request =>", request);
     const { searchParams, origin } = new URL(request.url);
     const code = searchParams.get("code");
     // if "next" is in param, use it as the redirect URL
@@ -37,3 +37,5 @@ export async function GET(request: Request) {
     // return the user to an error page with instructions
     return NextResponse.redirect(`${origin}/auth/auth-code-error`);
 }
+
+// 만일 소셜 로그인인데, 이메일이 같으면(깃헙로그인이든 구글이든) 수파베이스 auth 에는 그냥 업데이트만 됨

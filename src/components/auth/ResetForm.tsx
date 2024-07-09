@@ -9,7 +9,7 @@ function ResetForm() {
     const { isPending, resetPassword } = useAuth();
     const router = useRouter();
 
-    const handleRecoverPassword = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleRecoverPassword = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const form = e.currentTarget;
@@ -23,14 +23,9 @@ function ResetForm() {
 
         if (passwordOne !== passwordTwo) return alert("비밀번호가 일치하지 않습니다!");
 
-        const isSuccess = await resetPassword(passwordOne);
+        resetPassword(passwordOne);
 
         form.reset();
-
-        if (isSuccess) {
-            alert("비밀번호 변경 성공!");
-            router.push("/");
-        }
     };
 
     return (
