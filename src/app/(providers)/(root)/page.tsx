@@ -22,10 +22,9 @@ function MainPage() {
           />
           <AvatarFallback>NA</AvatarFallback>
         </Avatar>
-        <Avatar className="flex">
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>NA</AvatarFallback>
-        </Avatar>
+        <div className="flex">
+          <img src="/center_logo.svg" alt="Center Logo" />
+        </div>
         <div className="flex">
           <Select>
             <SelectTrigger className="w-[75px]">
