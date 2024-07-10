@@ -1,6 +1,7 @@
 "use client";
 
 import { Weather } from "@/types/weather";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 const WeatherData: React.FC = () => {
@@ -30,7 +31,12 @@ const WeatherData: React.FC = () => {
           weather.map((e) => (
             <div key={e.id} className="h-[20px] ">
               <div>날씨 : {e.description}</div>
-              {/* <div>{e.icon}</div> */}
+              <Image
+                src={e.iconUrl}
+                alt={e.description}
+                width={60}
+                height={60}
+              />
             </div>
           ))
         ) : (

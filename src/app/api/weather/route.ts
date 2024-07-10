@@ -13,7 +13,20 @@ export const GET = async (request: Request) => {
     );
     //한국, 'C로 받아오게 static 설정
 
-    const data = await response.json();
+    const weatherObj = await response.json();
+    console.log(weatherObj);
+
+    const iconCode = weatherObj.weather[0].icon; //아마도 10d
+    const iconUrl = `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+
+    const data = {
+      ...weatherObj,
+      weather: weatherObj.weather.map((weatherItem: any) => ({
+        //any 말고 object로 하면 왜 안되죵..?
+        ...weatherItem,
+        iconUrl: `http://openweathermap.org/img/wn/${weatherItem.icon}@2x.png`,
+      })),
+    };
     console.log(data);
     return NextResponse.json(data);
   } catch (error) {

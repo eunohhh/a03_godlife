@@ -8,6 +8,7 @@ export type Weather = {
     main: string;
     description: string;
     icon: string;
+    iconUrl: string;
   }>;
   base: string;
   main: {

@@ -23,13 +23,33 @@ const SideBar = () => {
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
-            <Image src="/profile_icon.svg" alt="tmp" width={30} height={30} />
+            <Image src="/profile_btn.svg" alt="tmp" width={67} height={34} />
             <SheetTitle>nickname</SheetTitle>
           </SheetHeader>
           <SheetDescription>자기소개 글입니다.</SheetDescription>
           <SheetDescription>@email</SheetDescription>
-          <Link href="/">내 프로필</Link>
-          <Link href="/">글 작성하기</Link>
+          <Link href="/">
+            <div className="flex flex-row">
+              <Image
+                src="/profile_icon.svg"
+                width={18}
+                height={21}
+                alt="profile_icon"
+              />
+              내 프로필
+            </div>
+          </Link>
+          <Link href="/">
+            <div className="flex flex-row">
+              <Image
+                src="/write_icon.svg"
+                alt="write_icon"
+                width={20}
+                height={20}
+              />
+              글 작성하기
+            </div>
+          </Link>
           {/* <h3>날씨</h3> */}
           <WeatherData />
           <SheetFooter>
