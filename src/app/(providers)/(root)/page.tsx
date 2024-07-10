@@ -34,7 +34,7 @@ function MainPage() {
           <div className="text-white">Main Header</div>
         </div>
         <div className="flex flex-row justify-between px-2 my-5">
-          <Avatar className="flex">
+          <Avatar className="flex bg-white">
             <AvatarImage
               src="https://ngtnbcqokvtyrilhkwpz.supabase.co/storage/v1/object/public/profile/Vector.png"
               alt="@shadcn"
@@ -62,7 +62,7 @@ function MainPage() {
           </div>
         </div>
         <MainPost></MainPost>
-        <div className="fixed bottom-[5%] right-[35%] group">
+        <div className="flex fixed bottom-[5%] right-[42%] group">
           <img
             className="cursor-pointer transition-transform duration-300 ease-in-out transform group-hover:scale-110"
             src="top_btn.svg"
