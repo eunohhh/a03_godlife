@@ -1,6 +1,7 @@
 // import { authOptions } from "@/auth";
 import type { Metadata } from "next";
 // import { getServerSession } from "next-auth/next";
+import QueryProvider from "@/providers/QueryProvider";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -18,7 +19,9 @@ export default async function HTMLLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }
