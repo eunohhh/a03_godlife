@@ -15,17 +15,19 @@ import {
 } from "./Alert-dialog";
 
 interface CustomAlertProps {
-    title: "success" | "error";
+    title: "success" | "caution" | "error";
     description: string;
     isConfirm?: boolean;
-    onClose: () => void;
+    onClose?: () => void;
+    onJustClose?: () => void;
 }
 
 function CustomAlert({
     title = "success",
     description = "성공했습니다!",
-    isConfirm = false,
-    onClose,
+    isConfirm = true,
+    onClose = () => {},
+    onJustClose,
 }: CustomAlertProps) {
     return (
         <AlertDialog open={true}>
@@ -48,7 +50,7 @@ function CustomAlert({
                             {isConfirm && (
                                 <AlertDialogCancel
                                     className="bg-gray-200 text-gray-500 px-4 py-2 rounded-md"
-                                    onClick={onClose}
+                                    onClick={onJustClose}
                                 >
                                     취소
                                 </AlertDialogCancel>
