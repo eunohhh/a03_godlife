@@ -7,11 +7,21 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/Select";
 import SideBar from "@/components/ui/SideBar";
 
 function MainPage() {
+  const handleLogoClick = () => {
+    window.location.reload();
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <div>
@@ -32,12 +42,16 @@ function MainPage() {
             <AvatarFallback>NA</AvatarFallback>
           </Avatar>
           <div className="flex">
-            <img src="/center_logo.svg" alt="Center Logo" />
+            <img
+              src="/center_logo.svg"
+              onClick={handleLogoClick}
+              style={{ cursor: "pointer" }}
+            />
           </div>
           <div className="flex">
             <Select>
               <SelectTrigger className="w-[75px]">
-                <SelectValue placeholder="정렬" />
+                <img src="/sort_btn.svg" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="light">인기순</SelectItem>
@@ -48,6 +62,14 @@ function MainPage() {
           </div>
         </div>
         <MainPost></MainPost>
+        <div className="fixed bottom-[5%] right-[35%] group">
+          <img
+            className="cursor-pointer transition-transform duration-300 ease-in-out transform group-hover:scale-110"
+            src="top_btn.svg"
+            alt="Top Button"
+            onClick={scrollToTop}
+          />
+        </div>
       </div>
     </>
   );
