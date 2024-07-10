@@ -19,5 +19,22 @@ export async function GET() {
     if (!user) {
         return NextResponse.json({ data: { user: "User not found" } }, { status: 404 });
     }
-    return NextResponse.json({ data: { user } }, { status: 200 });
+
+    const { data: userData, error: userError } = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+
+    if (userError) {
+        console.error(userError);
+        return NextResponse.json({ error: userError?.message }, { status: 401 });
+    }
+
+    const response = {
+        ...user,
+        userTableInfo: userData,
+    };
+
+    return NextResponse.json({ data: response }, { status: 200 });
 }
