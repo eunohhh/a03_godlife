@@ -94,7 +94,7 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
   //   },
   // });
 
-  const mutation = useMutation<
+  const { mutate: likeToggle } = useMutation<
     void,
     Error,
     { postId: number; isCheeruped: boolean }
@@ -118,7 +118,7 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
   // } as UseMutationOptions<void, Error, { postId: number; isCheeruped: boolean }>);
 
   const handleCheerup = () => {
-    mutation.mutate({ postId, isCheeruped });
+    likeToggle({ postId, isCheeruped });
   };
 
   if (isLoading) return <div>Loading...</div>;
