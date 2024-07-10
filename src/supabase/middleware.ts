@@ -47,10 +47,11 @@ export async function updateSession(request: NextRequest) {
         !request.nextUrl.pathname.startsWith("/api") &&
         !request.nextUrl.pathname.startsWith("/login") &&
         !request.nextUrl.pathname.startsWith("/recover") &&
-        !request.nextUrl.pathname.startsWith("/signup") &&
-        // 개발용으로 아래 추가 추후 삭제할 것
-        !request.nextUrl.pathname.startsWith("/write") &&
-        !request.nextUrl.pathname.startsWith("/profile")
+        !request.nextUrl.pathname.startsWith("/signup")
+        // &&
+        // // 개발용으로 아래 추가 추후 삭제할 것
+        // !request.nextUrl.pathname.startsWith("/write") &&
+        // !request.nextUrl.pathname.startsWith("/profile")
     ) {
         // no user, potentially respond by redirecting the user to the login page
         const url = request.nextUrl.clone();
