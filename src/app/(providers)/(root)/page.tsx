@@ -1,6 +1,5 @@
 "use client";
 
-import SideBar from "@/components/ui/SideBar";
 import MainPost from "@/components/MainPost";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import {
@@ -8,8 +7,8 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/Select";
+import SideBar from "@/components/ui/SideBar";
 
 function MainPage() {
   const handleLogoClick = () => {
