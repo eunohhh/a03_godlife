@@ -4,6 +4,16 @@ import { Weather } from "@/types/weather";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
+interface weatherDataProps {
+  onWeatherData: (
+    weather: Weather["weather"],
+    temp: number,
+    tempMin: number,
+    tempMax: number,
+    humidity: number
+  ) => void;
+}
+
 const WeatherData: React.FC = () => {
   const [weather, setWeather] = useState<Weather["weather"] | null>(null);
   const [tempMin, setTempMin] = useState<number | null>(null);
@@ -39,9 +49,9 @@ const WeatherData: React.FC = () => {
                 />
                 <div className="mt-4">{e.description}</div>
                 <div className="ml-2 mt-4">{temp?.toFixed(1)}°C</div>
-                <div className="ml-3 mt-4">최저 {tempMin?.toFixed(1)}°C</div>
-                <div className="ml-3 mt-4">최고 {tempMax?.toFixed(1)}°C</div>
-                <div className="ml-3 mt-4">습도 {humidity?.toFixed(1)}%</div>
+                <div className="ml-3 mt-4">🔽최저 {tempMin?.toFixed(1)}°C</div>
+                <div className="ml-3 mt-4">🔼최고 {tempMax?.toFixed(1)}°C</div>
+                <div className="ml-3 mt-4">💧습도 {humidity?.toFixed(1)}%</div>
               </div>
             </div>
           ))
