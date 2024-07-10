@@ -18,17 +18,26 @@ interface CheerupProps {
 
 // 좋아요 상태를 가져오는 함수
 const fetchCheerupStatus = async (postId: number): Promise<number> => {
-  const { data, error } = await supabase
-    .from("cheerup")
-    .select("id")
-    .eq("postid", postId);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data.length; // 좋아요 개수를 반환
+  const response = await fetch(
+    "http://localhost:3000/api/cheerup?postId=2bcc9fe0-73a6-4f3a-bf4e-7fa0dec7a4b2"
+  );
+  const data = await response.json();
+  console.log(data);
+  return data.length;
 };
+
+// const fetchCheerupStatus = async (postId: number): Promise<number> => {
+//   const { data, error } = await supabase
+//     .from("cheerup")
+//     .select("id")
+//     .eq("postid", postId);
+
+//   if (error) {
+//     throw new Error(error.message);
+//   }
+
+//   return data.length; // 좋아요 개수를 반환
+// };
 
 // 좋아요 상태를 변경하는 함수
 const handleCheerupToggle = async ({
@@ -65,9 +74,10 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
   const { data: cheerupCount = 0, isLoading } = useQuery<number>({
     queryKey: ["cheerupStatus", postId],
     queryFn: () => fetchCheerupStatus(postId),
-    staleTime: 300000,
+    // staleTime: 300000,
   });
 
+  // 조건 판단문 변경
   const isCheeruped = cheerupCount > 0;
 
   // 좋아요 상태를 변경하는 useMutation
@@ -106,6 +116,19 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
       queryClient.invalidateQueries({ queryKey: ["cheerupStatus", postId] }); // 데이터 갱신
     },
   });
+
+  // const mutation = useMutation<
+  //   void,
+  //   Error,
+  //   { postId: number; isCheeruped: boolean }
+  // >({
+  //   mutationFn: ({ postId, isCheeruped }) => {
+  //     return handleCheerupToggle({ postId, isCheeruped });
+  //   },
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["cheerupStatus", postId] }); // 데이터 갱신
+  //   },
+  // });
 
   // const mutation = useMutation<
   //   void,
