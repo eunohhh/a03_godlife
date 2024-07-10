@@ -1,7 +1,23 @@
-import React from "react";
+"use client";
+
+import React, { useRef } from "react";
 import Image from "next/image";
+import { useAuth } from "@/context/auth.context";
+import supabase from "@/supabase/client";
+import { User } from "@supabase/supabase-js";
 
 const ProfilePage: React.FC = () => {
+  const { me } = useAuth();
+  const dataRef = useRef<User | null>(null);
+
+  const handleUpdateSubmit = async (): Promise<void> => {
+    const { data: userData, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", me?.id)
+      .single();
+  };
+
   return (
     <div className="max-w-md mx-auto bg-white h-[138px]">
       {/* 헤더 섹션 */}
