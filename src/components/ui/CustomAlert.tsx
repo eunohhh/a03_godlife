@@ -25,7 +25,7 @@ interface CustomAlertProps {
 function CustomAlert({
     title = "success",
     description = "성공했습니다!",
-    isConfirm = true,
+    isConfirm = false,
     onClose = () => {},
     onJustClose,
 }: CustomAlertProps) {
@@ -49,14 +49,14 @@ function CustomAlert({
                         <AlertDialogFooter className="flex flex-row justify-center items-center gap-4">
                             {isConfirm && (
                                 <AlertDialogCancel
-                                    className="bg-gray-200 text-gray-500 px-4 py-2 rounded-md"
+                                    className="bg-gray-200 text-gray-500 px-4 py-2 rounded-md focus-visible:outline-none"
                                     onClick={onJustClose}
                                 >
                                     취소
                                 </AlertDialogCancel>
                             )}
                             <AlertDialogAction
-                                className="bg-turtleGreen text-white px-4 py-2 rounded-md"
+                                className="bg-turtleGreen text-white px-4 py-2 rounded-md focus-visible:outline-none"
                                 onClick={onClose}
                             >
                                 확인
