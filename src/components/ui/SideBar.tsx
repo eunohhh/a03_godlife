@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 
 import {
   Sheet,
@@ -25,16 +25,19 @@ import Image from "next/image";
 import WeatherData from "./WeatherData";
 import { Separator } from "./Separator";
 
-const SideBar = () => {
+const SideBar = ({ children }: PropsWithChildren) => {
   return (
     <>
       <Sheet>
-        <SheetTrigger asChild>
-          <button>Open Sheet 버튼</button>
-        </SheetTrigger>
+        <SheetTrigger asChild>{children}</SheetTrigger>
         <SheetContent>
           <SheetHeader>
-            <Image src="/profile_btn.svg" alt="tmp" width={67} height={34} />
+            <Image
+              src="/profile_btn.svg"
+              alt="profile_btn"
+              width={67}
+              height={34}
+            />
             <SheetTitle>nickname</SheetTitle>
           </SheetHeader>
           <SheetDescription>자기소개 글입니다.</SheetDescription>

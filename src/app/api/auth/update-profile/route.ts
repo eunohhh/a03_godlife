@@ -1,4 +1,4 @@
-//임시로 만들었습니다!
+//Request 타입에 user 정보가 없어서 에러가 나고 있어서 수정해야합니다
 
 import { createClient } from "@/supabase/server";
 import { NextResponse } from "next/server";
