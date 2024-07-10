@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { emojis } from "@/data/emojis";
+import { emojis } from "../data/emojis";
 
 interface Props {
   setter: Dispatch<SetStateAction<string>>;
