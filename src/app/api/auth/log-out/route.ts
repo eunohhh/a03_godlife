@@ -2,9 +2,9 @@ import { createClient } from "@/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function DELETE() {
-  const supabase = createClient();
+    const supabase = createClient();
 
-  await supabase.auth.signOut();
+    await supabase.auth.signOut();
 
-  return NextResponse.json("");
+    return NextResponse.json({ message: "Logout successful" }, { status: 200 });
 }
