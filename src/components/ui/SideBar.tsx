@@ -56,6 +56,7 @@ const SideBar = () => {
           <Separator />
           {/* <h3>날씨</h3> */}
           <WeatherData />
+          <Separator />
           <SheetFooter>
             <SheetClose asChild>
               <button>닫기</button>
