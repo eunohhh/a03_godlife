@@ -20,6 +20,16 @@ const ProfilePage: React.FC = () => {
       .select("*")
       .eq("id", me?.id)
       .single();
+
+    //여기부터 전혀모르겠습니다
+    const fileName = `avatars_${me.id}.jpg`;
+    const { error } = await supabase.storage
+      .from("profile")
+      .upload(fileName, avatarFile, {
+        cacheControl: "3600",
+        upsert: true,
+      });
+    //여기까지 전혀모르겠습니다
   };
 
   return (
