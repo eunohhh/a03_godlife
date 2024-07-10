@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
+import RefreshLogo from "@/components/RefreshLogo";
 
 function MainPage() {
   return (
@@ -23,12 +24,12 @@ function MainPage() {
           <AvatarFallback>NA</AvatarFallback>
         </Avatar>
         <div className="flex">
-          <img src="/center_logo.svg" alt="Center Logo" />
+          <RefreshLogo />
         </div>
         <div className="flex">
           <Select>
             <SelectTrigger className="w-[75px]">
-              <SelectValue placeholder="정렬" />
+              <img src="/sort_btn.svg" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="light">인기순</SelectItem>
