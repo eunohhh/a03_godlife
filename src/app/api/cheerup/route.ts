@@ -15,3 +15,36 @@ export async function GET(request: NextRequest) {
   }
   return NextResponse.json(data, { status: 200 });
 }
+
+export async function POST(request: NextRequest) {
+  const { postId, isCheeruped } = await request.json();
+
+  if (!postId) {
+    return NextResponse.json({ error: "postId is required" }, { status: 400 });
+  }
+
+  const supabase = createClient();
+
+  if (isCheeruped) {
+    const { error } = await supabase
+      .from("cheerup")
+      .delete()
+      .eq("postid", postId);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 401 });
+    }
+
+    return NextResponse.json({ message: "Cheerup removed" }, { status: 200 });
+  } else {
+    const { error } = await supabase
+      .from("cheerup")
+      .insert([{ postid: postId }]);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 401 });
+    }
+
+    return NextResponse.json({ message: "Cheerup added" }, { status: 200 });
+  }
+}
