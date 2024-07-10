@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { emojis } from "../data/emojis";
 
