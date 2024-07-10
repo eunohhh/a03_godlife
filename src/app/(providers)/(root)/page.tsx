@@ -10,7 +10,19 @@ import {
 } from "@/components/ui/Select";
 import SideBar from "@/components/ui/SideBar";
 
+import { showAlert } from "@/lib/openCustomAlert";
+import { useRouter } from "next/navigation";
+
 function MainPage() {
+  const router = useRouter();
+  const handleSideBarClick = () => {
+    showAlert("error", "로그인 해주세요", true);
+    setTimeout(() => {
+      router.push("./login");
+    }, 0);
+  };
+  //이게 맞는지 모르겠는데 login된 상태라 확인이 되는지도 모르겠습니다ㅠㅠ
+
   const handleLogoClick = () => {
     window.location.reload();
   };
@@ -32,6 +44,7 @@ function MainPage() {
           <SideBar>
             <Avatar className="flex">
               <AvatarImage
+                onClick={handleSideBarClick}
                 src="https://ngtnbcqokvtyrilhkwpz.supabase.co/storage/v1/object/public/profile/Vector.png"
                 alt="profile"
               />
