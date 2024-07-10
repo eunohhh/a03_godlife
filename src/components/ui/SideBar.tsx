@@ -10,6 +10,16 @@ import {
   SheetFooter,
   SheetDescription,
 } from "./Sheet";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./Card";
+
 import Link from "next/link";
 import Image from "next/image";
 import WeatherData from "./WeatherData";
@@ -55,6 +65,18 @@ const SideBar = () => {
           </Link>
           <Separator />
           {/* <h3>날씨</h3> */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Card Title</CardTitle>
+              <CardDescription>Card Description</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p>Card Content</p>
+            </CardContent>
+            <CardFooter>
+              <p>Card Footer</p>
+            </CardFooter>
+          </Card>
           <WeatherData />
           <Separator />
           <SheetFooter>
