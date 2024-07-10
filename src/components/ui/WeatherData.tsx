@@ -28,13 +28,13 @@ const WeatherData: React.FC = () => {
       <div>
         {weather ? (
           weather.map((e) => (
-            <div key={e.id} className="h-[300px] ">
+            <div key={e.id} className="h-[20px] ">
               <div>날씨 : {e.description}</div>
               {/* <div>{e.icon}</div> */}
             </div>
           ))
         ) : (
-          <div className="h-[300px]">날씨 데이터 없음</div>
+          <div className="h-[20px]">날씨 데이터 없음</div>
         )}
       </div>
     </>
