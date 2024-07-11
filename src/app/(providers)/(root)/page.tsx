@@ -4,9 +4,18 @@ import React from "react";
 import MainPost from "@/components/MainPost";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import SideBar from "@/components/ui/SideBar";
+
+import { showAlert } from "@/lib/openCustomAlert";
+import { useRouter } from "next/navigation";
 import { DropdownMenuCheckboxes } from "@/components/ui/Checkbox";
 
 function MainPage() {
+  const router = useRouter();
+  const handleSideBarClick = () => {
+    showAlert("error", "로그인 해주세요", () => router.push("/login"), true);
+  };
+  //이게 맞는지 모르겠는데 login된 상태라 확인이 되는지도 모르겠습니다ㅠㅠ
+
   const [sortBy, setSortBy] = React.useState<"latest" | "popular">("latest");
 
   const handleLogoClick = () => {
@@ -34,6 +43,7 @@ function MainPage() {
           <SideBar>
             <Avatar className="flex bg-white cursor-pointer">
               <AvatarImage
+                onClick={handleSideBarClick}
                 src="https://ngtnbcqokvtyrilhkwpz.supabase.co/storage/v1/object/public/profile/Vector.png"
                 alt="profile"
               />

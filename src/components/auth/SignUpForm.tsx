@@ -24,16 +24,16 @@ function SignUpForm() {
         if (!name || !email || !passwordOne || !passwordTwo) return alert("빈 값이 없도록 해주세요");
 
         if (validateWhiteSpace([name, email, passwordOne, passwordTwo]))
-            return showAlert("error", "공백을 포함할 수 없습니다!");
+            return showAlert("caution", "공백을 포함할 수 없습니다!");
 
-        if (!emailRegex.test(email)) return showAlert("error", "유효한 이메일 주소를 입력하세요!");
+        if (!emailRegex.test(email)) return showAlert("caution", "유효한 이메일 주소를 입력하세요!");
 
-        if (!passwordOne || !passwordTwo) return showAlert("error", "비밀번호를 입력해주세요!");
+        if (!passwordOne || !passwordTwo) return showAlert("caution", "비밀번호를 입력해주세요!");
 
         if (passwordOne.length < 8 || passwordOne.length > 15)
-            return showAlert("error", "비밀번호는 8~15 글자로 해야합니다!");
+            return showAlert("caution", "비밀번호는 8~15 글자로 해야합니다!");
 
-        if (passwordOne !== passwordTwo) return showAlert("error", "비밀번호가 일치하지 않습니다!");
+        if (passwordOne !== passwordTwo) return showAlert("caution", "비밀번호가 일치하지 않습니다!");
 
         form.reset();
 
