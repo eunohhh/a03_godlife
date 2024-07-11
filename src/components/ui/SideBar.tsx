@@ -30,6 +30,7 @@ const SideBar = ({ children }: PropsWithChildren) => {
     <>
       <Sheet>
         <SheetTrigger asChild>{children}</SheetTrigger>
+        {/* hover시 cursor 바뀌게 수정해야 함! */}
         <SheetContent>
           <SheetHeader>
             <Image
