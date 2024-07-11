@@ -42,7 +42,7 @@ const SideBar = ({
       <Sheet open={isOpen}>
         <SheetTrigger>{children}</SheetTrigger>
         {/* hover시 cursor 바뀌게 수정해야 함! */}
-        <SheetContent>
+        <SheetContent handleClick={handleClick}>
           <SheetHeader>
             <Image
               src="/profile_btn.svg"
