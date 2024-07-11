@@ -2,7 +2,7 @@
 
 import { format } from "date-fns";
 import supabase from "@/supabase/client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Separator } from "@/components/ui/Separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import CheerupButton from "@/components/Cheerup";
@@ -21,9 +21,9 @@ interface MainPostProps {
 }
 
 export function MainPost({ sortBy }: MainPostProps) {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = React.useState<Post[]>([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchPosts();
   }, [sortBy]);
 

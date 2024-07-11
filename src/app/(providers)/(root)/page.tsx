@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import MainPost from "@/components/MainPost";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import SideBar from "@/components/ui/SideBar";
 import { DropdownMenuCheckboxes } from "@/components/ui/Checkbox";
 
 function MainPage() {
-  const [sortBy, setSortBy] = useState<"latest" | "popular">("latest");
+  const [sortBy, setSortBy] = React.useState<"latest" | "popular">("latest");
 
   const handleLogoClick = () => {
     window.location.reload();
