@@ -54,7 +54,7 @@ const SideBar = ({
           </SheetHeader>
           <SheetDescription>자기소개 글입니다.</SheetDescription>
           <SheetDescription>@email</SheetDescription>
-          <Link href="/">
+          <Link href="/profile">
             <div className="flex flex-row mt-3 mb-3">
               <Image
                 className="mr-3"
@@ -66,7 +66,7 @@ const SideBar = ({
               <SheetTitle> 내 프로필</SheetTitle>
             </div>
           </Link>
-          <Link href="/">
+          <Link href="/write">
             <div className="flex flex-row mb-3">
               <Image
                 className="mr-3"
