@@ -25,11 +25,22 @@ import Image from "next/image";
 import WeatherData from "./WeatherData";
 import { Separator } from "./Separator";
 
-const SideBar = ({ children }: PropsWithChildren) => {
+const SideBar = ({
+  children,
+  isOpen,
+  handleOpen,
+}: {
+  children: React.ReactNode;
+  isOpen: boolean;
+  handleOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const handleclick = () => {
+    handleOpen(false);
+  };
   return (
     <>
-      <Sheet>
-        <SheetTrigger asChild>{children}</SheetTrigger>
+      <Sheet open={isOpen}>
+        <SheetTrigger>{children}</SheetTrigger>
         {/* hover시 cursor 바뀌게 수정해야 함! */}
         <SheetContent>
           <SheetHeader>
@@ -85,7 +96,7 @@ const SideBar = ({ children }: PropsWithChildren) => {
           <Separator />
           <SheetFooter>
             <SheetClose asChild>
-              <button>닫기</button>
+              <button onClick={handleclick}>닫기</button>
             </SheetClose>
           </SheetFooter>
         </SheetContent>
