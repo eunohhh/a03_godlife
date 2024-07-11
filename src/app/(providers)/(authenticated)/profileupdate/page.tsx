@@ -1,13 +1,16 @@
 "use client";
 
 import { useAuth } from "@/context/auth.context";
+import { showAlert } from "@/lib/openCustomAlert";
 import supabase from "@/supabase/client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 import React, { useState } from "react";
 
 const ProfilePage: React.FC = () => {
   const { me } = useAuth();
-
+  const router = useRouter();
   const [profileImg, setProfileImg] = useState(
     me?.userTableInfo.avatar ?? "/profile_camera.svg"
   );
@@ -25,6 +28,7 @@ const ProfilePage: React.FC = () => {
     const url = URL.createObjectURL(avatarFile);
     setProfileImg(url);
   };
+  // console.log("체크용", nickname, introduction);
 
   const handleUpdateSubmit = async (
     e: React.FormEvent<HTMLFormElement>
@@ -34,6 +38,8 @@ const ProfilePage: React.FC = () => {
     const updatedFields: Record<string, any> = {};
 
     if (!me) return;
+    if (nickname.length === 0 || introduction.length === 0)
+      return showAlert("caution", "값을 입력해주세요");
     if (avatarFile !== null) {
       const fileName = `avatars_${me.id}.jpg`;
 
@@ -80,6 +86,9 @@ const ProfilePage: React.FC = () => {
     setProfileImg(data[0].avatar);
     setNickname(data[0].nickname);
     setIntroduction(data[0].introduction);
+    showAlert("success", "업데이트에 성공했습니다!", () =>
+      router.push("/profile")
+    );
 
     console.log("User updated =>>>", data);
   };
