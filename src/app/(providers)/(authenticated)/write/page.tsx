@@ -1,24 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+// import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "@/context/auth.context";
 import supabase from "@/supabase/client";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { showAlert } from "@/lib/openCustomAlert";
 
 export default function WritingPage() {
   const [contents, setContents] = useState("");
   const { me } = useAuth();
   const router = useRouter();
-  console.log(me);
+  console.log(router);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContents(e.target.value);
 
     if (contents.length > 280) {
-      return alert("게시글은 280자 미만으로 입력해주세요.");
+      return showAlert("caution", "게시글은 280자 미만으로 입력해주세요.");
     }
   };
 
@@ -27,17 +27,24 @@ export default function WritingPage() {
     if (!me) return;
 
     if (!contents) {
-      return showAlert("caution", "게시글을 먼저 입력해주세요.")
+      return showAlert("caution", "게시글을 먼저 입력해주세요.");
     }
 
-    const { data, error } = await supabase
-      .from("posts")
-      .insert([{ contents: contents, nickname: me.userTableInfo.nickname, email: me.userTableInfo.email, avatar: me.userTableInfo.avatar }]);
+    const { data, error } = await supabase.from("posts").insert([
+      {
+        contents: contents,
+        nickname: me.userTableInfo.nickname,
+        email: me.userTableInfo.email,
+        avatar: me.userTableInfo.avatar,
+      },
+    ]);
 
     if (error instanceof Error) {
       console.error(error.message);
     } else {
-      return showAlert("success", "게시물이 등록되었습니다.", () => router.push("/write"))
+      return showAlert("success", "게시물이 등록되었습니다.", () =>
+        router.push("/")
+      );
     }
   };
 
@@ -48,19 +55,18 @@ export default function WritingPage() {
         className="bg-white p-6 pt-[60px] rounded-lg shadow-lg w-full max-w-[428px] min-h-[860px] flex flex-col"
       >
         <div className="flex justify-between items-center mb-4">
-          <Link
+          {/* <Link
             href="/"
             className="text-turtleGreen hover:text-green-700 cursor-pointer w-[67px] h-[34px]"
           >
             Cancel
-          </Link>
-          {/* <Image
-            src="/post_btn.svg"
-            alt="Post"
-            width={67}
-            height={34}
-            className="cursor-pointer"
-          />           */}
+          </Link> */}
+          <button
+            onClick={() => router.back()}
+            className="text-turtleGreen hover:text-green-700 cursor-pointer w-[67px] h-[34px]"
+          >
+            Cancel
+          </button>
           <button type="submit">
             <Image
               src="/post_btn.svg"
