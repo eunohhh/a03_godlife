@@ -6,17 +6,18 @@ import { useState } from "react";
 import { useAuth } from "@/context/auth.context";
 import supabase from "@/supabase/client";
 import { useRouter } from "next/navigation";
-// import { showAlert } from "@/lib/openCustomAlert";
+import { showAlert } from "@/lib/openCustomAlert";
 
 export default function WritingPage() {
-  const [content, setContent] = useState("");
+  const [contents, setContents] = useState("");
   const { me } = useAuth();
   const router = useRouter();
+  console.log(me);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
+    setContents(e.target.value);
 
-    if (content.length > 280) {
+    if (contents.length > 280) {
       return alert("게시글은 280자 미만으로 입력해주세요.");
     }
   };
@@ -25,29 +26,18 @@ export default function WritingPage() {
     e.preventDefault();
     if (!me) return;
 
-    if (!content) {
-      return alert("게시글을 먼저 입력해주세요.");
-      // return showAlert("success", "게시글을 먼저 입력해주세요.")
+    if (!contents) {
+      return showAlert("caution", "게시글을 먼저 입력해주세요.")
     }
-    
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.getSession();
-    // me를 어떻게 가져올깡...?
-    console.log(me);
 
-    const email = session?.user.email;
-    const userId = session?.user.id;
-
-    const { data, error: postError } = await supabase
+    const { data, error } = await supabase
       .from("posts")
-      .insert([{ content, nickname: me.userTableInfo.nickname, email: me.userTableInfo.email }]);
+      .insert([{ contents: contents, nickname: me.userTableInfo.nickname, email: me.userTableInfo.email, avatar: me.userTableInfo.avatar }]);
 
     if (error instanceof Error) {
       console.error(error.message);
     } else {
-      router.push("/write");
+      return showAlert("success", "게시물이 등록되었습니다.", () => router.push("/write"))
     }
   };
 
@@ -95,7 +85,7 @@ export default function WritingPage() {
           className="mx-auto my-0"
         />
         <div className="flex justify-between items-center mt-8">
-          <div className="text-turtleGreen">{content.length}/280</div>
+          <div className="text-turtleGreen">{contents.length}/280</div>
           <Image
             src="/Image_upload_btn.svg"
             alt="Image Uploader"
