@@ -34,7 +34,7 @@ const SideBar = ({
   isOpen: boolean;
   handleOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const handleclick = () => {
+  const handleClick = () => {
     handleOpen(false);
   };
   return (
@@ -96,7 +96,7 @@ const SideBar = ({
           <Separator />
           <SheetFooter>
             <SheetClose asChild>
-              <button onClick={handleclick}>닫기</button>
+              <button onClick={handleClick}>닫기</button>
             </SheetClose>
           </SheetFooter>
         </SheetContent>
