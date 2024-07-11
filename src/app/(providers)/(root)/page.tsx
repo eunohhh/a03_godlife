@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState } from "react";
 import MainPost from "@/components/MainPost";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import SideBar from "@/components/ui/SideBar";
@@ -8,13 +8,24 @@ import SideBar from "@/components/ui/SideBar";
 import { showAlert } from "@/lib/openCustomAlert";
 import { useRouter } from "next/navigation";
 import { DropdownMenuCheckboxes } from "@/components/ui/Checkbox";
+import { useAuth } from "@/context/auth.context";
 
 function MainPage() {
+  const { me } = useAuth();
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const router = useRouter();
   const handleSideBarClick = () => {
-    showAlert("error", "로그인 해주세요", () => router.push("/login"), true);
+    console.log("me=>", me);
+    if (!me) {
+      setIsOpen(false);
+      showAlert("error", "로그인 해주세요", () => router.push("/login"), true);
+    } else {
+      setIsOpen(true);
+      console.log("왜안돼");
+    }
   };
-  //이게 맞는지 모르겠는데 login된 상태라 확인이 되는지도 모르겠습니다ㅠㅠ
+  //이게 맞는지 모르겠는데 login된 상태라 확인이 되는지도 모르겠습니다ㅠㅠ....저도..ㅜㅜ
 
   const [sortBy, setSortBy] = React.useState<"latest" | "popular">("latest");
 
@@ -40,7 +51,7 @@ function MainPage() {
           <div className="text-white">Main Header</div>
         </div>
         <div className="flex flex-row justify-between px-2 my-5">
-          <SideBar>
+          <SideBar isOpen={isOpen} handleOpen={setIsOpen}>
             <Avatar className="flex bg-white cursor-pointer">
               <AvatarImage
                 onClick={handleSideBarClick}
