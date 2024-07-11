@@ -1,4 +1,13 @@
-import React, { PropsWithChildren } from "react";
+"use Client";
+
+import { useAuth } from "@/context/auth.context";
+import supabase from "@/supabase/client";
+import React, { PropsWithChildren, useState } from "react";
+
+import Link from "next/link";
+import Image from "next/image";
+import WeatherData from "./WeatherData";
+import { Separator } from "./Separator";
 
 import {
   Sheet,
@@ -19,11 +28,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./Card";
-
-import Link from "next/link";
-import Image from "next/image";
-import WeatherData from "./WeatherData";
-import { Separator } from "./Separator";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 const SideBar = ({
   children,
@@ -34,7 +39,17 @@ const SideBar = ({
   isOpen: boolean;
   handleOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const handleclick = () => {
+  const { me } = useAuth();
+  // const [profileImg, setProfileImg] = useState(
+  //   me?.userTableInfo.avatar ?? "/profile_camera.svg"
+  // );
+  // const [nickname, setNickname] = useState(me?.userTableInfo.nickname ?? "");
+  // const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  // const [introduction, setIntroduction] = useState(
+  //   me?.userTableInfo.introduction ?? ""
+  // );
+
+  const handleClick = () => {
     handleOpen(false);
   };
   return (
@@ -42,19 +57,19 @@ const SideBar = ({
       <Sheet open={isOpen}>
         <SheetTrigger>{children}</SheetTrigger>
         {/* hover시 cursor 바뀌게 수정해야 함! */}
-        <SheetContent>
+        <SheetContent handleClick={handleClick}>
           <SheetHeader>
             <Image
-              src="/profile_btn.svg"
+              src={me?.userTableInfo.avatar as string | StaticImport}
               alt="profile_btn"
               width={67}
               height={34}
             />
-            <SheetTitle>nickname</SheetTitle>
+            <SheetTitle>{me?.userTableInfo.nickname}</SheetTitle>
           </SheetHeader>
-          <SheetDescription>자기소개 글입니다.</SheetDescription>
-          <SheetDescription>@email</SheetDescription>
-          <Link href="/">
+          <SheetDescription>{me?.userTableInfo.introduction}</SheetDescription>
+          <SheetDescription>@{me?.userTableInfo.email}</SheetDescription>
+          <Link href="/profile">
             <div className="flex flex-row mt-3 mb-3">
               <Image
                 className="mr-3"
@@ -66,7 +81,7 @@ const SideBar = ({
               <SheetTitle> 내 프로필</SheetTitle>
             </div>
           </Link>
-          <Link href="/">
+          <Link href="/write">
             <div className="flex flex-row mb-3">
               <Image
                 className="mr-3"
@@ -96,7 +111,7 @@ const SideBar = ({
           <Separator />
           <SheetFooter>
             <SheetClose asChild>
-              <button onClick={handleclick}>닫기</button>
+              <button onClick={handleClick}>닫기</button>
             </SheetClose>
           </SheetFooter>
         </SheetContent>
