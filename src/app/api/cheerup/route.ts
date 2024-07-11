@@ -7,9 +7,10 @@ export async function GET(request: NextRequest) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("cheerup")
-    .select("id")
+    .select("*")
     .eq("postid", postId);
 
+  console.log({ data });
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 401 });
   }
@@ -17,7 +18,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const { postId, isCheeruped } = await request.json();
+  const { postId, isCheeruped, userId } = await request.json();
 
   if (!postId) {
     return NextResponse.json({ error: "postId is required" }, { status: 400 });
@@ -28,6 +29,16 @@ export async function POST(request: NextRequest) {
   if (isCheeruped) {
     const { error } = await supabase
       .from("cheerup")
+      .insert([{ postid: postId, userid: userId }]);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 401 });
+    }
+
+    return NextResponse.json({ message: "Cheerup added" }, { status: 200 });
+  } else {
+    const { error } = await supabase
+      .from("cheerup")
       .delete()
       .eq("postid", postId);
 
@@ -36,15 +47,5 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ message: "Cheerup removed" }, { status: 200 });
-  } else {
-    const { error } = await supabase
-      .from("cheerup")
-      .insert([{ postid: postId }]);
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 401 });
-    }
-
-    return NextResponse.json({ message: "Cheerup added" }, { status: 200 });
   }
 }
