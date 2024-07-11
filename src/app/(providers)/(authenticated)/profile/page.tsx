@@ -68,7 +68,7 @@ export function ProfilePage() {
             <button>
               <Image
                 className="w-full h-[68px]"
-                src="/profile_btn.svg"
+                src="/profile_icon_2.svg"
                 alt="profile"
                 width={68}
                 height={68}
@@ -89,31 +89,8 @@ export function ProfilePage() {
           />
         </button>
       </div>
-      {/* 게시물 섹션
-      <div className="p-4 border-t">
-        <div className="flex items-center mb-2">
-          <div className="bg-green-700 h-10 w-10 rounded-full"></div>
-          <div className="ml-2">
-            <div className="font-bold">nickname</div>
-            <div className="text-gray-600">@email</div>
-          </div>
-          <div className="ml-auto text-red-500">15</div>
-        </div>
-        <div className="mb-2">
-          돌아봐도 후회 없게 매 순간을 놀러 담아서 오늘을 살아가는 것
-        </div>
-        <div className="relative">
-          {/* 이미지 섹션 */}
-      {/* <Image
-            src="/edit_profile_btn.svg"
-            alt="post image"
-            layout="responsive"
-            width={500}
-            height={300}
-            className="w-full h-auto rounded-md"
-          />
-        </div> */}
-      {/* </div> */}
+
+      {/* supabase 데이터 불러오는 로직 */}
       <div className="space-y-3">
         {posts.map((post: Post) => (
           <div

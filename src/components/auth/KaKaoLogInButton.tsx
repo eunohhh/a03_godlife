@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/auth.context";
+import { showAlert } from "@/lib/openCustomAlert";
 import { usePathname } from "next/navigation";
 import { SiKakaotalk } from "react-icons/si";
 
@@ -9,7 +10,8 @@ function KaKaoLogInButton() {
     const pathname = usePathname();
 
     const handleClickKaKao = async () => {
-        if (pathname === "/recover") return alert("비밀번호 복구 페이지에서는 소셜로그인이 불가합니다");
+        if (pathname === "/recover")
+            return showAlert("caution", "비밀번호 복구 페이지에서는 소셜로그인이 불가합니다");
         loginWithProvider("kakao");
     };
 

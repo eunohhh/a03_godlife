@@ -2,6 +2,7 @@
 import { Input } from "@/components/ui/Input";
 import { SubmitButton } from "@/components/ui/Submit-button";
 import { useAuth } from "@/context/auth.context";
+import { showAlert } from "@/lib/openCustomAlert";
 import { useRouter } from "next/navigation";
 
 function ResetForm() {
@@ -16,11 +17,11 @@ function ResetForm() {
         const passwordOne = formData.get("password") as string;
         const passwordTwo = formData.get("passwordConfirm") as string;
 
-        if (!passwordOne || !passwordTwo) return alert("비밀번호를 입력해주세요!");
+        if (!passwordOne || !passwordTwo) return showAlert("caution", "비밀번호를 입력해주세요!");
         if (passwordOne.length < 8 || passwordOne.length > 15)
-            return alert("비밀번호는 4~15 글자로 해야합니다!");
+            return showAlert("caution", "비밀번호는 4~15 글자로 해야합니다!");
 
-        if (passwordOne !== passwordTwo) return alert("비밀번호가 일치하지 않습니다!");
+        if (passwordOne !== passwordTwo) return showAlert("caution", "비밀번호가 일치하지 않습니다!");
 
         resetPassword(passwordOne);
 
