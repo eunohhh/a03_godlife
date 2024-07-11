@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import MainPost from "@/components/MainPost";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import SideBar from "@/components/ui/SideBar";

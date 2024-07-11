@@ -14,6 +14,7 @@ interface Post {
   email: string;
   contents: string;
   created_at: string;
+  likecount: number;
 }
 
 interface MainPostProps {
@@ -30,19 +31,24 @@ export function MainPost({ sortBy }: MainPostProps) {
   async function fetchPosts() {
     try {
       let query = supabase.from("posts").select("*");
-
-      if (sortBy === "latest") {
-        query = query.order("created_at", { ascending: false });
-      } else if (sortBy === "popular") {
-        // 인기순 정렬 로직 (예: cheerup_count 컬럼이 있다고 가정)
-        query = query.order("cheerup_count", { ascending: false });
-      }
-
+      query = query.order("created_at", { ascending: false });
       const { data, error } = await query;
-
       if (error) throw error;
 
-      setPosts(data as Post[]);
+      if (sortBy === "latest") {
+        setPosts(data as Post[]);
+      } else if (sortBy === "popular") {
+        const supabasecount = await supabase
+          .from("cheerup_likes")
+          .select("*")
+          .order("likecount", { ascending: false });
+        if (!supabasecount.data) return;
+        const Sorted = supabasecount.data.map((aItem) =>
+          data.find((bItem) => bItem.id === aItem.postid)
+        );
+        console.log(Sorted);
+        setPosts(Sorted);
+      }
     } catch (error) {
       console.error("Error fetching posts:", (error as Error).message);
     }
