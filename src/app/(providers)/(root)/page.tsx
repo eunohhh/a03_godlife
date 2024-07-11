@@ -1,16 +1,14 @@
 "use client";
 
+import React, { useState } from "react";
 import MainPost from "@/components/MainPost";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/ui/Select";
 import SideBar from "@/components/ui/SideBar";
+import { DropdownMenuCheckboxes } from "@/components/ui/Checkbox";
 
 function MainPage() {
+  const [sortBy, setSortBy] = useState<"latest" | "popular">("latest");
+
   const handleLogoClick = () => {
     window.location.reload();
   };
@@ -22,6 +20,10 @@ function MainPage() {
     });
   };
 
+  const handleSortChange = (newSortBy: "latest" | "popular") => {
+    setSortBy(newSortBy);
+  };
+
   return (
     <>
       <div className="container w-full bg-turtleGreen max-w-[428px] p-2">
@@ -30,7 +32,7 @@ function MainPage() {
         </div>
         <div className="flex flex-row justify-between px-2 my-5">
           <SideBar>
-            <Avatar className="flex">
+            <Avatar className="flex bg-white cursor-pointer">
               <AvatarImage
                 src="https://ngtnbcqokvtyrilhkwpz.supabase.co/storage/v1/object/public/profile/Vector.png"
                 alt="profile"
@@ -46,19 +48,10 @@ function MainPage() {
             />
           </div>
           <div className="flex">
-            <Select>
-              <SelectTrigger className="w-[75px]">
-                <img src="/sort_btn.svg" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="light">인기순</SelectItem>
-                <SelectItem value="dark">최신순</SelectItem>
-                <SelectItem value="system">System</SelectItem>
-              </SelectContent>
-            </Select>
+            <DropdownMenuCheckboxes onSortChange={handleSortChange} />
           </div>
         </div>
-        <MainPost />
+        <MainPost sortBy={sortBy} />
         <div className="fixed bottom-[5%] right-[35%] group">
           <img
             className="cursor-pointer transition-transform duration-300 ease-in-out transform group-hover:scale-110"
@@ -71,4 +64,5 @@ function MainPage() {
     </>
   );
 }
+
 export default MainPage;
