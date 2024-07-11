@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import CheerupButton from "@/components/Cheerup";
 
 interface Post {
-  id: number;
+  id: string;
   avatar: string;
   nickname: string;
   email: string;
