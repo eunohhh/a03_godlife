@@ -1,5 +1,6 @@
 "use client";
 
+import { format } from "date-fns";
 import supabase from "@/supabase/client";
 import React, { useState, useEffect } from "react";
 import { Separator } from "@/components/ui/Separator";
@@ -67,7 +68,10 @@ export function MainPost({ sortBy }: MainPostProps) {
                   </h4>
                   <p className="text-sm text-muted-foreground">{post.email}</p>
                 </div>
-                <Separator className="my-4 border-black" />
+                <p className="text-xs text-muted-foreground mt-2">
+                  {format(new Date(post.created_at), "yyyy-MM-dd HH:mm")}
+                </p>
+                <Separator className="my-2 border-black" />
                 <div className="flex h-5 items-center space-x-4 text-sm">
                   <p>{post.contents}</p>
                 </div>
