@@ -1,14 +1,15 @@
 "use client";
 
 import { showAlert } from "@/lib/openCustomAlert";
-import { Provider, User } from "@supabase/supabase-js";
+import { Me } from "@/types/me.type";
+import { Provider } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
 type AuthContextValue = {
     isLoggedIn: boolean;
     isPending: boolean;
-    me: User | null;
+    me: Me | null;
     logIn: (email: string, password: string) => void;
     logOut: () => void;
     signUp: (name: string, email: string, password: string) => void;
@@ -34,12 +35,12 @@ const AuthContext = createContext<AuthContextValue>(initialValue);
 export const useAuth = () => useContext(AuthContext);
 
 interface AuthProviderProps {
-    initialMe: User | null | string;
+    initialMe: Me | null | string;
 }
 
 export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProviderProps>) {
-    const initializeMe = initialMe === "Auth session missing!" ? null : (initialMe as User);
-    const [me, setMe] = useState<AuthContextValue["me"]>(initializeMe);
+    const initializeMe = initialMe === "Auth session missing!" ? null : (initialMe as Me);
+    const [me, setMe] = useState<Me | null>(initializeMe);
 
     const isLoggedIn = !!me;
     const [isPending, setIsPending] = useState(false);
