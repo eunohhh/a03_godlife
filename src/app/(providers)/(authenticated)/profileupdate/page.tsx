@@ -98,7 +98,15 @@ const ProfilePage: React.FC = () => {
                         <div className="relative">
                             <div className="rounded-full flex items-center justify-center">
                                 <input type="file" accept="image/*" onChange={handleImgChange} />
-                                <Image src={profileImg} alt="profile camera icon" width={96} height={96} />
+                                <div className="rounded-full w-[96px] h-[96px] overflow-hidden">
+                                    <Image
+                                        src={profileImg}
+                                        alt="profile camera icon"
+                                        width={96}
+                                        height={96}
+                                        className="rounded-full object-contain"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
