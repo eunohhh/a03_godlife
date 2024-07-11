@@ -1,35 +1,47 @@
 "use client";
 
+import { format } from "date-fns";
 import supabase from "@/supabase/client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Separator } from "@/components/ui/Separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import CheerupButton from "@/components/Cheerup";
 
-// Post 인터페이스 정의
 interface Post {
   id: number;
   avatar: string;
   nickname: string;
   email: string;
   contents: string;
-  // 필요한 다른 필드들을 여기에 추가
+  created_at: string;
 }
 
-export function MainPost() {
-  const [posts, setPosts] = useState<Post[]>([]);
+interface MainPostProps {
+  sortBy: "latest" | "popular";
+}
 
-  useEffect(() => {
+export function MainPost({ sortBy }: MainPostProps) {
+  const [posts, setPosts] = React.useState<Post[]>([]);
+
+  React.useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [sortBy]);
 
   async function fetchPosts() {
     try {
-      const { data, error } = await supabase.from("posts").select("*");
+      let query = supabase.from("posts").select("*");
+
+      if (sortBy === "latest") {
+        query = query.order("created_at", { ascending: false });
+      } else if (sortBy === "popular") {
+        // 인기순 정렬 로직 (예: cheerup_count 컬럼이 있다고 가정)
+        query = query.order("cheerup_count", { ascending: false });
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
 
-      // 타입 단언을 사용하여 data를 Post[] 타입으로 처리
       setPosts(data as Post[]);
     } catch (error) {
       console.error("Error fetching posts:", (error as Error).message);
@@ -56,7 +68,10 @@ export function MainPost() {
                   </h4>
                   <p className="text-sm text-muted-foreground">{post.email}</p>
                 </div>
-                <Separator className="my-4 border-black" />
+                <p className="text-xs text-muted-foreground mt-2">
+                  {format(new Date(post.created_at), "yyyy-MM-dd HH:mm")}
+                </p>
+                <Separator className="my-2 border-black" />
                 <div className="flex h-5 items-center space-x-4 text-sm">
                   <p>{post.contents}</p>
                 </div>
