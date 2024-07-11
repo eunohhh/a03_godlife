@@ -1,14 +1,15 @@
 "use client";
 
 import { showAlert } from "@/lib/openCustomAlert";
-import { Provider, User } from "@supabase/supabase-js";
+import { Me } from "@/types/me.type";
+import { Provider } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
 type AuthContextValue = {
     isLoggedIn: boolean;
     isPending: boolean;
-    me: User | null;
+    me: Me | null;
     logIn: (email: string, password: string) => void;
     logOut: () => void;
     signUp: (name: string, email: string, password: string) => void;
@@ -34,20 +35,20 @@ const AuthContext = createContext<AuthContextValue>(initialValue);
 export const useAuth = () => useContext(AuthContext);
 
 interface AuthProviderProps {
-    initialMe: User | null | string;
+    initialMe: Me | null | string;
 }
 
 export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProviderProps>) {
-    const initializeMe = initialMe === "Auth session missing!" ? null : (initialMe as User);
-    const [me, setMe] = useState<AuthContextValue["me"]>(initializeMe);
+    const initializeMe = initialMe === "Auth session missing!" ? null : (initialMe as Me);
+    const [me, setMe] = useState<Me | null>(initializeMe);
 
     const isLoggedIn = !!me;
     const [isPending, setIsPending] = useState(false);
     const router = useRouter();
 
     const logIn: AuthContextValue["logIn"] = async (email, password) => {
-        if (me) return showAlert("error", "이미 로그인 되어 있어요");
-        if (!email || !password) return showAlert("error", "이메일, 비밀번호 모두 채워 주세요.");
+        if (me) return showAlert("caution", "이미 로그인 되어 있어요");
+        if (!email || !password) return showAlert("caution", "이메일, 비밀번호 모두 채워 주세요.");
 
         try {
             setIsPending(true);
@@ -62,9 +63,9 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
                 setIsPending(false);
 
                 if (error === "Invalid login credentials") {
-                    return showAlert("error", "이메일, 비밀번호를 확인해주세요.");
+                    return showAlert("caution", "이메일, 비밀번호를 확인해주세요.");
                 }
-                return showAlert("error", error);
+                return showAlert("caution", error);
             }
 
             setMe(user);
@@ -77,7 +78,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
     };
 
     const logOut = async () => {
-        if (!me) return showAlert("error", "로그인하고 눌러주세요");
+        if (!me) return showAlert("caution", "로그인하고 눌러주세요");
 
         try {
             setIsPending(true);
@@ -91,7 +92,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
     };
 
     const signUp: AuthContextValue["signUp"] = async (name, email, password) => {
-        if (me) return showAlert("error", "이미 로그인 되어 있어요");
+        if (me) return showAlert("caution", "이미 로그인 되어 있어요");
 
         try {
             setIsPending(true);
@@ -155,7 +156,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
             const data = await response.json();
             setIsPending(false);
             if (data.error === "New password should be different from the old password.") {
-                return showAlert("error", "기존 비밀번호와 동일합니다!");
+                return showAlert("caution", "기존 비밀번호와 동일합니다!");
             } else {
                 showAlert("success", "비밀번호 변경 성공!");
                 setMe(data.user);
