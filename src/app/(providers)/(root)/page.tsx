@@ -71,11 +71,16 @@ function MainPage() {
                                 style={{ cursor: "pointer" }}
                             />
                         </div>
+
+                        {/* 여기랑 */}
                         <div className="flex">
                             <DropdownMenuCheckboxes onSortChange={handleSortChange} />
                         </div>
                     </div>
+
+                    {/* 여기도 */}
                     <MainPost sortBy={sortBy} />
+
                     <div className="fixed bottom-[5%] right-[35%] group">
                         <img
                             className="cursor-pointer transition-transform duration-300 ease-in-out transform group-hover:scale-110"
