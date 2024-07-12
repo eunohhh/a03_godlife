@@ -78,6 +78,7 @@ function LogInForm() {
                             )}
 
                             <button
+                                type="button"
                                 onClick={() => setIsRecoverPassword(true)}
                                 className="w-full text-sm text-right text-gray-500"
                             >

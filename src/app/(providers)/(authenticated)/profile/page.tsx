@@ -57,6 +57,7 @@ export function ProfilePage() {
                                 width={68}
                                 height={68}
                                 priority
+                                unoptimized
                             />
                         </div>
 
