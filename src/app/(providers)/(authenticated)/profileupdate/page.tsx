@@ -108,14 +108,17 @@ const ProfilePage: React.FC = () => {
       <form onSubmit={handleUpdateSubmit}>
         <div>
           <div className="flex justify-end mt-6 px-4">
-            <button type="submit" className="cursor-pointer">
+            <button className="w-[93px] h-[32px] bg-white text-[#B7E6CB] font-semibold py-1 px-3 border-2 border-[#B7E6CB] rounded-full hover:bg-[#B7E6CB] hover:text-white transition duration-300 ease-in-out">
+              Update
+            </button>
+            {/* <button type="submit" className="cursor-pointer">
               <Image
                 src="/update_btn_2.svg"
                 alt="update button"
                 width={93}
                 height={32}
               />
-            </button>
+            </button> */}
           </div>
           <div className="flex flex-col items-center mt-10 mb-10 cursor-pointer">
             <div className="relative">
