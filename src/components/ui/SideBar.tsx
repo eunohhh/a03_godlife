@@ -100,10 +100,13 @@ const SideBar = ({
                   height={34}
                 />
                 <SheetTitle>{me.userTableInfo.nickname}</SheetTitle>
-                <SheetDescription>
-                  {me.userTableInfo.introduction}
-                </SheetDescription>
-                <SheetDescription>@{me.userTableInfo.email}</SheetDescription>
+                <div className="flex flex-col items-start">
+                  <SheetDescription className="">
+                    여기 안떠?
+                    {/* {me.userTableInfo.introduction} */}
+                  </SheetDescription>
+                  <SheetDescription>@{me.userTableInfo.email}</SheetDescription>
+                </div>
               </>
             ) : (
               <div>로딩중</div>
@@ -149,44 +152,40 @@ const SideBar = ({
           </Link>
           <Separator />
           {/* <h3>날씨</h3> */}
-          <Card className="max-w-80 max-h-40 mt-10 mb-10 bg-turtleGreen">
-            <CardHeader>
-              <div className="flex flex-row pt-2">
-                <CardTitle>
-                  {weather && weather[0] && (
-                    <Image
-                      src={weather[0].iconUrl}
-                      alt={weather[0].description}
-                      width={53}
-                      height={53}
-                    />
-                  )}
-                </CardTitle>
-                <CardTitle className="pt-2 text-xl">
-                  {weather ? weather[0].description : "Loading..."}
-                </CardTitle>
-                <CardDescription className="ml-1 pt-3">
-                  {temp ? `${temp.toFixed(1)}°C` : "Loading..."}
-                </CardDescription>
-              </div>
-              <CardContent className="text-sm/[15px]">
-                <p>
-                  {tempMin ? `🔽최저:  ${tempMin.toFixed(1)}°C` : "Loading..."}
-                </p>
-                <p>
-                  {tempMax ? `🔼최고:  ${tempMax.toFixed(1)}°C` : "Loading..."}
-                </p>
-                <p>
-                  {humidity ? `💧습도:  ${humidity.toFixed(1)}%` : "Loading..."}
-                </p>
-              </CardContent>
-            </CardHeader>
-
-            <CardFooter></CardFooter>
+          <Card className="font-Cafe24SsurroundAir max-w-80 max-h-40 mt-10 mb-10 bg-turtleGreen">
+            <div className="flex flex-col items-center">
+              <CardTitle>
+                {weather && weather[0] && (
+                  <Image
+                    src={weather[0].iconUrl}
+                    alt={weather[0].description}
+                    width={53}
+                    height={53}
+                  />
+                )}
+              </CardTitle>
+              <CardTitle className="text-xl">
+                {weather ? weather[0].description : "Loading..."}
+              </CardTitle>
+              <CardDescription className="mb-3">
+                {temp ? `${temp.toFixed(1)}°C` : "Loading..."}
+              </CardDescription>
+            </div>
+            <CardContent className="text-[12px] flex flex-row items-center">
+              <p className="ml-3 mr-3">
+                {tempMin ? `🔽최저:  ${tempMin.toFixed(1)}°C` : "Loading..."}
+              </p>
+              <p className="ml-3 mr-3">
+                {tempMax ? `🔼최고:  ${tempMax.toFixed(1)}°C` : "Loading..."}
+              </p>
+              <p className="ml-3 mr-3">
+                {humidity ? `💧습도:  ${humidity.toFixed(1)}%` : "Loading..."}
+              </p>
+            </CardContent>
           </Card>
           <WeatherData onWeatherData={handleWeatherData} />
-          <Separator />
-          <SheetFooter className="flex flex-row justify-center mt-3 mb-3">
+
+          <SheetFooter className="flex flex-row justify-center">
             {/* <SheetClose asChild>
               <button onClick={handleClick}>닫기</button>
             </SheetClose> */}
