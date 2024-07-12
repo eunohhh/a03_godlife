@@ -13,32 +13,35 @@ export function ProfilePage() {
     const [posts, setPosts] = useState<Post[]>([]);
 
     useEffect(() => {
-        fetchPosts();
-    }, []);
+        if (!me) return;
+        async function fetchPosts() {
+            try {
+                const { data, error } = await supabase
+                    .from("posts")
+                    .select("*")
+                    .eq("email", me?.userTableInfo.email);
 
-    async function fetchPosts() {
-        try {
-            const { data, error } = await supabase.from("posts").select("*");
-
-            if (error) throw error;
-
-            // 타입 단언을 사용하여 data를 Post[] 타입으로 처리
-            setPosts(data as Post[]);
-        } catch (error) {
-            console.error("Error fetching posts:", (error as Error).message);
+                if (error) throw error;
+                // 타입 단언을 사용하여 data를 Post[] 타입으로 처리
+                setPosts(data as Post[]);
+            } catch (error) {
+                console.error("Error fetching posts:", (error as Error).message);
+            }
         }
-    }
+        fetchPosts();
+    }, [me]);
 
+    // console.log(posts);
+
+    // max-w-md
     return (
         <div
-            className="max-w-md w-[428px] mx-auto bg-white h-[138px] relative"
+            className="max-w-[428px] mx-auto bg-white h-[138px] relative"
             // style={{ height: "428px" }}
         >
             {/* 헤더 섹션 */}
             <div className="bg-[#B7E6CB] h-full flex items-center justify-center">
-                <div className="font-semibold text-2xl text-white">
-                    God Life Mate
-                </div>
+                <div className="font-semibold text-2xl text-white">God Life Mate</div>
             </div>
 
             {/* 자기소개 섹션 */}
@@ -53,18 +56,13 @@ export function ProfilePage() {
                                 alt="profile"
                                 width={68}
                                 height={68}
+                                priority
                             />
                         </div>
 
-                        <div className="font-bold text-lg">
-                            {me?.userTableInfo.nickname}
-                        </div>
-                        <div className="text-gray-600">
-                            {me?.userTableInfo.introduction}
-                        </div>
-                        <div className="text-gray-600">
-                            {me?.userTableInfo.email}
-                        </div>
+                        <div className="font-bold text-lg">{me?.userTableInfo.nickname}</div>
+                        <div className="text-gray-600">{me?.userTableInfo.introduction}</div>
+                        <div className="text-gray-600">{me?.userTableInfo.email}</div>
                     </div>
                 </div>
                 {/* 프로필 수정 버튼 */}
@@ -75,18 +73,14 @@ export function ProfilePage() {
                         </button>
                     </Link>
                     <Link href="/profileupdate">
-                        <Image
-                            src="/edit_profile_btn.svg"
-                            alt="profile"
-                            width={93}
-                            height={32}
-                        />
+                        <Image src="/edit_profile_btn.svg" alt="profile" width={93} height={32} />
                     </Link>
                 </div>
             </div>
 
             {/* supabase 데이터 불러오는 로직 */}
             <div className="space-y-3">
+                {posts.length === 0 && <div className="text-center">내가 쓴 글이 없습니다!</div>}
                 {posts.map((post: Post) => (
                     <PostCard key={post.id} post={post} />
                 ))}
