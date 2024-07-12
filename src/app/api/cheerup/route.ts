@@ -10,7 +10,6 @@ export async function GET(request: NextRequest) {
     .select("*")
     .eq("postid", postId);
 
-  console.log({ data });
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 401 });
   }

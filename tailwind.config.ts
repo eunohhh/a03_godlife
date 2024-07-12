@@ -21,6 +21,10 @@ const config = {
       },
     },
     extend: {
+      // 임시추가
+      fontFamily: {
+        Cafe24SsurroundAir: ["Cafe24SsurroundAir"],
+      },
       colors: {
         turtleGreen: "#b7e6cb",
         border: "hsl(var(--border))",

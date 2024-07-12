@@ -1,0 +1,9 @@
+function MainHeader() {
+    return (
+        <div className="navbar-center bg-#1d1d1d w-full h-[60px] text-center pt-[1rem] border-gray-500 border-b-2">
+            <div className="text-white">Main Header</div>
+        </div>
+    );
+}
+
+export default MainHeader;

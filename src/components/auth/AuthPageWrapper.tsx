@@ -4,7 +4,7 @@ import React from "react";
 function AuthPageWrapper({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex justify-center items-center min-h-dvh bg-gray-50">
-            <section className="h-dvh w-[428px] flex flex-col items-center justify-center my-0 mx-auto bg-white">
+            <section className="h-dvh max-w-[428px] flex flex-col items-center justify-center my-0 mx-auto bg-white">
                 <div className="h-[860px] w-[400px] flex flex-col items-center justify-center gap-10">
                     <div className="w-[110px] h-[110px] flex justify-center items-center rounded-full border border-turtleGreen">
                         <Image
