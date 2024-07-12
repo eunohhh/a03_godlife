@@ -36,9 +36,7 @@ export function ProfilePage() {
         >
             {/* 헤더 섹션 */}
             <div className="bg-[#B7E6CB] h-full flex items-center justify-center">
-                <div className="font-semibold text-2xl text-white">
-                    God Life Mate
-                </div>
+                <div className="font-semibold text-2xl text-white">God Life Mate</div>
             </div>
 
             {/* 자기소개 섹션 */}
@@ -56,15 +54,9 @@ export function ProfilePage() {
                             />
                         </div>
 
-                        <div className="font-bold text-lg">
-                            {me?.userTableInfo.nickname}
-                        </div>
-                        <div className="text-gray-600">
-                            {me?.userTableInfo.introduction}
-                        </div>
-                        <div className="text-gray-600">
-                            {me?.userTableInfo.email}
-                        </div>
+                        <div className="font-bold text-lg">{me?.userTableInfo.nickname}</div>
+                        <div className="text-gray-600">{me?.userTableInfo.introduction}</div>
+                        <div className="text-gray-600">{me?.userTableInfo.email}</div>
                     </div>
                 </div>
                 {/* 프로필 수정 버튼 */}
@@ -75,12 +67,7 @@ export function ProfilePage() {
                         </button>
                     </Link>
                     <Link href="/profileupdate">
-                        <Image
-                            src="/edit_profile_btn.svg"
-                            alt="profile"
-                            width={93}
-                            height={32}
-                        />
+                        <Image src="/edit_profile_btn.svg" alt="profile" width={93} height={32} />
                     </Link>
                 </div>
             </div>
