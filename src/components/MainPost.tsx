@@ -8,12 +8,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import CheerupButton from "@/components/Cheerup";
 
 interface Post {
-  id: number;
+  id: string;
   avatar: string;
   nickname: string;
   email: string;
   contents: string;
   created_at: string;
+  likecount: number;
 }
 
 interface MainPostProps {
@@ -30,19 +31,24 @@ export function MainPost({ sortBy }: MainPostProps) {
   async function fetchPosts() {
     try {
       let query = supabase.from("posts").select("*");
-
-      if (sortBy === "latest") {
-        query = query.order("created_at", { ascending: false });
-      } else if (sortBy === "popular") {
-        // 인기순 정렬 로직 (예: cheerup_count 컬럼이 있다고 가정)
-        query = query.order("cheerup_count", { ascending: false });
-      }
-
+      query = query.order("created_at", { ascending: false });
       const { data, error } = await query;
-
       if (error) throw error;
 
-      setPosts(data as Post[]);
+      if (sortBy === "latest") {
+        setPosts(data as Post[]);
+      } else if (sortBy === "popular") {
+        const supabasecount = await supabase
+          .from("cheerup_likes")
+          .select("*")
+          .order("likecount", { ascending: false });
+        if (!supabasecount.data) return;
+        const Sorted = supabasecount.data.map((aItem) =>
+          data.find((bItem) => bItem.id === aItem.postid)
+        );
+        console.log(Sorted);
+        setPosts(Sorted);
+      }
     } catch (error) {
       console.error("Error fetching posts:", (error as Error).message);
     }
@@ -54,14 +60,14 @@ export function MainPost({ sortBy }: MainPostProps) {
         {posts.map((post: Post) => (
           <div
             key={post.id}
-            className="post-card max-h-[200px] bg-white rounded-lg p-5"
+            className="post-card max-h-[170px] bg-white rounded-lg p-5"
           >
             <div className="flex flex-row">
               <Avatar className="flex">
                 <AvatarImage src={post.avatar} alt="@profile" />
                 <AvatarFallback>NA</AvatarFallback>
               </Avatar>
-              <div className="flex flex-col card content container ml-5">
+              <div className="flex flex-col card content container">
                 <div className="flex items-center">
                   <h4 className="text-sm font-medium leading-none mr-2">
                     {post.nickname}
@@ -72,9 +78,13 @@ export function MainPost({ sortBy }: MainPostProps) {
                   {format(new Date(post.created_at), "yyyy-MM-dd HH:mm")}
                 </p>
                 <Separator className="my-2 border-black" />
-                <div className="flex h-5 items-center space-x-4 text-sm">
-                  <p>{post.contents}</p>
+                <div className="flex h-15 space-x-4 text-sm">
+                  <p className="text-ellipsis line-clamp-3 overflow-hidden">
+                    {post.contents}
+                  </p>
                 </div>
+              </div>
+              <div className="flex place-items-end pb-0 pr-5">
                 <CheerupButton postId={post.id} />
               </div>
             </div>
@@ -84,5 +94,3 @@ export function MainPost({ sortBy }: MainPostProps) {
     </div>
   );
 }
-
-export default MainPost;

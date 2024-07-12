@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import MainPost from "@/components/MainPost";
+import React, { useState } from "react";
+import { MainPost } from "@/components/MainPost";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import SideBar from "@/components/ui/SideBar";
 
@@ -9,6 +9,7 @@ import { showAlert } from "@/lib/openCustomAlert";
 import { useRouter } from "next/navigation";
 import { DropdownMenuCheckboxes } from "@/components/ui/Checkbox";
 import { useAuth } from "@/context/auth.context";
+import Image from "next/image";
 
 function MainPage() {
   const { me } = useAuth();
@@ -25,7 +26,6 @@ function MainPage() {
       console.log("왜안돼");
     }
   };
-  //이게 맞는지 모르겠는데 login된 상태라 확인이 되는지도 모르겠습니다ㅠㅠ....저도..ㅜㅜ
 
   const [sortBy, setSortBy] = React.useState<"latest" | "popular">("latest");
 
@@ -73,15 +73,17 @@ function MainPage() {
           </div>
         </div>
         <MainPost sortBy={sortBy} />
-        <div className="fixed bottom-[5%] right-[35%] group">
-          <img
-            className="cursor-pointer transition-transform duration-300 ease-in-out transform group-hover:scale-110"
-            src="top_btn.svg"
-            alt="Top Button"
-            onClick={scrollToTop}
-          />
-        </div>
+        {/* <div className="fixed w-[428px] h-dvh bottom-[0%] right-[0%]"> */}
+        {/* </div> */}
       </div>
+      <Image
+        className="fixed cursor-pointer bottom-[2%] right-[2%] transition-transform duration-300 ease-in-out transform hover:scale-110"
+        src="top_btn.svg"
+        alt="Top Button"
+        width={50}
+        height={50}
+        onClick={scrollToTop}
+      />
     </main>
   );
 }
