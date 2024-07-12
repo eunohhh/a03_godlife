@@ -84,7 +84,7 @@ function MainPage() {
         height={50}
         onClick={scrollToTop}
       />
-    </>
+    </main>
   );
 }
 
