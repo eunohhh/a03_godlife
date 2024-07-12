@@ -1,4 +1,4 @@
-import { PostStoreState } from "@/types/post.type";
+import { PostStoreState } from "@/types/zustand.type";
 import { create } from "zustand";
 
 export const usePostStore = create<PostStoreState>((set) => ({
