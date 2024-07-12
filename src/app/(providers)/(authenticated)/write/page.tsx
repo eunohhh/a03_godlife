@@ -1,18 +1,16 @@
 "use client";
 
 import Image from "next/image";
-// import Link from "next/link";
-import { useState } from "react";
-import { useAuth } from "@/context/auth.context";
 import supabase from "@/supabase/client";
-import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth.context";
 import { showAlert } from "@/lib/openCustomAlert";
 
 export default function WritingPage() {
   const [contents, setContents] = useState("");
   const { me } = useAuth();
   const router = useRouter();
-  console.log(router);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContents(e.target.value);
@@ -22,15 +20,9 @@ export default function WritingPage() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const addPost = async () => {
     if (!me) return;
-
-    if (!contents) {
-      return showAlert("caution", "게시글을 먼저 입력해주세요.");
-    }
-
-    const { data, error } = await supabase.from("posts").insert([
+    const { error } = await supabase.from("posts").insert([
       {
         contents: contents,
         nickname: me.userTableInfo.nickname,
@@ -48,6 +40,16 @@ export default function WritingPage() {
     }
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!contents) {
+      return showAlert("caution", "게시글을 먼저 입력해주세요.");
+    }
+
+    addPost();
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
       <form
@@ -55,26 +57,25 @@ export default function WritingPage() {
         className="bg-white p-6 pt-[60px] rounded-lg shadow-lg w-full max-w-[428px] min-h-[860px] flex flex-col"
       >
         <div className="flex justify-between items-center mb-4">
-          {/* <Link
-            href="/"
-            className="text-turtleGreen hover:text-green-700 cursor-pointer w-[67px] h-[34px]"
-          >
-            Cancel
-          </Link> */}
           <button
             onClick={() => router.back()}
-            className="text-turtleGreen hover:text-green-700 cursor-pointer w-[67px] h-[34px]"
+            type="button"
+            className="text-turtleGreen hover:bg-green-100 cursor-pointer w-[67px] h-[34px] rounded-lg"
           >
             Cancel
           </button>
-          <button type="submit">
-            <Image
+          <button
+            type="submit"
+            className="text-white bg-turtleGreen hover:bg-green-500 cursor-pointer w-[67px] h-[34px] rounded-lg"
+          >
+            Post
+            {/* <Image
               src="/post_btn.svg"
               alt="Post"
               width={67}
               height={34}
               className="cursor-pointer"
-            />
+            /> */}
           </button>
         </div>
         <textarea
@@ -92,13 +93,13 @@ export default function WritingPage() {
         />
         <div className="flex justify-between items-center mt-8">
           <div className="text-turtleGreen">{contents.length}/280</div>
-          <Image
+          {/* <Image
             src="/Image_upload_btn.svg"
             alt="Image Uploader"
             width={67}
             height={34}
             className="cursor-pointer"
-          />
+          /> */}
         </div>
       </form>
     </div>
