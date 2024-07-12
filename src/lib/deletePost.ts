@@ -20,15 +20,23 @@ import supabase from "@/supabase/client";
 //   }
 // };
 
+// export const deletePost = async (id: string) => {
+//   const { data, error } = await supabase.from("posts").delete().eq("id", id);
+
+//   if (error instanceof Error) {
+//     console.error(error.message);
+//     return false;
+//   }
+
+//   if (data) return true;
+
 export const deletePost = async (id: string) => {
-  const { data, error } = await supabase.from("posts").delete().eq("id", id);
+  const { error } = await supabase.from("posts").delete().eq("id", id);
 
   if (error instanceof Error) {
     console.error(error.message);
     return false;
-  }
-
-  if (data) return true;
+  } else return true;
 
   // 해당 사용자가 맞는지 확인하는 validation 필요
   // 삭제 원하는지 확인하는 validation 필요
