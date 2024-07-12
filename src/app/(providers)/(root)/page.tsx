@@ -45,10 +45,10 @@ function MainPage() {
   };
 
   return (
-    <>
-      <div className="container w-full bg-turtleGreen max-w-[428px] p-2">
-        <div className="navbar-center bg-#1d1d1d w-full h-[60px] text-center pt-[1rem]">
-          <div className="text-white">M</div>
+    <main className="w-dvw ">
+      <div className="my-0 mx-auto container bg-turtleGreen w-[428px] p-2">
+        <div className="navbar-center bg-#1d1d1d w-full h-[60px] text-center pt-[1rem] border-gray-500 border-b-2">
+          <div className="text-white">Main Header</div>
         </div>
         <div className="flex flex-row justify-between px-2 my-5">
           <SideBar isOpen={isOpen} handleOpen={setIsOpen}>
