@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/context/auth.context";
 import { showAlert } from "@/lib/openCustomAlert";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./Avatar";
 import SideBar from "./SideBar";

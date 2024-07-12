@@ -1,90 +1,90 @@
 "use client";
 
-import CheerupButton from "@/components/Cheerup";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
-import { Separator } from "@/components/ui/Separator";
-import supabase from "@/supabase/client";
+import { getInfinitePosts } from "@/api/getInfinitePosts";
+import { Post } from "@/types/post.type";
 import { usePostStore } from "@/zustand/post.store";
-import { format } from "date-fns";
-import React from "react";
-
-interface Post {
-    id: string;
-    avatar: string;
-    nickname: string;
-    email: string;
-    contents: string;
-    created_at: string;
-}
-
-// interface MainPostProps {
-//     sortBy: "latest" | "popular";
-// }
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import BasicLoader from "./ui/BasicLoader";
+import InfiniteScroll from "./ui/InfiniteScroll";
+import PostCard from "./ui/PostCard";
 
 export function MainPost() {
-    const [posts, setPosts] = React.useState<Post[]>([]);
-
     const { sortBy } = usePostStore((state) => ({
         sortBy: state.sortBy,
     }));
 
-    React.useEffect(() => {
-        async function fetchPosts() {
-            try {
-                let query = supabase.from("posts").select("*");
+    const {
+        data: posts = [],
+        isFetching,
+        fetchNextPage,
+        hasNextPage,
+    } = useInfiniteQuery({
+        queryKey: ["postsInfinite"],
+        initialPageParam: 5,
+        getNextPageParam: (lastPage: Post[], allPages: Post[][]) => {
+            if (lastPage.length === 0) return null;
+            return allPages.length;
+        },
+        queryFn: getInfinitePosts,
+        select: (data) => data.pages.flat(),
+    });
 
-                if (sortBy === "latest") {
-                    query = query.order("created_at", { ascending: false });
-                } else if (sortBy === "popular") {
-                    // 인기순 정렬 로직 (예: cheerup_count 컬럼이 있다고 가정)
-                    query = query.order("cheerup_count", { ascending: false });
-                }
+    const [sortedPosts, setSortedPosts] = useState<Post[]>(posts);
 
-                const { data, error } = await query;
+    useEffect(() => {
+        if (!posts) return;
 
-                if (error) throw error;
+        const copiedPosts = [...posts];
 
-                setPosts(data as Post[]);
-            } catch (error) {
-                console.error("Error fetching posts:", (error as Error).message);
-            }
+        if (sortBy === "latest") {
+            copiedPosts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+            setSortedPosts(copiedPosts);
+        } else if (sortBy === "popular") {
+            copiedPosts.sort((a, b) => (b.likecount as number) - (a.likecount as number));
+            setSortedPosts(copiedPosts);
         }
-
-        fetchPosts();
-    }, [sortBy]);
+    }, [posts, sortBy]);
 
     return (
         <div className="flex flex-col w-full max-w-[428px] p-2 my-2">
-            <div className="space-y-3">
-                {posts.map((post: Post) => (
-                    <div key={post.id} className="post-card max-h-[200px] bg-white rounded-lg p-5">
-                        <div className="flex flex-row">
-                            <Avatar className="flex">
-                                <AvatarImage src={post.avatar} alt="@profile" />
-                                <AvatarFallback>NA</AvatarFallback>
-                            </Avatar>
-                            <div className="flex flex-col card content container ml-5">
-                                <div className="flex items-center">
-                                    <h4 className="text-sm font-medium leading-none mr-2">
-                                        {post.nickname}
-                                    </h4>
-                                    <p className="text-sm text-muted-foreground">{post.email}</p>
-                                </div>
-                                <p className="text-xs text-muted-foreground mt-2">
-                                    {format(new Date(post.created_at), "yyyy-MM-dd HH:mm")}
-                                </p>
-                                <Separator className="my-2 border-black" />
-                                <div className="flex h-5 items-center space-x-4 text-sm">
-                                    <p>{post.contents}</p>
-                                </div>
-                                <CheerupButton postId={post.id} />
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
+            <InfiniteScroll fetchNextPage={fetchNextPage} hasNextPage={hasNextPage}>
+                <div className="space-y-3">
+                    {sortedPosts.map((post: Post) => (
+                        <PostCard key={post.id} post={post} />
+                    ))}
+                    {isFetching && <BasicLoader isSmall={true} />}
+                </div>
+            </InfiniteScroll>
         </div>
     );
 }
 
 export default MainPost;
+
+{
+    /* <div key={post.id} className="post-card max-h-[200px] bg-white rounded-lg p-5">
+    <div className="flex flex-row">
+        <Avatar className="flex">
+            <AvatarImage src={post.avatar as string} alt="@profile" />
+            <AvatarFallback>NA</AvatarFallback>
+        </Avatar>
+        <div className="flex flex-col card content container ml-5">
+            <div className="flex items-center">
+                <h4 className="text-sm font-medium leading-none mr-2">
+                    {post.nickname}
+                </h4>
+                <p className="text-sm text-muted-foreground">{post.email}</p>
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+                {format(new Date(post.created_at), "yyyy-MM-dd HH:mm")}
+            </p>
+            <Separator className="my-2 border-black" />
+            <div className="flex h-5 items-center space-x-4 text-sm">
+                <p>{post.contents}</p>
+            </div>
+            <CheerupButton postId={post.id} />
+        </div>
+    </div>
+</div> */
+}

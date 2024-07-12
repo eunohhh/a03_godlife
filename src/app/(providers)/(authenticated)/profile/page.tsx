@@ -13,21 +13,25 @@ export function ProfilePage() {
     const [posts, setPosts] = useState<Post[]>([]);
 
     useEffect(() => {
-        fetchPosts();
-    }, []);
+        if (!me) return;
+        async function fetchPosts() {
+            try {
+                const { data, error } = await supabase
+                    .from("posts")
+                    .select("*")
+                    .eq("email", me?.userTableInfo.email);
 
-    async function fetchPosts() {
-        try {
-            const { data, error } = await supabase.from("posts").select("*");
-
-            if (error) throw error;
-
-            // 타입 단언을 사용하여 data를 Post[] 타입으로 처리
-            setPosts(data as Post[]);
-        } catch (error) {
-            console.error("Error fetching posts:", (error as Error).message);
+                if (error) throw error;
+                // 타입 단언을 사용하여 data를 Post[] 타입으로 처리
+                setPosts(data as Post[]);
+            } catch (error) {
+                console.error("Error fetching posts:", (error as Error).message);
+            }
         }
-    }
+        fetchPosts();
+    }, [me]);
+
+    console.log(posts);
 
     return (
         <div
@@ -74,6 +78,7 @@ export function ProfilePage() {
 
             {/* supabase 데이터 불러오는 로직 */}
             <div className="space-y-3">
+                {posts.length === 0 && <div className="text-center">내가 쓴 글이 없습니다!</div>}
                 {posts.map((post: Post) => (
                     <PostCard key={post.id} post={post} />
                 ))}
