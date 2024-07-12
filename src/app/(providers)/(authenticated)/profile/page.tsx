@@ -22,7 +22,6 @@ export function ProfilePage() {
                     .eq("email", me?.userTableInfo.email);
 
                 if (error) throw error;
-                // 타입 단언을 사용하여 data를 Post[] 타입으로 처리
                 setPosts(data as Post[]);
             } catch (error) {
                 console.error("Error fetching posts:", (error as Error).message);
@@ -31,14 +30,8 @@ export function ProfilePage() {
         fetchPosts();
     }, [me]);
 
-    // console.log(posts);
-
-    // max-w-md
     return (
-        <div
-            className="max-w-[428px] mx-auto bg-white h-[138px] relative"
-            // style={{ height: "428px" }}
-        >
+        <div className="max-w-[428px] mx-auto bg-white h-[138px] relative">
             {/* 헤더 섹션 */}
             <div className="bg-[#B7E6CB] h-full flex items-center justify-center">
                 <div className="font-semibold text-2xl text-white">God Life Mate</div>
@@ -46,18 +39,17 @@ export function ProfilePage() {
 
             {/* 자기소개 섹션 */}
             <div className="flex justify-between px-4 py-2 border-b height-[150px] relative -top-11 pb-4">
-                <div className="flex w-[50%] items-center relative">
+                <div className="w-[50%] items-center relative">
                     {/* 프로필 이미지 */}
                     <div className="ml-[10px]">
-                        <div className="w-[68px] h-[68px] rounded-full overflow-hidden">
+                        <div className="rounded-full overflow-hidden w-[68px] h-[68px] border-[7px] border-white">
                             <Image
-                                className="object-contain"
+                                className="object-cover w-full h-full"
                                 src={me?.userTableInfo.avatar as string}
                                 alt="profile"
                                 width={68}
                                 height={68}
                                 priority
-                                unoptimized
                             />
                         </div>
 
@@ -69,12 +61,14 @@ export function ProfilePage() {
                 {/* 프로필 수정 버튼 */}
                 <div className="w-[50%] flex flex-col justify-end items-end gap-1">
                     <Link href={"/write"}>
-                        <button className="border border-turtleGreen text-turtleGreen rounded-2xl px-2 py-1">
+                        <button className="w-[93px] h-[32px] bg-transparent text-[#B7E6CB] text-sm font-semi-bold py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full transition duration-300 ease-in-out flex items-center justify-center hover:bg-[#B7E6CB] hover:text-white">
                             write
                         </button>
                     </Link>
                     <Link href="/profileupdate">
-                        <Image src="/edit_profile_btn.svg" alt="profile" width={93} height={32} />
+                        <button className="w-[93px] h-[32px] bg-transparent text-[#B7E6CB] text-sm font-semi-bold py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full transition duration-300 ease-in-out flex items-center justify-center hover:bg-[#B7E6CB] hover:text-white">
+                            Edit profile
+                        </button>
                     </Link>
                 </div>
             </div>
