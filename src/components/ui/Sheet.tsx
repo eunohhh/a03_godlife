@@ -23,7 +23,7 @@ const SheetOverlay = React.forwardRef<
 >(({ className, handleClick, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      "fixed inset-0 z-50 bg-transparent  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-10 bg-transparent data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
@@ -62,7 +62,7 @@ const SheetContent = React.forwardRef<
 >(({ side = "left", className, children, handleClick, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay handleClick={handleClick} />
-    <div className="fixed top-0 left-0 w-dvw h-dvh">
+    <div className="fixed z-50 top-0 left-0 w-dvw h-dvh">
       <div className="w-[428px] my-0 mx-auto h-dvh">
         <SheetPrimitive.Content
           ref={ref}
