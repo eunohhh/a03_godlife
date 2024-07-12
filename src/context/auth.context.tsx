@@ -4,7 +4,7 @@ import { showAlert } from "@/lib/openCustomAlert";
 import { Me } from "@/types/me.type";
 import { Provider } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
-import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
+import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 type AuthContextValue = {
     isLoggedIn: boolean;
@@ -172,18 +172,16 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
     // useEffect(() => {
     //     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`).then(async (response) => {
     //         if (response.status === 200) {
-    //             const {
-    //                 data: { user },
-    //             } = await response.json();
-    //             setMe(user);
+    //             const { data } = await response.json();
+    //             setMe(data);
     //         }
     //     });
     // }, []);
 
     // 여기는 나중에 지우기
-    useEffect(() => {
-        console.log(me);
-    }, [me]);
+    // useEffect(() => {
+    //     console.log(me);
+    // }, [me]);
 
     const value: AuthContextValue = {
         isLoggedIn,

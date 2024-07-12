@@ -33,9 +33,10 @@ export function ProfilePage() {
 
     // console.log(posts);
 
+    // max-w-md
     return (
         <div
-            className="max-w-md w-[428px] mx-auto bg-white h-[138px] relative"
+            className="max-w-[428px] mx-auto bg-white h-[138px] relative"
             // style={{ height: "428px" }}
         >
             {/* 헤더 섹션 */}
@@ -55,6 +56,7 @@ export function ProfilePage() {
                                 alt="profile"
                                 width={68}
                                 height={68}
+                                priority
                             />
                         </div>
 

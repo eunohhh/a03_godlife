@@ -20,7 +20,7 @@ export default async function HTMLLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="ko">
             <body className={inter.className}>
                 <Suspense fallback={<Loading />}>
                     <QueryProvider>{children}</QueryProvider>

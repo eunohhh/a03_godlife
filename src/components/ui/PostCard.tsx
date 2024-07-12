@@ -32,7 +32,7 @@ function PostCard({ post }: { post: Post }) {
                     <AvatarImage src={post.avatar!} alt="@profile" />
                     <AvatarFallback>NA</AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col card content container ml-5">
+                <div className="flex flex-col card content ml-5 w-full">
                     <div className="flex items-center">
                         <h4 className="text-sm font-medium leading-none mr-2">{post.nickname}</h4>
                         <p className="text-sm text-muted-foreground">{post.email}</p>
@@ -40,9 +40,11 @@ function PostCard({ post }: { post: Post }) {
                     <p className="text-xs text-muted-foreground mt-2">
                         {format(new Date(post.created_at), "yyyy-MM-dd HH:mm")}
                     </p>
-                    <Separator className="my-4 border-black" />
+                    <Separator className="mt-1 mb-6 border-black" />
                     <div className="flex h-5 items-center space-x-4 text-sm">
-                        <p>{post.contents}</p>
+                        <p className="text-ellipsis line-clamp-3 overflow-hidden w-[80%]">
+                            {post.contents}
+                        </p>
                     </div>
                     <CheerupButton postId={post.id} />
                 </div>
