@@ -29,6 +29,7 @@ import {
   CardTitle,
 } from "./Card";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { Weather } from "@/types/weather";
 
 const SideBar = ({
   children,
@@ -63,8 +64,28 @@ const SideBar = ({
   //이 부분 때문에, 로그인 안 됐을 때 SideBar를 누를 수 있는 버튼이 없어졌었다
   //return null 대신 스켈레톤이나 loading을 알려줄 수 잇는 거 추가하기
 
+  const [weather, setWeather] = useState<Weather["weather"] | null>(null);
+  const [tempMin, setTempMin] = useState<number | null>(null);
+  const [tempMax, setTempMax] = useState<number | null>(null);
+  const [humidity, setHumidity] = useState<number | null>(null);
+  const [temp, setTemp] = useState<number | null>(null);
+
+  const handleWeatherData = (
+    weatherData: Weather["weather"],
+    temperature: number,
+    minimumTemp: number,
+    maximumTemp: number,
+    humidityLevel: number
+  ) => {
+    setWeather(weatherData);
+    setTempMin(minimumTemp);
+    setTempMax(maximumTemp);
+    setHumidity(humidityLevel);
+    setTemp(temperature);
+  };
   return (
     <div className="w-[428px]">
+      {/* as Child 삭제해도 동작하는 이유? */}
       <Sheet open={isOpen}>
         <SheetTrigger asChild>{children}</SheetTrigger>
         {/* hover시 cursor 바뀌게 수정해야 함! */}
@@ -102,7 +123,7 @@ const SideBar = ({
             </div>
           </Link>
           <Link href="/write">
-            <div className="flex flex-row mb-3">
+            <div className="flex flex-row mb-10">
               <Image
                 className="mr-3"
                 src="/write_icon.svg"
@@ -115,21 +136,43 @@ const SideBar = ({
           </Link>
           <Separator />
           {/* <h3>날씨</h3> */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Card Title</CardTitle>
-              <CardDescription>Card Description</CardDescription>
+          <Card className="max-w-80 max-h-40 mt-10 mb-10 bg-turtleGreen">
+            <CardHeader className="flex flex-row">
+              <CardTitle>
+                {weather && weather[0] && (
+                  <Image
+                    src={weather[0].iconUrl}
+                    alt={weather[0].description}
+                    width={53}
+                    height={53}
+                  />
+                )}
+              </CardTitle>
+              <CardTitle className="pt-2">
+                {weather ? weather[0].description : "Loading..."}
+              </CardTitle>
+              <CardDescription className="ml-1 pt-1">
+                {temp ? `${temp.toFixed(1)}°C` : "Loading..."}
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-              <p>Card Content</p>
+            <CardContent className="ml-3">
+              <p>
+                {tempMin ? `🔽최저: ${tempMin.toFixed(1)}°C` : "Loading..."}
+              </p>
+              <p>
+                {tempMax ? `🔼최고: ${tempMax.toFixed(1)}°C` : "Loading..."}
+              </p>
             </CardContent>
-            <CardFooter>
-              <p>Card Footer</p>
-            </CardFooter>
+            <CardContent className="ml-3">
+              <p>
+                {humidity ? `💧습도: ${humidity.toFixed(1)}%` : "Loading..."}
+              </p>
+            </CardContent>
+            <CardFooter></CardFooter>
           </Card>
-          <WeatherData />
+          <WeatherData onWeatherData={handleWeatherData} />
           <Separator />
-          <SheetFooter>
+          <SheetFooter className="mt-3 mb-3">
             <SheetClose asChild>
               <button onClick={handleClick}>닫기</button>
             </SheetClose>
