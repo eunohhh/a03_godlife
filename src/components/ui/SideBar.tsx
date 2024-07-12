@@ -39,7 +39,7 @@ const SideBar = ({
   isOpen: boolean;
   handleOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { me } = useAuth();
+  const { me, logOut } = useAuth();
   // const [profileImg, setProfileImg] = useState(
   //   me?.userTableInfo.avatar ?? "/profile_camera.svg"
   // );
@@ -49,22 +49,42 @@ const SideBar = ({
   //   me?.userTableInfo.introduction ?? ""
   // );
 
+  const handleClickLogout = () => {
+    //로더를 띄우거나 (1)
+    //화면을 천천히 사라지게
+    //transition
+    logOut();
+  };
+
   const handleClick = () => {
     handleOpen(false);
   };
+  if (!me) return null;
+  //이 부분 때문에, 로그인 안 됐을 때 SideBar를 누를 수 있는 버튼이 없어졌었다
+  //return null 대신 스켈레톤이나 loading을 알려줄 수 잇는 거 추가하기
+
   return (
-    <>
+    <div className="w-[428px]">
       <Sheet open={isOpen}>
-        <SheetTrigger>{children}</SheetTrigger>
+        <SheetTrigger asChild>{children}</SheetTrigger>
         {/* hover시 cursor 바뀌게 수정해야 함! */}
         <SheetContent handleClick={handleClick}>
           <SheetHeader>
-            <Image
-              src={me?.userTableInfo.avatar as string | StaticImport}
-              alt="profile_btn"
-              width={67}
-              height={34}
-            />
+            {me ? (
+              <Image
+                src={me?.userTableInfo.avatar as string | StaticImport}
+                alt="profile_btn"
+                width={67}
+                height={34}
+              />
+            ) : (
+              ""
+            )}
+
+            {/* // src={me?.userTableInfo.avatar as string | StaticImport} 의 로직에서
+                            // me가 뜨는 속도 차이로 avatar이미지 에러가 났었음
+                            // 아예 더 윗줄에서 me ?  (): (스켈레톤) 으로 삼항연산자  */}
+
             <SheetTitle>{me?.userTableInfo.nickname}</SheetTitle>
           </SheetHeader>
           <SheetDescription>{me?.userTableInfo.introduction}</SheetDescription>
@@ -113,10 +133,11 @@ const SideBar = ({
             <SheetClose asChild>
               <button onClick={handleClick}>닫기</button>
             </SheetClose>
+            <button onClick={handleClickLogout}>로그아웃</button>
           </SheetFooter>
         </SheetContent>
       </Sheet>
-    </>
+    </div>
   );
 };
 
