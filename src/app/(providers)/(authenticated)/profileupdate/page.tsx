@@ -5,7 +5,6 @@ import { showAlert } from "@/lib/openCustomAlert";
 import supabase from "@/supabase/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
 import React, { useState } from "react";
 
 const ProfilePage: React.FC = () => {
@@ -21,14 +20,16 @@ const ProfilePage: React.FC = () => {
   );
 
   const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // 낙관적 업데이트
     if (!e.target.files) return;
-    const avatarFile = e.target.files?.[0];
+    const avatarFile = e.target.files[0];
     setAvatarFile(avatarFile);
     const url = URL.createObjectURL(avatarFile);
     setProfileImg(url);
   };
-  // console.log("체크용", nickname, introduction);
+
+  const handleCancel = () => {
+    router.push("/profile");
+  };
 
   const handleUpdateSubmit = async (
     e: React.FormEvent<HTMLFormElement>
@@ -59,7 +60,6 @@ const ProfilePage: React.FC = () => {
         .from("profile")
         .getPublicUrl(fileName);
 
-      // 실제 업데이트
       updatedFields.avatar = avatarData.publicUrl;
       setProfileImg(avatarData.publicUrl);
     }
@@ -82,7 +82,6 @@ const ProfilePage: React.FC = () => {
       return;
     }
 
-    // 실제 업데이트
     setProfileImg(data[0].avatar);
     setNickname(data[0].nickname);
     setIntroduction(data[0].introduction);
@@ -94,7 +93,7 @@ const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white h-[138px]">
+    <div className="w-full max-w-[428px] max-w-md mx-auto bg-white h-[138px]">
       {/* 헤더 섹션 */}
       <div className="bg-[#B7E6CB] h-[138px] flex items-center justify-between">
         <div className="flex-grow text-center">
@@ -106,43 +105,43 @@ const ProfilePage: React.FC = () => {
       {/* submit form 시작 */}
       {/* 프로필 섹션 */}
       <form onSubmit={handleUpdateSubmit}>
-        <div>
-          <div className="flex justify-end mt-6 px-4">
-            <button className="w-[93px] h-[32px] bg-white text-[#B7E6CB] font-semibold py-1 px-3 border-2 border-[#B7E6CB] rounded-full hover:bg-[#B7E6CB] hover:text-white transition duration-300 ease-in-out">
-              Update
-            </button>
-            {/* <button type="submit" className="cursor-pointer">
-              <Image
-                src="/update_btn_2.svg"
-                alt="update button"
-                width={93}
-                height={32}
-              />
-            </button> */}
-          </div>
-          <div className="flex flex-col items-center mt-10 mb-10 cursor-pointer">
-            <div className="relative">
-              <div className="rounded-full flex items-center justify-center">
-                <label
-                  htmlFor="avatar-upload"
-                  className="cursor-pointer rounded-full w-[96px] h-[96px] overflow-hidden relative flex items-center justify-center"
-                >
-                  <input
-                    id="avatar-upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImgChange}
-                    className="absolute inset-0 opacity-0 cursor-pointer"
-                  />
-                  <Image
-                    src={profileImg}
-                    alt="profile camera icon"
-                    width={96}
-                    height={96}
-                    className="rounded-full object-contain"
-                  />
-                </label>
-              </div>
+        <div className="flex justify-between mt-6 px-4">
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="w-[93px] h-[32px] bg-white text-[#B7E6CB] font-semi-bold py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full hover:bg-[#B7E6CB] hover:text-white transition duration-300 ease-in-out flex items-center justify-center"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="w-[93px] h-[32px] bg-white text-[#B7E6CB] font-semi-bold py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full hover:bg-[#B7E6CB] hover:text-white transition duration-300 ease-in-out flex items-center justify-center"
+          >
+            Update
+          </button>
+        </div>
+        <div className="flex flex-col items-center mt-10 mb-10 cursor-pointer">
+          <div className="relative">
+            <div className="rounded-full flex items-center justify-center">
+              <label
+                htmlFor="avatar-upload"
+                className="cursor-pointer rounded-full w-[96px] h-[96px] overflow-hidden relative flex items-center justify-center"
+              >
+                <input
+                  id="avatar-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImgChange}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                />
+                <Image
+                  src={profileImg}
+                  alt="profile camera icon"
+                  width={96}
+                  height={96}
+                  className="rounded-full object-contain"
+                />
+              </label>
             </div>
           </div>
         </div>
@@ -150,7 +149,7 @@ const ProfilePage: React.FC = () => {
         {/* 입력 섹션 */}
         <div className="px-4 mt-4">
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-bold text-gray-700">
               닉네임
             </label>
             <input
@@ -158,24 +157,23 @@ const ProfilePage: React.FC = () => {
               placeholder="nickname"
               value={nickname ?? ""}
               onChange={(e) => setNickname(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#B7E6CB] focus:border-[#B7E6CB] sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#B7E6CB] focus:border-[#B7E6CB] sm:text-sm placeholder-gray-400 text-gray-600 text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-bold text-gray-700">
               자기소개
             </label>
             <input
               value={introduction ?? ""}
               onChange={(e) => setIntroduction(e.target.value)}
               placeholder="20자이내로 작성해주세요"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#B7E6CB] focus:border-[#B7E6CB] sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#B7E6CB] focus:border-[#B7E6CB] sm:text-sm placeholder-gray-400 text-gray-600 text-sm"
             ></input>
           </div>
         </div>
       </form>
       {/* submit form 끝 */}
-
       {/* 바닥 아이콘 섹션 */}
       <div className="flex justify-center mt-20 mb-4">
         <Image src="/turtle.svg" alt="turtle icon" width={70} height={70} />
