@@ -16,7 +16,6 @@ function BasicLoader({ isSmall = false }: BasicLoaderProps) {
                     alt="turtle"
                     fill
                     sizes="(min-width: 640px) 96px, 96px"
-                    priority
                 />
             </div>
         </div>
