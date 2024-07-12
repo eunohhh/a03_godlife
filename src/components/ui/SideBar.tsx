@@ -83,6 +83,9 @@ const SideBar = ({
     setHumidity(humidityLevel);
     setTemp(temperature);
   };
+
+  console.log(me);
+
   return (
     <div className="w-[428px]">
       {/* as Child 삭제해도 동작하는 이유? */}
@@ -102,8 +105,9 @@ const SideBar = ({
                 <SheetTitle>{me.userTableInfo.nickname}</SheetTitle>
                 <div className="flex flex-col items-start">
                   <SheetDescription className="">
-                    여기 안떠?
-                    {/* {me.userTableInfo.introduction} */}
+                    {me.userTableInfo.introduction
+                      ? me.userTableInfo.introduction
+                      : "자기소개를 추가해주세요"}
                   </SheetDescription>
                   <SheetDescription>@{me.userTableInfo.email}</SheetDescription>
                 </div>
