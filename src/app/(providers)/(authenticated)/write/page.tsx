@@ -1,44 +1,53 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
-import { useAuth } from "@/context/auth.context";
 import supabase from "@/supabase/client";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth.context";
 import { showAlert } from "@/lib/openCustomAlert";
 
 export default function WritingPage() {
   const [contents, setContents] = useState("");
   const { me } = useAuth();
   const router = useRouter();
-  console.log(me);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContents(e.target.value);
 
     if (contents.length > 280) {
-      return alert("게시글은 280자 미만으로 입력해주세요.");
+      return showAlert("caution", "게시글은 280자 미만으로 입력해주세요.");
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const addPost = async () => {
     if (!me) return;
-
-    if (!contents) {
-      return showAlert("caution", "게시글을 먼저 입력해주세요.")
-    }
-
-    const { data, error } = await supabase
-      .from("posts")
-      .insert([{ contents: contents, nickname: me.userTableInfo.nickname, email: me.userTableInfo.email, avatar: me.userTableInfo.avatar }]);
+    const { error } = await supabase.from("posts").insert([
+      {
+        contents: contents,
+        nickname: me.userTableInfo.nickname,
+        email: me.userTableInfo.email,
+        avatar: me.userTableInfo.avatar,
+      },
+    ]);
 
     if (error instanceof Error) {
       console.error(error.message);
     } else {
-      return showAlert("success", "게시물이 등록되었습니다.", () => router.push("/write"))
+      return showAlert("success", "게시물이 등록되었습니다.", () =>
+        router.push("/")
+      );
     }
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!contents) {
+      return showAlert("caution", "게시글을 먼저 입력해주세요.");
+    }
+
+    addPost();
   };
 
   return (
@@ -48,27 +57,25 @@ export default function WritingPage() {
         className="bg-white p-6 pt-[60px] rounded-lg shadow-lg w-full max-w-[428px] min-h-[860px] flex flex-col"
       >
         <div className="flex justify-between items-center mb-4">
-          <Link
-            href="/"
-            className="text-turtleGreen hover:text-green-700 cursor-pointer w-[67px] h-[34px]"
+          <button
+            onClick={() => router.back()}
+            type="button"
+            className="text-turtleGreen hover:bg-green-100 cursor-pointer w-[67px] h-[34px] rounded-lg"
           >
             Cancel
-          </Link>
-          {/* <Image
-            src="/post_btn.svg"
-            alt="Post"
-            width={67}
-            height={34}
-            className="cursor-pointer"
-          />           */}
-          <button type="submit">
-            <Image
+          </button>
+          <button
+            type="submit"
+            className="text-white bg-turtleGreen hover:bg-green-500 cursor-pointer w-[67px] h-[34px] rounded-lg"
+          >
+            Post
+            {/* <Image
               src="/post_btn.svg"
               alt="Post"
               width={67}
               height={34}
               className="cursor-pointer"
-            />
+            /> */}
           </button>
         </div>
         <textarea
@@ -86,13 +93,13 @@ export default function WritingPage() {
         />
         <div className="flex justify-between items-center mt-8">
           <div className="text-turtleGreen">{contents.length}/280</div>
-          <Image
+          {/* <Image
             src="/Image_upload_btn.svg"
             alt="Image Uploader"
             width={67}
             height={34}
             className="cursor-pointer"
-          />
+          /> */}
         </div>
       </form>
     </div>
