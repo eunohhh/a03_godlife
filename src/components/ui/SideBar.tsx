@@ -135,11 +135,13 @@ const SideBar = ({
               <Image
                 className="mr-3"
                 src="/profile_icon.svg"
-                width={18}
-                height={21}
+                width={17}
+                height={14}
                 alt="profile_icon"
               />
-              <SheetTitle> 내 프로필</SheetTitle>
+              <SheetTitle className="font-semibold text-md text-slate-700">
+                내 프로필
+              </SheetTitle>
             </div>
           </Link>
           <Link href="/write">
@@ -148,15 +150,17 @@ const SideBar = ({
                 className="mr-3"
                 src="/write_icon.svg"
                 alt="write_icon"
-                width={20}
-                height={20}
+                width={17}
+                height={17}
               />
-              <SheetTitle> 글 작성하기</SheetTitle>
+              <SheetTitle className="font-semibold text-md  text-slate-700">
+                글 작성하기
+              </SheetTitle>
             </div>
           </Link>
           <Separator />
           {/* <h3>날씨</h3> */}
-          <Card className="font-Cafe24SsurroundAir max-w-80 max-h-40 mt-10 mb-10 bg-turtleGreen">
+          <Card className="font-Cafe24SsurroundAir max-w-80 max-h-40 mt-10 mb-10 bg-turtleGreen/60">
             <div className="flex flex-col items-center">
               <CardTitle>
                 {weather && weather[0] && (
@@ -175,15 +179,15 @@ const SideBar = ({
                 {temp ? `${temp.toFixed(1)}°C` : "Loading..."}
               </CardDescription>
             </div>
-            <CardContent className="text-[12px] flex flex-row items-center">
+            <CardContent className="text-[12px] ml-1 font-semibold flex flex-row items-center">
               <p className="ml-3 mr-3">
-                {tempMin ? `🔽최저:  ${tempMin.toFixed(1)}°C` : "Loading..."}
+                {tempMin ? `🔽최저  ${tempMin.toFixed(1)}°C` : "Loading..."}
+              </p>
+              <p className="ml-5 mr-3">
+                {tempMax ? `🔼최고  ${tempMax.toFixed(1)}°C` : "Loading..."}
               </p>
               <p className="ml-3 mr-3">
-                {tempMax ? `🔼최고:  ${tempMax.toFixed(1)}°C` : "Loading..."}
-              </p>
-              <p className="ml-3 mr-3">
-                {humidity ? `💧습도:  ${humidity.toFixed(1)}%` : "Loading..."}
+                {humidity ? `💧습도  ${humidity.toFixed(1)}%` : "Loading..."}
               </p>
             </CardContent>
           </Card>
