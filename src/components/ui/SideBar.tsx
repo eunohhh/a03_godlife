@@ -78,7 +78,10 @@ const SideBar = ({
       <Sheet open={isOpen}>
         <SheetTrigger asChild>{children}</SheetTrigger>
         {/* hover시 cursor 바뀌게 수정해야 함! */}
-        <SheetContent handleClick={handleClick}>
+        <SheetContent
+          className="font-Pretendard-Regular"
+          handleClick={handleClick}
+        >
           <SheetHeader>
             {me && me.userTableInfo ? (
               <>
@@ -91,7 +94,7 @@ const SideBar = ({
                 />
                 <SheetTitle>{me.userTableInfo.nickname}</SheetTitle>
                 <div className="flex flex-col items-start">
-                  <SheetDescription className="">
+                  <SheetDescription>
                     {me.userTableInfo.introduction
                       ? me.userTableInfo.introduction
                       : "자기소개를 추가해주세요"}
