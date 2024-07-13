@@ -10,6 +10,9 @@ import SideBar from "./SideBar";
 
 function SidebarComponent() {
     const { me } = useAuth();
+
+    // console.log("sidebar me ====>", me);
+
     const router = useRouter();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -30,7 +33,11 @@ function SidebarComponent() {
             <Avatar className="flex bg-white cursor-pointer">
                 <AvatarImage
                     onClick={handleSideBarClick}
-                    src={me?.userTableInfo.avatar as string}
+                    src={
+                        me
+                            ? (me.avatar as string)
+                            : "https://ngtnbcqokvtyrilhkwpz.supabase.co/storage/v1/object/public/profile/Vector.png"
+                    }
                     alt="profile"
                 />
                 <AvatarFallback>

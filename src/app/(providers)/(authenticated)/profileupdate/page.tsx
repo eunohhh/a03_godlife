@@ -3,18 +3,20 @@
 import { useAuth } from "@/context/auth.context";
 import { showAlert } from "@/lib/openCustomAlert";
 import supabase from "@/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const ProfilePage: React.FC = () => {
-    const { me, setMeClient } = useAuth();
+    const queryClient = useQueryClient();
+    const { me } = useAuth();
     console.log("플필 변경시 변경된 데이 클라이언트 ===>", me);
     const router = useRouter();
-    const [profileImg, setProfileImg] = useState(me?.userTableInfo?.avatar ?? "/profile_camera.svg");
-    const [nickname, setNickname] = useState(me?.userTableInfo?.nickname ?? "");
+    const [profileImg, setProfileImg] = useState(me?.avatar ?? "/profile_camera.svg");
+    const [nickname, setNickname] = useState(me?.nickname ?? "");
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
-    const [introduction, setIntroduction] = useState(me?.userTableInfo?.introduction ?? "");
+    const [introduction, setIntroduction] = useState(me?.introduction ?? "");
 
     const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return;
@@ -38,13 +40,13 @@ const ProfilePage: React.FC = () => {
         if (nickname.length === 0 || introduction.length === 0)
             return showAlert("caution", "값을 입력해주세요");
         if (avatarFile !== null) {
-            const fileName = `avatars_${me.id}.jpg`;
+            const fileName = `avatars_${new Date().getTime()}.jpg`;
 
             const { error: uploadError } = await supabase.storage
                 .from("profile")
                 .upload(fileName, avatarFile, {
                     cacheControl: "10",
-                    upsert: true,
+                    upsert: false,
                 });
 
             if (uploadError) {
@@ -62,34 +64,32 @@ const ProfilePage: React.FC = () => {
         if (introduction) updatedFields.introduction = introduction;
 
         const updatedData = {
-            ...me.userTableInfo,
+            ...me,
             ...updatedFields,
         };
 
-        console.log("updatedData ====>", updatedData);
+        // console.log("updatedData ====>", updatedData);
 
-        const { data, error: updateError } = await supabase.from("users").upsert(updatedData).select();
+        // const { data, error: updateError } = await supabase.from("users").upsert(updatedData).select();
+        const { data, error: updateError } = await supabase
+            .from("users")
+            .update(updatedData)
+            .eq("id", me.id)
+            .select();
 
         if (updateError) {
             console.error(updateError);
             return;
         }
 
-        const newMe = {
-            ...me,
-            userTableInfo: data[0],
-        };
-        setMeClient(newMe);
-
-        setProfileImg(data[0].avatar);
-        setNickname(data[0].nickname);
-        setIntroduction(data[0].introduction);
+        queryClient.invalidateQueries({ queryKey: ["users"] });
+        // setProfileImg(data[0].avatar);
+        // setNickname(data[0].nickname);
+        // setIntroduction(data[0].introduction);
         showAlert("success", "업데이트에 성공했습니다!", () => {
             router.push("/profile");
             // 여기서 set me 를 해봐야...
         });
-
-        console.log("User updated =>>>", data);
     };
 
     //max-w-md
@@ -138,7 +138,7 @@ const ProfilePage: React.FC = () => {
                                     alt="profile camera icon"
                                     width={96}
                                     height={96}
-                                    className="rounded-full object-contain"
+                                    className="rounded-full object-contain w-auto h-auto"
                                 />
                             </label>
                         </div>

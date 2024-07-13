@@ -83,27 +83,23 @@ const SideBar = ({
                 {/* hover시 cursor 바뀌게 수정해야 함! */}
                 <SheetContent handleClick={handleClick}>
                     <SheetHeader>
-                        {me && me.userTableInfo ? (
+                        {me ? (
                             <div className="flex flex-col h-[150px]">
-                                <img
-                                    src={me.userTableInfo.avatar as string}
+                                <Image
+                                    src={me.avatar as string}
                                     alt="profile_btn"
                                     className="rounded-full w-[50px] h-[50px] mb-2"
                                     width={50}
                                     height={50}
                                 />
                                 <SheetTitle>
-                                    {me.userTableInfo.nickname
-                                        ? me.userTableInfo.nickname
-                                        : "닉네임을 추가해주세요"}
+                                    {me.nickname ? me.nickname : "닉네임을 추가해주세요"}
                                 </SheetTitle>
                                 <div className="flex flex-col items-start">
                                     <SheetDescription className="">
-                                        {me.userTableInfo.introduction
-                                            ? me.userTableInfo.introduction
-                                            : "자기소개를 추가해주세요"}
+                                        {me.introduction ? me.introduction : "자기소개를 추가해주세요"}
                                     </SheetDescription>
-                                    <SheetDescription>@{me.userTableInfo.email}</SheetDescription>
+                                    <SheetDescription>@{me.email}</SheetDescription>
                                 </div>
                             </div>
                         ) : (

@@ -97,7 +97,7 @@ function LogInForm() {
                 <SubmitButton
                     className="bg-turtleGreen w-[70%] text-white rounded-lg px-4 py-2 text-foreground"
                     type="submit"
-                    pendingText="진행 중..."
+                    pendingText="로딩..."
                     pending={isPending}
                 >
                     {isRecoverPassword ? "복구메일보내기" : "로그인하기"}

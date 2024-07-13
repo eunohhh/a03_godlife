@@ -25,9 +25,9 @@ export default function WritingPage() {
         const { error } = await supabase.from("posts").insert([
             {
                 contents: contents,
-                nickname: me.userTableInfo.nickname,
-                email: me.userTableInfo.email,
-                avatar: me.userTableInfo.avatar,
+                nickname: me.nickname,
+                email: me.email,
+                avatar: me.avatar,
             },
         ]);
 

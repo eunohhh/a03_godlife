@@ -11,13 +11,13 @@ export default function CenterLogo() {
     return (
         <div className="flex justify-center items-center">
             <Image
-                src="/center_logo.svg"
+                src="/turtle.png"
                 alt="center_logo"
                 onClick={handleLogoClick}
                 style={{ cursor: "pointer" }}
-                className="object-contain w-auto h-auto"
-                width={60}
-                height={60}
+                className="object-contain w-12 h-12"
+                width={100}
+                height={100}
             />
         </div>
     );

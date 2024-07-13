@@ -17,10 +17,7 @@ export function ProfilePage() {
         if (!me) return;
         async function fetchPosts() {
             try {
-                const { data, error } = await supabase
-                    .from("posts")
-                    .select("*")
-                    .eq("email", me?.userTableInfo.email);
+                const { data, error } = await supabase.from("posts").select("*").eq("email", me?.email);
 
                 if (error) throw error;
                 setPosts(data as Post[]);
@@ -46,18 +43,17 @@ export function ProfilePage() {
                         <div className="rounded-full overflow-hidden w-[68px] h-[68px] border-[7px] border-white">
                             <Image
                                 className="object-cover w-full h-full"
-                                src={me?.userTableInfo.avatar as string}
+                                src={me?.avatar as string}
                                 alt="profile"
                                 width={68}
                                 height={68}
                                 priority
-                                unoptimized
                             />
                         </div>
 
-                        <div className="font-bold text-lg">{me?.userTableInfo.nickname}</div>
-                        <div className="text-gray-600">{me?.userTableInfo.introduction}</div>
-                        <div className="text-gray-600">{me?.userTableInfo.email}</div>
+                        <div className="font-bold text-lg">{me?.nickname}</div>
+                        <div className="text-gray-600">{me?.introduction}</div>
+                        <div className="text-gray-600">{me?.email}</div>
                     </div>
                 </div>
                 {/* 프로필 수정 버튼 */}
