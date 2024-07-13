@@ -66,10 +66,9 @@ export async function updateSession(request: NextRequest) {
         return NextResponse.redirect(url);
     }
 
-    // 유저가 있을 때, login, recover, signup 은 무조건 홈으로 리다이렉트
+    // 유저가 있을 때, login, signup 은 무조건 홈으로 리다이렉트
     if (
         (request.nextUrl.pathname.startsWith("/login") && user) ||
-        (request.nextUrl.pathname.startsWith("/recover") && user) ||
         (request.nextUrl.pathname.startsWith("/signup") && user)
     ) {
         const url = request.nextUrl.clone();

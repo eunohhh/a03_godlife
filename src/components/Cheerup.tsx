@@ -134,9 +134,8 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
                 <Image
                     src="/fire_btn.svg"
                     alt="backbtn"
-                    width={18}
-                    height={18}
-                    style={{ width: "auto", height: "auto" }}
+                    width={100}
+                    height={100}
                     className="cursor-pointer w-auto h-auto"
                 />
                 <span className="text-[18px]">...</span>
@@ -149,9 +148,8 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
                 <Image
                     src="/fire_btn.svg"
                     alt="backbtn"
-                    width={18}
-                    height={18}
-                    style={{ width: "auto", height: "auto" }}
+                    width={100}
+                    height={100}
                     className="cursor-pointer w-auto h-auto"
                 />
             </button>
