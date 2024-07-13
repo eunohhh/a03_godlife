@@ -102,7 +102,7 @@ const ProfilePage: React.FC = () => {
       {/* 헤더 섹션 */}
       <div className="bg-[#B7E6CB] h-[138px] flex items-center justify-between">
         <div className="flex-grow text-center">
-          <div className="font-semibold font-MangoByeolbyeol text-2xl text-[#ffffff]">
+          <div className="font-MangoByeolbyeol text-2xl text-[#ffffff]">
             God Life Mate
           </div>
         </div>
@@ -110,7 +110,7 @@ const ProfilePage: React.FC = () => {
       {/* submit form 시작 */}
       {/* 프로필 섹션 */}
       <form onSubmit={handleUpdateSubmit}>
-        <div className="flex justify-between mt-6 px-4">
+        <div className="flex justify-between mt-6 px-4 font-Pretendard-Regular font-semibold">
           <button
             type="button"
             onClick={handleCancel}
@@ -130,7 +130,7 @@ const ProfilePage: React.FC = () => {
             <div className="rounded-full flex items-center justify-center">
               <label
                 htmlFor="avatar-upload"
-                className="cursor-pointer rounded-full w-[96px] h-[96px] overflow-hidden relative flex items-center justify-center"
+                className=" cursor-pointer rounded-full w-[96px] h-[96px] overflow-hidden relative flex items-center justify-center"
               >
                 <input
                   id="avatar-upload"
@@ -154,7 +154,7 @@ const ProfilePage: React.FC = () => {
         {/* 입력 섹션 */}
         <div className="px-4 mt-4">
           <div className="mb-4">
-            <label className="block text-sm font-bold text-gray-700">
+            <label className="block text-sm font-bold font-Pretendard-Regular text-gray-700">
               닉네임
             </label>
             <input
@@ -162,18 +162,18 @@ const ProfilePage: React.FC = () => {
               placeholder="nickname"
               value={nickname ?? ""}
               onChange={(e) => setNickname(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#B7E6CB] focus:border-[#B7E6CB] sm:text-sm placeholder-gray-400 text-gray-600 text-sm"
+              className="font-Pretendard-Regular mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#B7E6CB] focus:border-[#B7E6CB] sm:text-sm placeholder-gray-400 text-gray-600 text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-700">
+            <label className="block text-sm font-bold font-Pretendard-Regular text-gray-700">
               자기소개
             </label>
             <input
               value={introduction ?? ""}
               onChange={(e) => setIntroduction(e.target.value)}
               placeholder="20자이내로 작성해주세요"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#B7E6CB] focus:border-[#B7E6CB] sm:text-sm placeholder-gray-400 text-gray-600 text-sm"
+              className="font-Pretendard-Regular mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#B7E6CB] focus:border-[#B7E6CB] sm:text-sm placeholder-gray-400 text-gray-600 text-sm"
             ></input>
           </div>
         </div>

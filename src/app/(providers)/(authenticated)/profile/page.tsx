@@ -62,19 +62,21 @@ export function ProfilePage() {
               />
             </div>
 
-            <div className="font-bold text-lg">
+            <div className="font-bold font-Pretendard-Regular text-lg">
               {me?.userTableInfo.nickname}
             </div>
-            <div className="text-gray-600">
+            <div className="text-gray-600 font-Pretendard-Regular">
               {me?.userTableInfo.introduction}
             </div>
-            <div className="text-gray-600">{me?.userTableInfo.email}</div>
+            <div className="text-gray-600 font-Pretendard-Regular">
+              {me?.userTableInfo.email}
+            </div>
           </div>
         </div>
         {/* 프로필 수정 버튼 */}
         <div className="w-[50%] flex flex-col justify-end items-end gap-1">
           <Link href={"/write"}>
-            <button className="border border-turtleGreen text-turtleGreen rounded-2xl px-2 py-1">
+            <button className="font-Pretendard-Regular border border-turtleGreen text-turtleGreen rounded-2xl px-2 py-1">
               write
             </button>
           </Link>
@@ -90,7 +92,7 @@ export function ProfilePage() {
       </div>
 
       {/* supabase 데이터 불러오는 로직 */}
-      <div className="space-y-3">
+      <div className="space-y-3 font-Pretendard-Regular">
         {posts.length === 0 && (
           <div className="text-center">내가 쓴 글이 없습니다!</div>
         )}
