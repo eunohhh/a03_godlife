@@ -8,10 +8,24 @@ import { usePathname } from "next/navigation";
 import CheerupButton from "../Cheerup";
 import { Avatar, AvatarFallback, AvatarImage } from "./Avatar";
 import { Separator } from "./Separator";
+import { deletePost } from "@/lib/deletePost";
 
 function PostCard({ post }: { post: Post }) {
   const { me } = useAuth();
   const pathname = usePathname();
+
+  const handleDelete = async () => {
+    console.log(post.id);
+    const result = await deletePost(post.id);
+
+    if (result) {
+      // UI 업데이트, 얼럿 추가하기
+      console.log(post.id, "삭제 성공 좀 돼라");
+    } else {
+      console.log("삭제 실패");
+      // 에러 처리
+    }
+  };
 
   return (
     <div className="post-card max-h-[200px] bg-white rounded-lg p-5 ">
@@ -23,7 +37,7 @@ function PostCard({ post }: { post: Post }) {
             <div className="flex flex-row">
               {/* 완성되면 edit 로 수정*/}
               <Link href={`/write`}>수정</Link>
-              <button>삭제</button>
+              <button onClick={handleDelete}>삭제</button>
             </div>
           )}
         </div>
