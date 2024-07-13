@@ -172,7 +172,7 @@ const ProfileUpdatePage: React.FC = () => {
             {/* submit form 끝 */}
             {/* 바닥 아이콘 섹션 */}
             <div className="flex justify-center mt-20 mb-4">
-                <Image src="/turtle.png" alt="turtle icon" width={70} height={70} />
+                <Image src="/turtle.png" alt="turtle icon" width={70} height={70} priority />
             </div>
         </div>
     );

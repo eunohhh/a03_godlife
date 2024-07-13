@@ -14,6 +14,7 @@ function BasicLoader({ isSmall = false }: BasicLoaderProps) {
                     src="/turtle.png"
                     alt="turtle"
                     fill
+                    priority
                     sizes="(min-width: 640px) 96px, 96px"
                 />
             </div>

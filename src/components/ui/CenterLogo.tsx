@@ -18,6 +18,7 @@ export default function CenterLogo() {
                 className="object-contain w-12 h-12"
                 width={100}
                 height={100}
+                priority
             />
         </div>
     );
