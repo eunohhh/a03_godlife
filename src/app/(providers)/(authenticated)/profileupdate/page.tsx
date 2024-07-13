@@ -8,12 +8,13 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const ProfilePage: React.FC = () => {
-    const { me } = useAuth();
+    const { me, setMeClient } = useAuth();
+    console.log("플필 변경시 변경된 데이 클라이언트 ===>", me);
     const router = useRouter();
-    const [profileImg, setProfileImg] = useState(me?.userTableInfo.avatar ?? "/profile_camera.svg");
-    const [nickname, setNickname] = useState(me?.userTableInfo.nickname ?? "");
+    const [profileImg, setProfileImg] = useState(me?.userTableInfo?.avatar ?? "/profile_camera.svg");
+    const [nickname, setNickname] = useState(me?.userTableInfo?.nickname ?? "");
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
-    const [introduction, setIntroduction] = useState(me?.userTableInfo.introduction ?? "");
+    const [introduction, setIntroduction] = useState(me?.userTableInfo?.introduction ?? "");
 
     const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return;
@@ -37,7 +38,7 @@ const ProfilePage: React.FC = () => {
         if (nickname.length === 0 || introduction.length === 0)
             return showAlert("caution", "값을 입력해주세요");
         if (avatarFile !== null) {
-            const fileName = `avatars_${new Date().getTime()}.jpg`;
+            const fileName = `avatars_${me.id}.jpg`;
 
             const { error: uploadError } = await supabase.storage
                 .from("profile")
@@ -73,6 +74,12 @@ const ProfilePage: React.FC = () => {
             console.error(updateError);
             return;
         }
+
+        const newMe = {
+            ...me,
+            userTableInfo: data[0],
+        };
+        setMeClient(newMe);
 
         setProfileImg(data[0].avatar);
         setNickname(data[0].nickname);

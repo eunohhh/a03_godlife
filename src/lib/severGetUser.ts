@@ -10,6 +10,9 @@ export default async function serverGetUser(): Promise<Me | null> {
     } = await supabase.auth.getUser();
 
     if (error || !user) {
+        if (error?.message === "Auth session missing!") {
+            console.log("Auth session missing! <<<<<<<<<");
+        }
         console.error(error);
         return null;
     }

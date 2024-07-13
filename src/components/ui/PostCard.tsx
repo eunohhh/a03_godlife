@@ -3,6 +3,7 @@
 import { useAuth } from "@/context/auth.context";
 import { Post } from "@/types/post.type";
 import { format } from "date-fns";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import CheerupButton from "../Cheerup";
@@ -30,7 +31,18 @@ function PostCard({ post }: { post: Post }) {
 
                 <Avatar className="flex">
                     <AvatarImage src={post.avatar!} alt="@profile" />
-                    <AvatarFallback>NA</AvatarFallback>
+                    <AvatarFallback>
+                        <div className="h-10 w-10 relative rounded-full overflow-hidden">
+                            <Image
+                                src={
+                                    "https://ngtnbcqokvtyrilhkwpz.supabase.co/storage/v1/object/public/profile/Vector.png"
+                                }
+                                alt="profile"
+                                fill
+                                className="object-contain"
+                            />
+                        </div>
+                    </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col card content ml-5 w-full">
                     <div className="flex items-center">

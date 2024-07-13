@@ -19,7 +19,7 @@ import {
 } from "./Sheet";
 
 import { Weather } from "@/types/weather";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import BasicLoader from "./BasicLoader";
 import { Card, CardContent, CardDescription, CardTitle } from "./Card";
 
 const SideBar = ({
@@ -49,7 +49,7 @@ const SideBar = ({
     };
 
     const handleClick = () => {
-        handleOpen(false);
+        handleOpen((prev) => !prev);
     };
     // if (!me) return null;
     //이 부분 때문에, 로그인 안 됐을 때 SideBar를 누를 수 있는 버튼이 없어졌었다
@@ -84,15 +84,19 @@ const SideBar = ({
                 <SheetContent handleClick={handleClick}>
                     <SheetHeader>
                         {me && me.userTableInfo ? (
-                            <>
-                                <Image
-                                    src={me.userTableInfo.avatar as string | StaticImport}
+                            <div className="flex flex-col h-[150px]">
+                                <img
+                                    src={me.userTableInfo.avatar as string}
                                     alt="profile_btn"
-                                    className="rounded-full"
-                                    width={67}
-                                    height={34}
+                                    className="rounded-full w-[50px] h-[50px] mb-2"
+                                    width={50}
+                                    height={50}
                                 />
-                                <SheetTitle>{me.userTableInfo.nickname}</SheetTitle>
+                                <SheetTitle>
+                                    {me.userTableInfo.nickname
+                                        ? me.userTableInfo.nickname
+                                        : "닉네임을 추가해주세요"}
+                                </SheetTitle>
                                 <div className="flex flex-col items-start">
                                     <SheetDescription className="">
                                         {me.userTableInfo.introduction
@@ -101,9 +105,11 @@ const SideBar = ({
                                     </SheetDescription>
                                     <SheetDescription>@{me.userTableInfo.email}</SheetDescription>
                                 </div>
-                            </>
+                            </div>
                         ) : (
-                            <div>로딩중</div>
+                            <div className="flex items-center justify-center rounded-lg h-[150px] w-[80%]">
+                                <BasicLoader isSmall={true} />
+                            </div>
                         )}
                     </SheetHeader>
                     {/* <SheetDescription>
@@ -123,7 +129,7 @@ const SideBar = ({
                     <Link href="/profile">
                         <div className="flex flex-row mt-3 mb-3">
                             <Image
-                                className="mr-3"
+                                className="mr-3 w-auto h-auto"
                                 src="/profile_icon.svg"
                                 width={17}
                                 height={14}
@@ -137,7 +143,7 @@ const SideBar = ({
                     <Link href="/write">
                         <div className="flex flex-row mb-10">
                             <Image
-                                className="mr-3"
+                                className="mr-3 w-auto h-auto"
                                 src="/write_icon.svg"
                                 alt="write_icon"
                                 width={17}
@@ -149,7 +155,13 @@ const SideBar = ({
                         </div>
                     </Link>
                     <Separator />
-                    {/* <h3>날씨</h3> */}
+
+                    <WeatherData onWeatherData={handleWeatherData} />
+
+                    {!weather && (
+                        <div className="font-Cafe24SsurroundAir max-w-80 max-h-40 mt-10 mb-10 bg-turtleGreen/60"></div>
+                    )}
+                    {/* <h3>날</h3> */}
                     <Card className="font-Cafe24SsurroundAir max-w-80 max-h-40 mt-10 mb-10 bg-turtleGreen/60">
                         <div className="flex flex-col items-center">
                             <CardTitle>
@@ -181,7 +193,6 @@ const SideBar = ({
                             </p>
                         </CardContent>
                     </Card>
-                    <WeatherData onWeatherData={handleWeatherData} />
 
                     <SheetFooter className="flex flex-row justify-center">
                         {/* <SheetClose asChild>
@@ -189,7 +200,7 @@ const SideBar = ({
             </SheetClose> */}
                         <button
                             onClick={handleClickLogout}
-                            className="w-[67px] h-[34px] bg-[#B7E6CB] text-white font-semi-bold text-sm py-0 px-1 rounded-full hover:bg-[#073A33] transition duration-300 ease-in-out flex items-center justify-center"
+                            className="w-[67px] h-[34px] bg-[#B7E6CB] text-white font-semi-bold text-sm py-0 px-1 rounded-full hover:bg-[#073A33] transition duration-300 ease-in-out flex items-center justify-center focus-visible:outline-none"
                         >
                             Logout
                         </button>

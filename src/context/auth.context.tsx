@@ -4,7 +4,7 @@ import { showAlert } from "@/lib/openCustomAlert";
 import { Me } from "@/types/me.type";
 import { Provider } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
 type AuthContextValue = {
     isLoggedIn: boolean;
@@ -16,6 +16,7 @@ type AuthContextValue = {
     loginWithProvider: (provider: Provider) => void;
     resetPassword: (password: string) => void;
     sendingResetEmail: (email: string) => void;
+    setMeClient: (me: Me | null) => void;
 };
 
 const initialValue: AuthContextValue = {
@@ -28,6 +29,7 @@ const initialValue: AuthContextValue = {
     loginWithProvider: () => {},
     resetPassword: () => {},
     sendingResetEmail: () => {},
+    setMeClient: () => {},
 };
 
 const AuthContext = createContext<AuthContextValue>(initialValue);
@@ -61,7 +63,6 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
 
             if (error) {
                 setIsPending(false);
-
                 if (error === "Invalid login credentials") {
                     return showAlert("caution", "이메일, 비밀번호를 확인해주세요.");
                 }
@@ -69,9 +70,8 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
             }
 
             setMe(user);
+            showAlert("success", "로그인 성공!", () => router.replace("/"));
             setIsPending(false);
-            showAlert("success", "로그인 성공!");
-            router.replace("/");
         } catch (error) {
             console.error(error);
         }
@@ -83,11 +83,11 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
         try {
             setIsPending(true);
             await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/log-out`, { method: "DELETE" });
-            setIsPending(false);
         } catch (error) {
             console.error(error);
         }
         setMe(null);
+        setIsPending(false);
         router.replace("/login");
     };
 
@@ -106,7 +106,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
             if (data.user) {
                 setMe(data.user);
                 setIsPending(false);
-                router.replace("/");
+                showAlert("success", "회원가입 성공!", () => router.replace("/"));
             } else {
                 console.error(data.error);
             }
@@ -125,6 +125,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
 
             setIsPending(false);
             router.replace(data.url);
+            showAlert("success", "로그인 성공");
         } catch (error) {
             console.error(error);
         }
@@ -140,9 +141,10 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
             const data = await response.json();
 
             setIsPending(false);
-            console.log(data);
+            return showAlert("success", "이메일 전송 성공!", () => router.replace("/login"));
         } catch (error) {
             console.error(error);
+            setIsPending(false);
         }
     };
 
@@ -154,34 +156,39 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
                 body: JSON.stringify({ password }),
             });
             const data = await response.json();
-            setIsPending(false);
             if (data.error === "New password should be different from the old password.") {
+                setIsPending(false);
                 return showAlert("caution", "기존 비밀번호와 동일합니다!");
             } else {
-                showAlert("success", "비밀번호 변경 성공!");
                 setMe(data.user);
-                router.replace("/");
+                setIsPending(false);
+                return showAlert("success", "비밀번호 변경 성공!", () => router.replace("/"));
             }
         } catch (error) {
             console.error(error);
             router.refresh();
+            setIsPending(false);
         }
     };
 
+    const setMeClient = (me: Me | null) => {
+        setMe(me);
+    };
+
     // 아래는 서버사이드에서 처리하기 때문에 주석처리
-    // useEffect(() => {
-    //     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`).then(async (response) => {
-    //         if (response.status === 200) {
-    //             const { data } = await response.json();
-    //             setMe(data);
-    //         }
-    //     });
-    // }, []);
+    useEffect(() => {
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`).then(async (response) => {
+            if (response.status === 200) {
+                const { data } = await response.json();
+                setMe(data);
+            }
+        });
+    }, []);
 
     // 여기는 나중에 지우기
-    // useEffect(() => {
-    //     console.log(me);
-    // }, [me]);
+    useEffect(() => {
+        console.log("me 변경됨 ===>", me);
+    }, [me]);
 
     const value: AuthContextValue = {
         isLoggedIn,
@@ -193,6 +200,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
         loginWithProvider,
         resetPassword,
         sendingResetEmail,
+        setMeClient,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

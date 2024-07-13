@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/auth.context";
 import { showAlert } from "@/lib/openCustomAlert";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
+import React from "react";
 
 interface CheerupProps {
     postId: string;
@@ -27,9 +27,7 @@ interface CheerupStatus {
 //   return data.length;
 // };
 
-const fetchCheerupStatus = async (
-    postId: string
-): Promise<CheerupStatus[] | null> => {
+const fetchCheerupStatus = async (postId: string): Promise<CheerupStatus[] | null> => {
     const response = await fetch(`/api/cheerup?postId=${postId}`);
     const data = await response.json();
     if (data.error) {
@@ -93,9 +91,7 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
     // const isCheeruped = cheerupCount > 0;
     const cheerupCount = data?.length || 0;
     // TODO: 내가 좋아요를 누른 적이 있는지
-    const isCheeruped = data?.find((item) => item.userid === me?.id)
-        ? true
-        : false;
+    const isCheeruped = data?.find((item) => item.userid === me?.id) ? true : false;
 
     // 좋아요 상태를 변경하는 useMutation
     const { mutate: likeToggle } = useMutation<
@@ -132,14 +128,23 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
         }
     };
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading)
+        return (
+            <div className="justify-end flex w-full h-6 text-gray-100 gap-2">
+                <Image
+                    src="/fire_btn.svg"
+                    alt="backbtn"
+                    width={18}
+                    height={18}
+                    className="cursor-pointer w-auto h-auto"
+                />
+                <span className="text-[18px]">...</span>
+            </div>
+        );
 
     return (
-        <div className="justify-end flex w-full">
-            <button
-                onClick={handleCheerup}
-                className="flex items-center text-3xl"
-            >
+        <div className="justify-end items-center flex w-full h-6 gap-2">
+            <button onClick={handleCheerup} className="flex items-center text-3xl">
                 <Image
                     src="/fire_btn.svg"
                     alt="backbtn"
@@ -147,10 +152,8 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
                     height={18}
                     className="cursor-pointer"
                 />
-                <span className="ml-2 text-[18px]">
-                    {cheerupCount.toLocaleString()}
-                </span>
             </button>
+            <span className="text-[18px]">{cheerupCount.toLocaleString()}</span>
         </div>
     );
 };

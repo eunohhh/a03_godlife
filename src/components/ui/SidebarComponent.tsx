@@ -2,6 +2,7 @@
 
 import { useAuth } from "@/context/auth.context";
 import { showAlert } from "@/lib/openCustomAlert";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./Avatar";
@@ -19,7 +20,7 @@ function SidebarComponent() {
             setIsOpen(false);
             showAlert("error", "로그인 해주세요", () => router.push("/login"), true);
         } else {
-            setIsOpen(true);
+            setIsOpen((prev) => !prev);
             console.log("왜안돼");
         }
     };
@@ -29,10 +30,22 @@ function SidebarComponent() {
             <Avatar className="flex bg-white cursor-pointer">
                 <AvatarImage
                     onClick={handleSideBarClick}
-                    src="https://ngtnbcqokvtyrilhkwpz.supabase.co/storage/v1/object/public/profile/Vector.png"
+                    src={me?.userTableInfo.avatar as string}
                     alt="profile"
                 />
-                <AvatarFallback>NA</AvatarFallback>
+                <AvatarFallback>
+                    <div className="h-10 w-10 relative rounded-full overflow-hidden">
+                        <Image
+                            onClick={handleSideBarClick}
+                            src={
+                                "https://ngtnbcqokvtyrilhkwpz.supabase.co/storage/v1/object/public/profile/Vector.png"
+                            }
+                            alt="profile"
+                            fill
+                            className="object-contain"
+                        />
+                    </div>
+                </AvatarFallback>
             </Avatar>
         </SideBar>
     );

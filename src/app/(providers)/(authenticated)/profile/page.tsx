@@ -1,5 +1,6 @@
 "use client";
 
+import BasicLoader from "@/components/ui/BasicLoader";
 import PostCard from "@/components/ui/PostCard";
 import { useAuth } from "@/context/auth.context";
 import supabase from "@/supabase/client";
@@ -10,7 +11,7 @@ import { useEffect, useState } from "react";
 
 export function ProfilePage() {
     const { me } = useAuth();
-    const [posts, setPosts] = useState<Post[]>([]);
+    const [posts, setPosts] = useState<Post[] | null>(null);
 
     useEffect(() => {
         if (!me) return;
@@ -50,6 +51,7 @@ export function ProfilePage() {
                                 width={68}
                                 height={68}
                                 priority
+                                unoptimized
                             />
                         </div>
 
@@ -75,10 +77,11 @@ export function ProfilePage() {
 
             {/* supabase 데이터 불러오는 로직 */}
             <div className="space-y-3">
-                {posts.length === 0 && <div className="text-center">내가 쓴 글이 없습니다!</div>}
-                {posts.map((post: Post) => (
-                    <PostCard key={post.id} post={post} />
-                ))}
+                {posts === null && <BasicLoader isSmall={true} />}
+                {posts && posts.length === 0 && <div className="text-center">내가 쓴 글이 없습니다!</div>}
+                {posts &&
+                    posts.length > 0 &&
+                    posts.map((post: Post) => <PostCard key={post.id} post={post} />)}
             </div>
         </div>
     );
