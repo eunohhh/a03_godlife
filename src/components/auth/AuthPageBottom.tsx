@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@/context/auth.context";
+import { useAuth } from "@/hooks/useAuth";
 import GithubLogInButton from "./GithubLogInButton";
 import GoogleLogInButton from "./GoogleLogInButton";
 import KaKaoLogInButton from "./KaKaoLogInButton";

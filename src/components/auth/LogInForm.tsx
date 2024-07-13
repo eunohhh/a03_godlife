@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@/context/auth.context";
+import { useAuth } from "@/hooks/useAuth";
 import { emailRegex } from "@/lib/commonRegexs";
 import { showAlert } from "@/lib/openCustomAlert";
 import clsx from "clsx";

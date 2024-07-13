@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/context/auth.context";
+import { useAuth } from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import supabase from "@/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const ProfilePage: React.FC = () => {
+const ProfileUpdatePage: React.FC = () => {
     const queryClient = useQueryClient();
     const { me } = useAuth();
     // console.log("플필 변경시 변경된 데이 클라이언트 ===>", me);
@@ -138,6 +138,7 @@ const ProfilePage: React.FC = () => {
                                     alt="profile camera icon"
                                     width={96}
                                     height={96}
+                                    priority
                                     className="rounded-full object-contain w-auto h-auto"
                                 />
                             </label>
@@ -171,10 +172,10 @@ const ProfilePage: React.FC = () => {
             {/* submit form 끝 */}
             {/* 바닥 아이콘 섹션 */}
             <div className="flex justify-center mt-20 mb-4">
-                <Image src="/turtle.svg" alt="turtle icon" width={70} height={70} />
+                <Image src="/turtle.png" alt="turtle icon" width={70} height={70} />
             </div>
         </div>
     );
 };
 
-export default ProfilePage;
+export default ProfileUpdatePage;

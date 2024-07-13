@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/context/auth.context";
+import { useAuth } from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
@@ -136,6 +136,7 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
                     alt="backbtn"
                     width={18}
                     height={18}
+                    style={{ width: "auto", height: "auto" }}
                     className="cursor-pointer w-auto h-auto"
                 />
                 <span className="text-[18px]">...</span>
@@ -150,6 +151,7 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
                     alt="backbtn"
                     width={18}
                     height={18}
+                    style={{ width: "auto", height: "auto" }}
                     className="cursor-pointer w-auto h-auto"
                 />
             </button>

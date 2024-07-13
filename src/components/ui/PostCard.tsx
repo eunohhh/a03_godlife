@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/context/auth.context";
+import { useAuth } from "@/hooks/useAuth";
 import { Post } from "@/types/post.type";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -40,6 +40,7 @@ function PostCard({ post }: { post: Post }) {
                                 alt="profile"
                                 fill
                                 className="object-contain"
+                                sizes="(max-width: 768px) 100vw, 33vw"
                             />
                         </div>
                     </AvatarFallback>

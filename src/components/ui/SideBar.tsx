@@ -1,6 +1,5 @@
 "use Client";
 
-import { useAuth } from "@/context/auth.context";
 import React, { useState } from "react";
 
 import Image from "next/image";
@@ -18,6 +17,7 @@ import {
     SheetTrigger,
 } from "./Sheet";
 
+import { useAuth } from "@/hooks/useAuth";
 import { Weather } from "@/types/weather";
 import BasicLoader from "./BasicLoader";
 import { Card, CardContent, CardDescription, CardTitle } from "./Card";

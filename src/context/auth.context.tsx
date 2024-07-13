@@ -7,7 +7,7 @@ import { Tables } from "@/types/supabase";
 import { Provider } from "@supabase/supabase-js";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
+import { PropsWithChildren, createContext, useEffect, useState } from "react";
 
 type AuthContextValue = {
     isLoggedIn: boolean;
@@ -35,9 +35,9 @@ const initialValue: AuthContextValue = {
     // setMeClient: () => {},
 };
 
-const AuthContext = createContext<AuthContextValue>(initialValue);
+export const AuthContext = createContext<AuthContextValue>(initialValue);
 
-export const useAuth = () => useContext(AuthContext);
+// export const useAuth = () => useContext(AuthContext);
 
 interface AuthProviderProps {
     initialMe?: Me | undefined;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/context/auth.context";
+import { useAuth } from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -39,6 +39,7 @@ function SidebarComponent() {
                             : "https://ngtnbcqokvtyrilhkwpz.supabase.co/storage/v1/object/public/profile/Vector.png"
                     }
                     alt="profile"
+                    sizes="(max-width: 768px) 100vw, 33vw"
                 />
                 <AvatarFallback>
                     <div className="h-10 w-10 relative rounded-full overflow-hidden">
@@ -49,7 +50,7 @@ function SidebarComponent() {
                             }
                             alt="profile"
                             fill
-                            sizes="100vw"
+                            sizes="(max-width: 768px) 100vw, 33vw"
                             className="object-contain"
                         />
                     </div>
