@@ -11,7 +11,7 @@ import React, { useState } from "react";
 const ProfilePage: React.FC = () => {
     const queryClient = useQueryClient();
     const { me } = useAuth();
-    console.log("플필 변경시 변경된 데이 클라이언트 ===>", me);
+    // console.log("플필 변경시 변경된 데이 클라이언트 ===>", me);
     const router = useRouter();
     const [profileImg, setProfileImg] = useState(me?.avatar ?? "/profile_camera.svg");
     const [nickname, setNickname] = useState(me?.nickname ?? "");
@@ -82,7 +82,7 @@ const ProfilePage: React.FC = () => {
             return;
         }
 
-        queryClient.invalidateQueries({ queryKey: ["users"] });
+        queryClient.invalidateQueries({ queryKey: ["user"] });
         // setProfileImg(data[0].avatar);
         // setNickname(data[0].nickname);
         // setIntroduction(data[0].introduction);

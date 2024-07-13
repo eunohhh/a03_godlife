@@ -1,29 +1,30 @@
 import { createClient } from "@/supabase/server";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-    let hasCookie = false;
-    const cookieStore = cookies();
-    const cookiesArray = cookieStore.getAll();
+    // let hasCookie = false;
+    // const cookieStore = cookies();
+    // const cookiesArray = cookieStore.getAll();
 
-    if (cookiesArray.length === 0) {
-        hasCookie = false;
-    } else {
-        const authToken = cookiesArray.map((cookie) => {
-            if (cookie.name.startsWith("sb-ngtnbcqokvtyrilhkwpz-auth-token")) {
-                return true;
-            }
-            return false;
-        });
-        hasCookie = authToken.every((cookie) => cookie);
-    }
+    // console.log("cookiesArray ====>", cookiesArray);
 
-    // console.log("authToken ====>", hasCookie);
+    // if (cookiesArray.length === 0) {
+    //     hasCookie = false;
+    // } else {
+    //     const authToken = cookiesArray.map((cookie) => {
+    //         if (cookie.name.startsWith("sb-ngtnbcqokvtyrilhkwpz-auth-token")) {
+    //             return true;
+    //         }
+    //         return false;
+    //     });
+    //     hasCookie = authToken.every((cookie) => cookie);
+    // }
 
-    if (!hasCookie) {
-        return NextResponse.json({ data: { user: "cookie not found" } }, { status: 200 });
-    }
+    // // console.log("authToken ====>", hasCookie);
+
+    // if (!hasCookie) {
+    //     return NextResponse.json({ data: { user: "cookie not found" } }, { status: 200 });
+    // }
     //sb-ngtnbcqokvtyrilhkwpz-auth-token.0
 
     const supabase = createClient();

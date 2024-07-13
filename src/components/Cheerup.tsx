@@ -150,7 +150,7 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
                     alt="backbtn"
                     width={18}
                     height={18}
-                    className="cursor-pointer"
+                    className="cursor-pointer w-auto h-auto"
                 />
             </button>
             <span className="text-[18px]">{cheerupCount.toLocaleString()}</span>

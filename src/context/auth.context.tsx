@@ -1,8 +1,8 @@
 "use client";
 
-import { getUserFn } from "@/api/getUserFn";
+import { getUserFnClient } from "@/api/getUserFnClient";
 import { showAlert } from "@/lib/openCustomAlert";
-import { Me } from "@/types/me.type";
+import { Me, Users } from "@/types/me.type";
 import { Tables } from "@/types/supabase";
 import { Provider } from "@supabase/supabase-js";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -12,7 +12,7 @@ import { PropsWithChildren, createContext, useContext, useEffect, useState } fro
 type AuthContextValue = {
     isLoggedIn: boolean;
     isPending: boolean;
-    me: Tables<"users"> | null;
+    me: Users | null;
     logIn: (email: string, password: string) => void;
     logOut: () => void;
     signUp: (name: string, email: string, password: string) => void;
@@ -40,11 +40,11 @@ const AuthContext = createContext<AuthContextValue>(initialValue);
 export const useAuth = () => useContext(AuthContext);
 
 interface AuthProviderProps {
-    initialMe: Me | null | string;
+    initialMe?: Me | undefined;
 }
 
 export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProviderProps>) {
-    const initializeMe = initialMe === "Auth session missing!" ? null : (initialMe as Me);
+    const initializeMe = !initialMe ? null : (initialMe as Me);
     const queryClient = useQueryClient();
 
     const {
@@ -52,8 +52,8 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
         isPending: userIsPending,
         error: userError,
     } = useQuery({
-        queryKey: ["users"],
-        queryFn: getUserFn,
+        queryKey: ["user"],
+        queryFn: getUserFnClient,
     });
 
     // console.log("tanstack query me ====>", me);
@@ -90,7 +90,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
                 return showAlert("caution", error);
             }
 
-            queryClient.invalidateQueries({ queryKey: ["users"] });
+            queryClient.invalidateQueries({ queryKey: ["user"] });
             // setMe(user);
             showAlert("success", "로그인 성공!", () => router.replace("/"));
             // setIsPending(userIsPending);
@@ -114,7 +114,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
             console.error(error);
         }
         // setMe(null);
-        // queryClient.invalidateQueries({ queryKey: ["users"] });
+        queryClient.invalidateQueries({ queryKey: ["user"] });
         setIsPending(userIsPending);
         router.replace("/login");
     };
@@ -136,7 +136,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
 
             if (data.user) {
                 // setMe(data.user);
-                queryClient.invalidateQueries({ queryKey: ["users"] });
+                queryClient.invalidateQueries({ queryKey: ["user"] });
                 // setIsPending(userIsPending);
                 showAlert("success", "회원가입 성공!", () => router.replace("/"));
             } else {
@@ -158,7 +158,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
             }
             const data = await response.json();
 
-            queryClient.invalidateQueries({ queryKey: ["users"] });
+            queryClient.invalidateQueries({ queryKey: ["user"] });
             // setIsPending(userIsPending);
             router.replace(data.url);
             showAlert("success", "로그인 성공");
@@ -199,7 +199,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
                 return showAlert("caution", "기존 비밀번호와 동일합니다!");
             } else {
                 // setMe(data.user);
-                queryClient.invalidateQueries({ queryKey: ["users"] });
+                queryClient.invalidateQueries({ queryKey: ["user"] });
                 // setIsPending(userIsPending);
                 return showAlert("success", "비밀번호 변경 성공!", () => router.replace("/"));
             }
@@ -216,7 +216,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
 
     // const setMeClient = (me: Me | null) => {
     //     // setMe(me);
-    //     queryClient.invalidateQueries({ queryKey: ["users"] });
+    //     queryClient.invalidateQueries({ queryKey: ["user"] });
     // };
 
     // 아래는 서버사이드에서 처리하기 때문에 주석처리
@@ -237,7 +237,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
     const value: AuthContextValue = {
         isLoggedIn,
         isPending,
-        me: me?.userTableInfo as Tables<"users"> | null,
+        me: userError ? null : (me?.userTableInfo as Tables<"users"> | null),
         logIn,
         logOut,
         signUp,

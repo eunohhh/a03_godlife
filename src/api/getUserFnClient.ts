@@ -1,22 +1,12 @@
-import { cookies } from "next/headers";
 import { Me } from "./../types/me.type";
 
-export async function getUserFn(): Promise<Me | null> {
-    const cookieStore = cookies();
-    const cookiesArray = cookieStore.getAll();
-
-    // console.log("cookiesArray ====>", cookiesArray);
-
-    // 여기 정말 중요!!!!!!! 쿠키를 fetch 할때 같이 보내줘야 getUser가 동작함!!!!
+export async function getUserFnClient(): Promise<Me | null> {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`, {
         method: "GET",
         // next: {
         //     tags: ["user"],
         // },
         // cache: "no-store",
-        headers: {
-            Cookie: cookiesArray.map((cookie) => `${cookie.name}=${cookie.value}`).join(";"),
-        },
     });
 
     if (!response.ok) {

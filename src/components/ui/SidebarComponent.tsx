@@ -18,7 +18,7 @@ function SidebarComponent() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const handleSideBarClick = () => {
-        console.log("me=>", me);
+        // console.log("me=>", me);
         if (!me) {
             setIsOpen(false);
             showAlert("error", "로그인 해주세요", () => router.push("/login"), true);
@@ -49,6 +49,7 @@ function SidebarComponent() {
                             }
                             alt="profile"
                             fill
+                            sizes="100vw"
                             className="object-contain"
                         />
                     </div>
