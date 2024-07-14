@@ -1,41 +1,13 @@
 "use client";
 
 import { getUserFnClient } from "@/api/getUserFnClient";
+import { AuthContext, AuthContextValue } from "@/lib/authContextInit";
 import { showAlert } from "@/lib/openCustomAlert";
-import { Me, Users } from "@/types/me.type";
+import { Me } from "@/types/me.type";
 import { Tables } from "@/types/supabase";
-import { Provider } from "@supabase/supabase-js";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { PropsWithChildren, createContext, useEffect, useState } from "react";
-
-type AuthContextValue = {
-    isLoggedIn: boolean;
-    isPending: boolean;
-    me: Users | null;
-    logIn: (email: string, password: string) => void;
-    logOut: () => void;
-    signUp: (name: string, email: string, password: string) => void;
-    loginWithProvider: (provider: Provider) => void;
-    resetPassword: (password: string) => void;
-    sendingResetEmail: (email: string) => void;
-    // setMeClient: (me: Me | null) => void;
-};
-
-const initialValue: AuthContextValue = {
-    isLoggedIn: false,
-    isPending: false,
-    me: null,
-    logIn: () => {},
-    logOut: () => {},
-    signUp: () => {},
-    loginWithProvider: () => {},
-    resetPassword: () => {},
-    sendingResetEmail: () => {},
-    // setMeClient: () => {},
-};
-
-export const AuthContext = createContext<AuthContextValue>(initialValue);
+import { PropsWithChildren, useEffect, useState } from "react";
 
 // export const useAuth = () => useContext(AuthContext);
 
@@ -45,7 +17,6 @@ interface AuthProviderProps {
 
 export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProviderProps>) {
     const initializeMe = !initialMe ? null : (initialMe as Me);
-    const queryClient = useQueryClient();
 
     const {
         data: me = initializeMe,
@@ -63,6 +34,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
 
     const [isPending, setIsPending] = useState(userIsPending);
     const router = useRouter();
+    const queryClient = useQueryClient();
 
     // console.log("isPending ====>", userIsPending);
 
