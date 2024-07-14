@@ -1,12 +1,12 @@
-"use client";
+// "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 export default function CenterLogo() {
-    const router = useRouter();
+    // const router = useRouter();
 
-    const handleLogoClick = () => router.refresh();
+    // const handleLogoClick = () => router.refresh();
 
     return (
         <div className="flex justify-center items-center">

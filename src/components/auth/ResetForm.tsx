@@ -1,7 +1,7 @@
 "use client";
 import { Input } from "@/components/ui/Input";
 import { SubmitButton } from "@/components/ui/Submit-button";
-import { useAuth } from "@/hooks/useAuth";
+import useAuth from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import { useRouter } from "next/navigation";
 
@@ -19,7 +19,7 @@ function ResetForm() {
 
         if (!passwordOne || !passwordTwo) return showAlert("caution", "비밀번호를 입력해주세요!");
         if (passwordOne.length < 8 || passwordOne.length > 15)
-            return showAlert("caution", "비밀번호는 4~15 글자로 해야합니다!");
+            return showAlert("caution", "비밀번호는 8~15 글자로 해야합니다!");
 
         if (passwordOne !== passwordTwo) return showAlert("caution", "비밀번호가 일치하지 않습니다!");
 
