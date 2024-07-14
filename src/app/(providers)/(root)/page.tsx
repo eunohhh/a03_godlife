@@ -1,8 +1,5 @@
 import { getInfinitePosts } from "@/api/getInfinitePosts";
 import MainPost from "@/components/MainPost";
-import CenterLogo from "@/components/ui/CenterLogo";
-import { DropdownMenuCheckboxes } from "@/components/ui/Checkbox";
-import SidebarComponent from "@/components/ui/SidebarComponent";
 import TopButton from "@/components/ui/TopButton";
 import { Post } from "@/types/post.type";
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
@@ -24,10 +21,10 @@ async function MainPage() {
     const dehydratedState = dehydrate(queryClient);
 
     return (
-        <HydrationBoundary state={dehydratedState}>
+        <>
             {/* <MainHeader /> */}
 
-            <div className="bg-turtleGreen max-w-[428px] p-2">
+            {/* <div className="bg-turtleGreen max-w-[428px] p-2">
                 <div className="flex flex-row justify-between px-2">
                     <SidebarComponent />
 
@@ -35,12 +32,12 @@ async function MainPage() {
 
                     <DropdownMenuCheckboxes />
                 </div>
-            </div>
-
-            <MainPost />
-
+            </div> */}
+            <HydrationBoundary state={dehydratedState}>
+                <MainPost />
+            </HydrationBoundary>
             <TopButton />
-        </HydrationBoundary>
+        </>
     );
 }
 
