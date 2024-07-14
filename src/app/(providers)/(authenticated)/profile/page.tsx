@@ -22,7 +22,6 @@ export function ProfilePage() {
           .eq("email", me?.userTableInfo.email);
 
         if (error) throw error;
-        // 타입 단언을 사용하여 data를 Post[] 타입으로 처리
         setPosts(data as Post[]);
       } catch (error) {
         console.error("Error fetching posts:", (error as Error).message);
@@ -54,42 +53,38 @@ export function ProfilePage() {
             <div className="w-[68px] h-[68px] rounded-full overflow-hidden">
               <Image
                 className="object-contain"
+
                 src={me?.userTableInfo.avatar as string}
                 alt="profile"
                 width={68}
                 height={68}
                 priority
               />
-            </div>
+             </div>
 
-            <div className="font-bold font-Pretendard-Regular text-lg">
+            <div className="font-bold text-lg">
               {me?.userTableInfo.nickname}
             </div>
-            <div className="text-gray-600 font-Pretendard-Regular">
+            <div className="text-gray-600">
               {me?.userTableInfo.introduction}
             </div>
-            <div className="text-gray-600 font-Pretendard-Regular">
-              {me?.userTableInfo.email}
-            </div>
+            <div className="text-gray-600">{me?.userTableInfo.email}</div>
           </div>
         </div>
         {/* 프로필 수정 버튼 */}
         <div className="w-[50%] flex flex-col justify-end items-end gap-1">
           <Link href={"/write"}>
-            <button className="font-Pretendard-Regular border border-turtleGreen text-turtleGreen rounded-2xl px-2 py-1">
+            <button className="w-[93px] h-[32px] bg-transparent text-[#B7E6CB] text-sm font-semi-bold py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full transition duration-300 ease-in-out flex items-center justify-center hover:bg-[#B7E6CB] hover:text-white">
               write
             </button>
           </Link>
           <Link href="/profileupdate">
-            <Image
-              src="/edit_profile_btn.svg"
-              alt="profile"
-              width={93}
-              height={32}
-            />
+            <button className="w-[93px] h-[32px] bg-transparent text-[#B7E6CB] text-sm font-semi-bold py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full transition duration-300 ease-in-out flex items-center justify-center hover:bg-[#B7E6CB] hover:text-white">
+              Edit profile
+            </button>
           </Link>
         </div>
-      </div>
+      </div> 
 
       {/* supabase 데이터 불러오는 로직 */}
       <div className="space-y-3 font-Pretendard-Regular">
