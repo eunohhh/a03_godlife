@@ -15,11 +15,12 @@ async function ProvidersLayout({ children }: { children: React.ReactNode }) {
     // console.log("me서버서버서버서버에서 ====>", me);
 
     return (
+        <>{children}</>
         // <AuthProvider initialMe={me}>
         // <AuthProvider>
         // <Suspense fallback={<Loading />}>
-        //<AuthHydrationBoundary></AuthHydrationBoundary> */
-        { children }
+        //<AuthHydrationBoundary>{ children }</AuthHydrationBoundary> */
+
         // </Suspense>
         // </AuthProvider>
     );
