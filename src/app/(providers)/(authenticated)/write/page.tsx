@@ -52,7 +52,7 @@ export default function WritingPage() {
 
   //min-h-[860px]
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
+    <div className="flex justify-center items-center min-h-screen bg-gray-50 font-Pretendard-Regular">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 pt-[60px] rounded-lg shadow-lg w-full max-w-[428px] h-dvh flex flex-col"
@@ -67,6 +67,7 @@ export default function WritingPage() {
           </button>
           <button
             type="submit"
+
             className="w-[67px] h-[34px] bg-[#B7E6CB] text-white font-semi-bold text-sm py-0 px-1 rounded-full hover:bg-[#073A33] transition duration-300 ease-in-out flex items-center justify-center"
           >
             Post
