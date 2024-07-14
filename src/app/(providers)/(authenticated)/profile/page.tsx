@@ -46,11 +46,11 @@ export function ProfilePage() {
       </div>
 
       {/* 자기소개 섹션 */}
-      <div className="flex justify-between px-4 py-2 border-b height-[150px] relative -top-11 pb-4">
-        <div className="flex w-[50%] items-center relative">
+      <div className="flex justify-between px-4 py-2 border-b height-[150px] relative -top-11 pb-7">
+        <div className="w-[50%] items-center relative">
           {/* 프로필 이미지 */}
-          <div className="ml-[10px]">
-            <div className="w-[68px] h-[68px] rounded-full overflow-hidden">
+          <div className="ml-[10px] relative">
+            <div className="rounded-full overflow-hidden w-[68px] h-[68px] border-[4px] border-[#ffffff]">
               <Image
                 className="object-contain"
 
@@ -62,13 +62,15 @@ export function ProfilePage() {
               />
              </div>
 
-            <div className="font-bold text-lg">
+            <div className="font-semibold text-lg text-gray-700">
               {me?.userTableInfo.nickname}
             </div>
-            <div className="text-gray-600">
+            <div className="text-gray-600 text-sm">
               {me?.userTableInfo.introduction}
             </div>
-            <div className="text-gray-600">{me?.userTableInfo.email}</div>
+            <div className="text-gray-600 text-sm">
+              {me?.userTableInfo.email}
+            </div>
           </div>
         </div>
         {/* 프로필 수정 버튼 */}
@@ -79,7 +81,7 @@ export function ProfilePage() {
             </button>
           </Link>
           <Link href="/profileupdate">
-            <button className="w-[93px] h-[32px] bg-transparent text-[#B7E6CB] text-sm font-semi-bold py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full transition duration-300 ease-in-out flex items-center justify-center hover:bg-[#B7E6CB] hover:text-white">
+            <button className="w-[93px] h-[32px] bg-transparent text-[#B7E6CB] text-xs font-semi-bold py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full transition duration-300 ease-in-out flex items-center justify-center hover:bg-[#B7E6CB] hover:text-white">
               Edit profile
             </button>
           </Link>
