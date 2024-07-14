@@ -4,22 +4,32 @@ import { useAuth } from "@/context/auth.context";
 import { Post } from "@/types/post.type";
 import { format } from "date-fns";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import CheerupButton from "../Cheerup";
 import { Avatar, AvatarFallback, AvatarImage } from "./Avatar";
 import { Separator } from "./Separator";
 import { deletePost } from "@/lib/deletePost";
+import { showAlert } from "@/lib/openCustomAlert";
 
 function PostCard({ post }: { post: Post }) {
   const { me } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
 
   const handleDelete = async () => {
     console.log(post.id);
-    const result = await deletePost(post.id);
 
+    if (!me) return;
+    if (post.email !== me.userTableInfo.email) {
+      return showAlert("caution", "게시물 작성자만 삭제할 수 있어요!");
+    }
+
+    const isConfirmed = confirm("게시물을 삭제할까요?");
+    if (!isConfirmed) return;
+
+    const result = await deletePost(post.id);
     if (result) {
-      // UI 업데이트, 얼럿 추가하기
+      router.refresh();
       console.log(post.id, "삭제 성공 좀 돼라");
     } else {
       console.log("삭제 실패");
