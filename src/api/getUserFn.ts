@@ -10,10 +10,10 @@ export async function getUserFn(): Promise<Me | null> {
     // 여기 정말 중요!!!!!!! 쿠키를 fetch 할때 같이 보내줘야 getUser가 동작함!!!!
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`, {
         method: "GET",
-        // next: {
-        //     tags: ["user"],
-        // },
-        // cache: "no-store",
+        next: {
+            tags: ["user"],
+        },
+        cache: "no-store",
         headers: {
             Cookie: cookiesArray.map((cookie) => `${cookie.name}=${cookie.value}`).join(";"),
         },
