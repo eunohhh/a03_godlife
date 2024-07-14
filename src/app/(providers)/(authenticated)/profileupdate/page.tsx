@@ -8,11 +8,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-
 const ProfileUpdatePage: React.FC = () => {
-    const queryClient = useQueryClient();
     const { me } = useAuth();
     // console.log("플필 변경시 변경된 데이 클라이언트 ===>", me);
+    const queryClient = useQueryClient();
+
     const router = useRouter();
     const [profileImg, setProfileImg] = useState(me?.avatar ?? "/profile_camera.svg");
     const [nickname, setNickname] = useState(me?.nickname ?? "");
@@ -145,7 +145,9 @@ const ProfileUpdatePage: React.FC = () => {
                 {/* 입력 섹션 */}
                 <div className="px-4 mt-4">
                     <div className="mb-4">
-                        <label className="block text-sm font-bold font-Pretendard-Regular text-gray-700">닉네임</label>
+                        <label className="block text-sm font-bold font-Pretendard-Regular text-gray-700">
+                            닉네임
+                        </label>
                         <input
                             type="text"
                             placeholder="nickname"
@@ -155,7 +157,9 @@ const ProfileUpdatePage: React.FC = () => {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-bold font-Pretendard-Regular text-gray-700">자기소개</label>
+                        <label className="block text-sm font-bold font-Pretendard-Regular text-gray-700">
+                            자기소개
+                        </label>
                         <input
                             value={introduction ?? ""}
                             onChange={(e) => setIntroduction(e.target.value)}
@@ -171,7 +175,7 @@ const ProfileUpdatePage: React.FC = () => {
                 <Image src="/turtle.png" alt="turtle icon" width={70} height={70} priority />
             </div>
         </div>
-  );
+    );
 };
 
 export default ProfileUpdatePage;

@@ -6,6 +6,8 @@ import SidebarComponent from "@/components/ui/SidebarComponent";
 import TopButton from "@/components/ui/TopButton";
 import { Post } from "@/types/post.type";
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 async function MainPage() {
     const queryClient = new QueryClient();
@@ -24,7 +26,7 @@ async function MainPage() {
     const dehydratedState = dehydrate(queryClient);
 
     return (
-        <HydrationBoundary state={dehydratedState}>
+        <>
             {/* <MainHeader /> */}
 
             <div className="bg-turtleGreen max-w-[428px] p-2">
@@ -36,11 +38,13 @@ async function MainPage() {
                     <DropdownMenuCheckboxes />
                 </div>
             </div>
-
-            <MainPost />
-
+            <Suspense fallback={<Loading />}>
+                <HydrationBoundary state={dehydratedState}>
+                    <MainPost />
+                </HydrationBoundary>
+            </Suspense>
             <TopButton />
-        </HydrationBoundary>
+        </>
     );
 }
 
