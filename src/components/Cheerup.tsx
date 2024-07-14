@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "@/context/auth.context";
+import { useAuth } from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import { useRouter } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
+import React from "react";
 
 interface CheerupProps {
   postId: string;
@@ -64,9 +64,7 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
   });
 
   const cheerupCount = data?.length || 0;
-  const isCheeruped = data?.find((item) => item.userid === me?.id)
-    ? true
-    : false;
+  const isCheeruped = data?.some((item) => item.userid === me?.id) ?? false;
 
   // 좋아요 상태를 변경하는 함수
   const { mutate: likeToggle } = useMutation<
@@ -82,12 +80,6 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
       });
     },
   });
-
-  //   const handleCheerup = () => {
-  //     if (!me) {
-  //       showAlert("error", "로그인이 필요합니다.");
-  //       return;
-  //     }
 
   const handleCheerup = () => {
     if (!me) {
@@ -109,22 +101,32 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="justify-end flex w-full h-6 text-gray-100 gap-2">
+        <Image
+          src="/fire_btn.svg"
+          alt="backbtn"
+          width={100}
+          height={100}
+          className="cursor-pointer w-auto h-auto"
+        />
+        <span className="text-[18px]">...</span>
+      </div>
+    );
 
   return (
-    <div className="justify-end flex w-full">
+    <div className="justify-end items-center flex w-full h-6 gap-2">
       <button onClick={handleCheerup} className="flex items-center text-3xl">
         <Image
           src="/fire_btn.svg"
           alt="backbtn"
-          width={18}
-          height={18}
-          className="cursor-pointer"
+          width={100}
+          height={100}
+          className="cursor-pointer w-auto h-auto"
         />
-        <span className="ml-2 text-[18px]">
-          {cheerupCount.toLocaleString()}
-        </span>
       </button>
+      <span className="text-[18px]">{cheerupCount.toLocaleString()}</span>
     </div>
   );
 };

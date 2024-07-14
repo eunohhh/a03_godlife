@@ -1,6 +1,5 @@
 "use Client";
 
-import { useAuth } from "@/context/auth.context";
 import React, { useState } from "react";
 
 import Image from "next/image";
@@ -18,8 +17,9 @@ import {
     SheetTrigger,
 } from "./Sheet";
 
+import { useAuth } from "@/hooks/useAuth";
 import { Weather } from "@/types/weather";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import BasicLoader from "./BasicLoader";
 import { Card, CardContent, CardDescription, CardTitle } from "./Card";
 
 const SideBar = ({
@@ -49,7 +49,7 @@ const SideBar = ({
     };
 
     const handleClick = () => {
-        handleOpen(false);
+        handleOpen((prev) => !prev);
     };
     // if (!me) return null;
     //이 부분 때문에, 로그인 안 됐을 때 SideBar를 누를 수 있는 버튼이 없어졌었다
@@ -76,50 +76,38 @@ const SideBar = ({
     };
 
     return (
-        <div className="w-[10%]">
-            {/* as Child 삭제해도 동작하는 이유? */}
+        <div className="w-[10%] flex justify-center items-center">
             <Sheet open={isOpen}>
                 <SheetTrigger asChild>{children}</SheetTrigger>
-                {/* hover시 cursor 바뀌게 수정해야 함! */}
-                <SheetContent handleClick={handleClick}>
+
+                <SheetContent className="font-Pretendard-Regular" handleClick={handleClick}>
                     <SheetHeader>
-                        {me && me.userTableInfo ? (
-                            <>
+                        {me ? (
+                            <div className="flex flex-col h-[150px]">
                                 <Image
-                                    src={me.userTableInfo.avatar as string | StaticImport}
+                                    src={me.avatar as string}
                                     alt="profile_btn"
-                                    className="rounded-full"
-                                    width={67}
-                                    height={34}
+                                    className="rounded-full w-[50px] h-[50px] mb-2"
+                                    width={50}
+                                    height={50}
                                 />
-                                <SheetTitle>{me.userTableInfo.nickname}</SheetTitle>
+                                <SheetTitle>
+                                    {me.nickname ? me.nickname : "닉네임을 추가해주세요"}
+                                </SheetTitle>
                                 <div className="flex flex-col items-start">
                                     <SheetDescription className="">
-                                        {me.userTableInfo.introduction
-                                            ? me.userTableInfo.introduction
-                                            : "자기소개를 추가해주세요"}
+                                        {me.introduction ? me.introduction : "자기소개를 추가해주세요"}
                                     </SheetDescription>
-                                    <SheetDescription>@{me.userTableInfo.email}</SheetDescription>
+                                    <SheetDescription>@{me.email}</SheetDescription>
                                 </div>
-                            </>
+                            </div>
                         ) : (
-                            <div>로딩중</div>
+                            <div className="flex items-center justify-center rounded-lg h-[150px] w-[80%]">
+                                <BasicLoader isSmall={true} />
+                            </div>
                         )}
                     </SheetHeader>
-                    {/* <SheetDescription>
-            {me && me.userTableInfo.introduction ? (
-              me.userTableInfo.introduction
-            ) : (
-              <div>로딩중</div>
-            )}
-          </SheetDescription> */}
-                    {/* <SheetDescription>
-            {me && me.userTableInfo.email ? (
-              `@${me.userTableInfo.introduction}`
-            ) : (
-              <div>로딩중</div>
-            )}
-          </SheetDescription> */}
+
                     <Link href="/profile">
                         <div className="flex flex-row mt-3 mb-3">
                             <Image
@@ -150,38 +138,37 @@ const SideBar = ({
                     </Link>
                     <Separator />
                     {/* <h3>날씨</h3> */}
-                    <Card className="font-Cafe24SsurroundAir max-w-80 max-h-40 mt-10 mb-10 bg-turtleGreen/60">
-                        <div className="flex flex-col items-center">
-                            <CardTitle>
-                                {weather && weather[0] && (
-                                    <Image
-                                        src={weather[0].iconUrl}
-                                        alt={weather[0].description}
-                                        width={53}
-                                        height={53}
-                                    />
-                                )}
-                            </CardTitle>
-                            <CardTitle className="text-xl">
-                                {weather ? weather[0].description : "Loading..."}
-                            </CardTitle>
-                            <CardDescription className="mb-3">
-                                {temp ? `${temp.toFixed(1)}°C` : "Loading..."}
-                            </CardDescription>
-                        </div>
-                        <CardContent className="text-[12px] ml-1 font-semibold flex flex-row items-center">
-                            <p className="ml-3 mr-3">
-                                {tempMin ? `🔽최저  ${tempMin.toFixed(1)}°C` : "Loading..."}
-                            </p>
-                            <p className="ml-5 mr-3">
-                                {tempMax ? `🔼최고  ${tempMax.toFixed(1)}°C` : "Loading..."}
-                            </p>
-                            <p className="ml-3 mr-3">
-                                {humidity ? `💧습도  ${humidity.toFixed(1)}%` : "Loading..."}
-                            </p>
-                        </CardContent>
-                    </Card>
                     <WeatherData onWeatherData={handleWeatherData} />
+
+                    {weather && tempMin && tempMax && humidity ? (
+                        <Card className="font-Cafe24SsurroundAir max-w-80 max-h-40 mt-10 mb-10 bg-turtleGreen/60">
+                            <div className="flex flex-col items-center">
+                                <CardTitle>
+                                    {weather && weather[0] && (
+                                        <Image
+                                            src={weather[0].iconUrl}
+                                            alt={weather[0].description}
+                                            width={53}
+                                            height={53}
+                                        />
+                                    )}
+                                </CardTitle>
+                                <CardTitle className="text-xl">{weather[0].description}</CardTitle>
+                                <CardDescription className="mb-3">
+                                    {`${temp?.toFixed(1)}°C`}
+                                </CardDescription>
+                            </div>
+                            <CardContent className="text-[12px] ml-1 font-semibold flex flex-row items-center">
+                                <p className="ml-3 mr-3">{`🔽최저  ${tempMin.toFixed(1)}°C`}</p>
+                                <p className="ml-5 mr-3">{`🔼최고  ${tempMax.toFixed(1)}°C`}</p>
+                                <p className="ml-3 mr-3">{`💧습도  ${humidity.toFixed(1)}%`}</p>
+                            </CardContent>
+                        </Card>
+                    ) : (
+                        <Card className="text-center font-semibold grid place-items-center font-Cafe24SsurroundAir mt-10 mb-10 bg-turtleGreen/60 w-[270px] h-[162px]">
+                            <p>오늘의 날씨는?</p>
+                        </Card>
+                    )}
 
                     <SheetFooter className="flex flex-row justify-center">
                         {/* <SheetClose asChild>

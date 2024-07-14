@@ -1,21 +1,25 @@
 "use client";
 
+import { getUserFnClient } from "@/api/getUserFnClient";
 import { showAlert } from "@/lib/openCustomAlert";
-import { Me } from "@/types/me.type";
+import { Me, Users } from "@/types/me.type";
+import { Tables } from "@/types/supabase";
 import { Provider } from "@supabase/supabase-js";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { PropsWithChildren, createContext, useEffect, useState } from "react";
 
 type AuthContextValue = {
     isLoggedIn: boolean;
     isPending: boolean;
-    me: Me | null;
+    me: Users | null;
     logIn: (email: string, password: string) => void;
     logOut: () => void;
     signUp: (name: string, email: string, password: string) => void;
     loginWithProvider: (provider: Provider) => void;
     resetPassword: (password: string) => void;
     sendingResetEmail: (email: string) => void;
+    // setMeClient: (me: Me | null) => void;
 };
 
 const initialValue: AuthContextValue = {
@@ -28,26 +32,42 @@ const initialValue: AuthContextValue = {
     loginWithProvider: () => {},
     resetPassword: () => {},
     sendingResetEmail: () => {},
+    // setMeClient: () => {},
 };
 
-const AuthContext = createContext<AuthContextValue>(initialValue);
+export const AuthContext = createContext<AuthContextValue>(initialValue);
 
-export const useAuth = () => useContext(AuthContext);
+// export const useAuth = () => useContext(AuthContext);
 
 interface AuthProviderProps {
-    initialMe: Me | null | string;
+    initialMe?: Me | undefined;
 }
 
 export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProviderProps>) {
-    const initializeMe = initialMe === "Auth session missing!" ? null : (initialMe as Me);
-    const [me, setMe] = useState<Me | null>(initializeMe);
+    const initializeMe = !initialMe ? null : (initialMe as Me);
+    const queryClient = useQueryClient();
 
+    const {
+        data: me = initializeMe,
+        isPending: userIsPending,
+        error: userError,
+    } = useQuery({
+        queryKey: ["user"],
+        queryFn: getUserFnClient,
+    });
+
+    // console.log("tanstack query me ====>", me);
+
+    // const [me, setMe] = useState<Me | null>(initializeMe);
     const isLoggedIn = !!me;
-    const [isPending, setIsPending] = useState(false);
+
+    const [isPending, setIsPending] = useState(userIsPending);
     const router = useRouter();
 
+    // console.log("isPending ====>", userIsPending);
+
     const logIn: AuthContextValue["logIn"] = async (email, password) => {
-        if (me) return showAlert("caution", "이미 로그인 되어 있어요");
+        if (me?.userTableInfo) return showAlert("caution", "이미 로그인 되어 있어요");
         if (!email || !password) return showAlert("caution", "이메일, 비밀번호 모두 채워 주세요.");
 
         try {
@@ -57,42 +77,50 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
                 method: "POST",
                 body: JSON.stringify(data),
             });
-            const { user, error } = await response.json();
+            if (!response.ok) {
+                throw new Error("fetch 실패");
+            }
+            const { error } = await response.json();
 
             if (error) {
                 setIsPending(false);
-
                 if (error === "Invalid login credentials") {
                     return showAlert("caution", "이메일, 비밀번호를 확인해주세요.");
                 }
                 return showAlert("caution", error);
             }
 
-            setMe(user);
-            setIsPending(false);
-            showAlert("success", "로그인 성공!");
-            router.replace("/");
+            queryClient.invalidateQueries({ queryKey: ["user"] });
+            // setMe(user);
+            showAlert("success", "로그인 성공!", () => router.replace("/"));
+            // setIsPending(userIsPending);
         } catch (error) {
             console.error(error);
         }
     };
 
     const logOut = async () => {
-        if (!me) return showAlert("caution", "로그인하고 눌러주세요");
+        if (!me?.userTableInfo) return showAlert("caution", "로그인하고 눌러주세요");
 
         try {
             setIsPending(true);
-            await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/log-out`, { method: "DELETE" });
-            setIsPending(false);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/log-out`, {
+                method: "DELETE",
+            });
+            if (!response.ok) {
+                throw new Error("fetch 실패");
+            }
         } catch (error) {
             console.error(error);
         }
-        setMe(null);
+        // setMe(null);
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+        setIsPending(userIsPending);
         router.replace("/login");
     };
 
     const signUp: AuthContextValue["signUp"] = async (name, email, password) => {
-        if (me) return showAlert("caution", "이미 로그인 되어 있어요");
+        if (me?.userTableInfo) return showAlert("caution", "이미 로그인 되어 있어요");
 
         try {
             setIsPending(true);
@@ -101,12 +129,16 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
                 method: "POST",
                 body: JSON.stringify(payload),
             });
+            if (!response.ok) {
+                throw new Error("fetch 실패");
+            }
             const data = await response.json();
 
             if (data.user) {
-                setMe(data.user);
-                setIsPending(false);
-                router.replace("/");
+                // setMe(data.user);
+                queryClient.invalidateQueries({ queryKey: ["user"] });
+                // setIsPending(userIsPending);
+                showAlert("success", "회원가입 성공!", () => router.replace("/"));
             } else {
                 console.error(data.error);
             }
@@ -121,10 +153,15 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/provider?provider=${provider}`
             );
+            if (!response.ok) {
+                throw new Error("fetch 실패");
+            }
             const data = await response.json();
 
-            setIsPending(false);
+            queryClient.invalidateQueries({ queryKey: ["user"] });
+            // setIsPending(userIsPending);
             router.replace(data.url);
+            showAlert("success", "로그인 성공");
         } catch (error) {
             console.error(error);
         }
@@ -137,12 +174,15 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
                 method: "POST",
                 body: JSON.stringify({ email }),
             });
-            const data = await response.json();
 
+            if (!response.ok) {
+                throw new Error("fetch 실패");
+            }
             setIsPending(false);
-            console.log(data);
+            return showAlert("success", "이메일 전송 성공!", () => router.replace("/login"));
         } catch (error) {
             console.error(error);
+            setIsPending(false);
         }
     };
 
@@ -154,19 +194,30 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
                 body: JSON.stringify({ password }),
             });
             const data = await response.json();
-            setIsPending(false);
             if (data.error === "New password should be different from the old password.") {
+                setIsPending(false);
                 return showAlert("caution", "기존 비밀번호와 동일합니다!");
             } else {
-                showAlert("success", "비밀번호 변경 성공!");
-                setMe(data.user);
-                router.replace("/");
+                // setMe(data.user);
+                queryClient.invalidateQueries({ queryKey: ["user"] });
+                // setIsPending(userIsPending);
+                return showAlert("success", "비밀번호 변경 성공!", () => router.replace("/"));
             }
         } catch (error) {
             console.error(error);
             router.refresh();
+            setIsPending(false);
         }
     };
+
+    useEffect(() => {
+        setIsPending(userIsPending);
+    }, [userIsPending]);
+
+    // const setMeClient = (me: Me | null) => {
+    //     // setMe(me);
+    //     queryClient.invalidateQueries({ queryKey: ["user"] });
+    // };
 
     // 아래는 서버사이드에서 처리하기 때문에 주석처리
     // useEffect(() => {
@@ -180,19 +231,20 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
 
     // 여기는 나중에 지우기
     // useEffect(() => {
-    //     console.log(me);
+    //     console.log("me 변경됨 ===>", me);
     // }, [me]);
 
     const value: AuthContextValue = {
         isLoggedIn,
         isPending,
-        me,
+        me: userError ? null : (me?.userTableInfo as Tables<"users"> | null),
         logIn,
         logOut,
         signUp,
         loginWithProvider,
         resetPassword,
         sendingResetEmail,
+        // setMeClient,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

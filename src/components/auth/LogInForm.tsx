@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@/context/auth.context";
+import { useAuth } from "@/hooks/useAuth";
 import { emailRegex } from "@/lib/commonRegexs";
 import { showAlert } from "@/lib/openCustomAlert";
 import clsx from "clsx";
@@ -52,8 +52,10 @@ function LogInForm() {
     return (
         <>
             <div className="flex flex-col items-center justify-center gap-2 pb-6">
-                <h1 className="text-2xl font-bold">{isRecoverPassword ? "비밀번호 복구" : "로그인"}</h1>
-                <p className="text-sm text-gray-500">
+                <h1 className="text-2xl font-Pretendard-Regular font-bold">
+                    {isRecoverPassword ? "비밀번호 복구" : "로그인"}
+                </h1>
+                <p className="text-sm font-Pretendard-Regular text-gray-500">
                     {isRecoverPassword ? "Recover your password" : "Sign up to continue using our App"}
                 </p>
             </div>
@@ -62,7 +64,7 @@ function LogInForm() {
                 onSubmit={isRecoverPassword ? handleRecoverPassword : handleSubmit}
                 className="w-full h-fit min-h-[35%] flex flex-col items-center justify-center gap-10"
             >
-                <div className="w-[90%] flex flex-col items-center justify-center gap-10">
+                <div className="w-[90%] flex flex-col items-center justify-center font-Pretendard-Regular gap-10">
                     <Input type="text" placeholder="email" name="email" />
 
                     {isRecoverPassword ? null : (
@@ -78,6 +80,7 @@ function LogInForm() {
                             )}
 
                             <button
+                                type="button"
                                 onClick={() => setIsRecoverPassword(true)}
                                 className="w-full text-sm text-right text-gray-500"
                             >
@@ -96,7 +99,7 @@ function LogInForm() {
                 <SubmitButton
                     className="bg-turtleGreen w-[70%] text-white rounded-lg px-4 py-2 text-foreground"
                     type="submit"
-                    pendingText="진행 중..."
+                    pendingText="로딩..."
                     pending={isPending}
                 >
                     {isRecoverPassword ? "복구메일보내기" : "로그인하기"}
@@ -105,7 +108,6 @@ function LogInForm() {
         </>
     );
 }
-
 export default LogInForm;
 
 // const createQueryString = useCallback(

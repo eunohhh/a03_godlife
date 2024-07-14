@@ -42,7 +42,7 @@ export function DropdownMenuCheckboxes() {
         <div className="flex">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <img className="cursor-pointer w-9" src="/sort_btn.svg" alt="Sort" />
+                    <img className="cursor-pointer w-7" src="/sort_btn.svg" alt="Sort" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
                     <DropdownMenuLabel>Sort By</DropdownMenuLabel>

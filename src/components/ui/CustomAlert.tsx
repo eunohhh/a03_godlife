@@ -36,7 +36,7 @@ function CustomAlert({
                     <AlertDialogContent className="bg-white w-[300px] min-h-[200px] rounded-lg flex flex-col justify-center items-center gap-5 transition-all duration-300">
                         <AlertDialogHeader className="flex flex-col items-center gap-2 w-full">
                             <AlertDialogTitle
-                                className={`text-2xl font-bold w-full ${
+                                className={`text-2xl font-bold w-full text-center ${
                                     title === "success" ? "text-lime-400" : "text-red-400"
                                 }`}
                             >

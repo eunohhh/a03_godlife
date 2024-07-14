@@ -1,12 +1,29 @@
-import { AuthProvider } from "@/context/auth.context";
-import serverGetUser from "@/lib/severGetUser";
-// import serverGetUser from "@/lib/severGetUser";
-import React from "react";
+import AuthHydrationBoundary from "@/components/auth/AuthHydrationBoundary";
+import React, { Suspense } from "react";
+import Loading from "./loading";
 
 async function ProvidersLayout({ children }: { children: React.ReactNode }) {
-    const me = await serverGetUser();
+    // const me = await serverGetUser();
 
-    return <AuthProvider initialMe={me}>{children}</AuthProvider>;
+    // const queryClient = new QueryClient();
+    // await queryClient.prefetchQuery({
+    //     queryKey: ["user"],
+    //     queryFn: () => getUserFn(),
+    // });
+    // const dehydratedState = dehydrate(queryClient);
+
+    // const me = await queryClient.getQueryData<Me | undefined>(["user"]);
+
+    // console.log("me서버서버서버서버에서 ====>", me);
+
+    return (
+        // <AuthProvider initialMe={me}>
+        // <AuthProvider>
+        <Suspense fallback={<Loading />}>
+            <AuthHydrationBoundary>{children}</AuthHydrationBoundary>
+        </Suspense>
+        // </AuthProvider>
+    );
 }
 
 export default ProvidersLayout;

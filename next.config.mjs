@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    reactStrictMode: false,
     images: {
         remotePatterns: [
             {
@@ -26,6 +27,7 @@ const nextConfig = {
         ],
         // minimumCacheTTL: 1,
     },
+    // experimental: { forceSwcTransforms: true },
 };
 
 export default nextConfig;

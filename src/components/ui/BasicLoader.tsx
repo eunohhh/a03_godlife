@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Image from "next/image";
 
 type BasicLoaderProps = {
-    isSmall?: boolean;
+  isSmall?: boolean;
 };
 
 function BasicLoader({ isSmall = false }: BasicLoaderProps) {
@@ -11,12 +11,11 @@ function BasicLoader({ isSmall = false }: BasicLoaderProps) {
             <div className="relative aspect-square w-[96px] h-[96px] top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
                 <Image
                     className="object-contain animate-bounce"
-                    src="/turtle.svg"
+                    src="/turtle.png"
                     alt="turtle"
                     fill
-                    sizes="(min-width: 640px) 96px, 96px"
                     priority
-                    unoptimized
+                    sizes="(min-width: 640px) 96px, 96px"
                 />
             </div>
         </div>
