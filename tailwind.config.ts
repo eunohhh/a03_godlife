@@ -21,8 +21,12 @@ const config = {
       },
     },
     extend: {
-      // 임시추가
       fontFamily: {
+        //제목 폰트
+        MangoByeolbyeol: ["MangoByeolbyeol"],
+        //본문 폰트
+        "Pretendard-Regular": ["Pretendard-Regular"],
+        //날씨 데이터 폰트
         Cafe24SsurroundAir: ["Cafe24SsurroundAir"],
       },
       colors: {
