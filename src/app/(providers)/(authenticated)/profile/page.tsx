@@ -36,12 +36,14 @@ export function ProfilePage() {
       {/* 헤더 섹션 */}
       <div className="bg-[#B7E6CB] h-full flex items-center justify-center">
         <Link href={"/"}>
-          <div className="font-semibold text-2xl text-white">God Life Mate</div>
+          <div className="font-MangoByeolbyeol text-2xl text-white">
+            God Life Mate
+          </div>
         </Link>
       </div>
 
       {/* 자기소개 섹션 */}
-      <div className="flex justify-between px-4 py-2 border-b relative -top-8 pb-4">
+      <div className="flex justify-between px-4 py-2 border-b relative -top-8 pb-4 font-Pretendard-Regular">
         <div className="w-[50%] items-center relative">
           {/* 프로필 이미지 */}
           <div className="ml-[10px] relative">
