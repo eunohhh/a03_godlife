@@ -2,10 +2,10 @@
 
 import { useAuth } from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
-import { useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 interface CheerupProps {
   postId: string;
@@ -17,7 +17,6 @@ interface CheerupStatus {
   userid: string;
 }
 
-// 좋아요 상태를 가져오는 함수
 const fetchCheerupStatus = async (
   postId: string
 ): Promise<CheerupStatus[] | null> => {
@@ -57,16 +56,18 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  // 좋아요 상태를 가져오는 함수
   const { data, isLoading } = useQuery({
     queryKey: ["cheerupStatus", postId],
     queryFn: async () => await fetchCheerupStatus(postId),
   });
 
   const cheerupCount = data?.length || 0;
-  const isCheeruped = data?.some((item) => item.userid === me?.id) ?? false;
 
-  // 좋아요 상태를 변경하는 함수
+  const isCheeruped = data?.find((item) => item.userid === me?.id)
+    ? true
+    : false;
+
+  // 좋아요 상태를 변경하는 useMutation
   const { mutate: likeToggle } = useMutation<
     void,
     Error,
@@ -91,7 +92,6 @@ const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
       );
       return;
     }
-
     if (isCheeruped) {
       likeToggle({ postId, isCheeruped: false, userId: me.id });
       showAlert("error", "좋아요를 취소했습니다.");
