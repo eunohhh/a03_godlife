@@ -1,7 +1,7 @@
 "use client";
 
 import BasicLoader from "@/components/ui/BasicLoader";
-import PostCard from "@/components/ui/PostCard";
+// import PostCard from "@/components/ui/PostCard";
 import { useAuth } from "@/hooks/useAuth";
 import supabase from "@/supabase/client";
 import { Post } from "@/types/post.type";
