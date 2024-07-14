@@ -2,7 +2,6 @@ import { getInfinitePosts } from "@/api/getInfinitePosts";
 import MainPost from "@/components/MainPost";
 import CenterLogo from "@/components/ui/CenterLogo";
 import { DropdownMenuCheckboxes } from "@/components/ui/Checkbox";
-import MainHeader from "@/components/ui/MainHeader";
 import SidebarComponent from "@/components/ui/SidebarComponent";
 import TopButton from "@/components/ui/TopButton";
 import { Post } from "@/types/post.type";
@@ -26,10 +25,10 @@ async function MainPage() {
 
     return (
         <HydrationBoundary state={dehydratedState}>
-            <MainHeader />
+            {/* <MainHeader /> */}
 
-            <div className="bg-turtleGreen max-w-[428px]">
-                <div className="flex flex-row justify-between px-2 my-5">
+            <div className="bg-turtleGreen max-w-[428px] p-2">
+                <div className="flex flex-row justify-between px-2">
                     <SidebarComponent />
 
                     <CenterLogo />

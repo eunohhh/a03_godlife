@@ -1,6 +1,7 @@
 import AuthPageBottom from "@/components/auth/AuthPageBottom";
 import AuthPageWrapper from "@/components/auth/AuthPageWrapper";
 import SignUpForm from "@/components/auth/SignUpForm";
+import Link from "next/link";
 
 export default async function SignUpPage() {
     return (
@@ -10,7 +11,10 @@ export default async function SignUpPage() {
             <AuthPageBottom />
 
             <p className="text-sm text-gray-500">
-                Create account? <span className="text-turtleGreen">Sign up</span>
+                Already have an account?{" "}
+                <Link href="/login" className="text-turtleGreen">
+                    Log In
+                </Link>
             </p>
         </AuthPageWrapper>
     );
