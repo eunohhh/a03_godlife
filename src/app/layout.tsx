@@ -1,7 +1,5 @@
-// import { authOptions } from "@/auth";
-import type { Metadata } from "next";
-// import { getServerSession } from "next-auth/next";
 import QueryProvider from "@/providers/QueryProvider";
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";

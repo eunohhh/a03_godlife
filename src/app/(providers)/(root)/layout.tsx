@@ -1,5 +1,4 @@
-import React, { Suspense } from "react";
-import Loading from "./loading";
+import React from "react";
 
 function RootLayout({ children }: { children: React.ReactNode }) {
   return (

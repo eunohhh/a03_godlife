@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function CenterLogo() {
@@ -8,8 +9,17 @@ export default function CenterLogo() {
     const handleLogoClick = () => router.refresh();
 
     return (
-        <div className="flex w-full justify-center items-center">
-            <img src="/center_logo.svg" onClick={handleLogoClick} style={{ cursor: "pointer" }} />
+        <div className="flex justify-center items-center">
+            <Image
+                src="/turtle.png"
+                alt="center_logo"
+                onClick={handleLogoClick}
+                style={{ cursor: "pointer" }}
+                className="object-contain w-12 h-12"
+                width={100}
+                height={100}
+                priority
+            />
         </div>
     );
 }

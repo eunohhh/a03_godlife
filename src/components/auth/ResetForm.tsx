@@ -1,7 +1,7 @@
 "use client";
 import { Input } from "@/components/ui/Input";
 import { SubmitButton } from "@/components/ui/Submit-button";
-import { useAuth } from "@/context/auth.context";
+import { useAuth } from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import { useRouter } from "next/navigation";
 
