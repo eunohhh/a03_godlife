@@ -1,0 +1,14 @@
+{
+    "deno.enablePaths": ["supabase/functions"],
+    "deno.lint": true,
+    "deno.unstable": true,
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+}
+{
+    "cSpell.words": [
+        "cheerup",
+        "cheerupCount"
+    ]
+}
