@@ -1,6 +1,5 @@
 "use Client";
 
-import { useAuth } from "@/context/auth.context";
 import React, { useState } from "react";
 
 import Image from "next/image";
@@ -18,8 +17,9 @@ import {
   SheetTrigger,
 } from "./Sheet";
 
+import { useAuth } from "@/hooks/useAuth";
 import { Weather } from "@/types/weather";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import BasicLoader from "./BasicLoader";
 import { Card, CardContent, CardDescription, CardTitle } from "./Card";
 
 import LogoutLoader from "./LogoutLoader";
@@ -33,36 +33,50 @@ const SideBar = ({
   isOpen: boolean;
   handleOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { me, logOut } = useAuth();
+  
+    const { me, logOut } = useAuth();
+    // const [profileImg, setProfileImg] = useState(
+    //   me?.userTableInfo.avatar ?? "/profile_camera.svg"
+    // );
+    // const [nickname, setNickname] = useState(me?.userTableInfo.nickname ?? "");
+    // const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    // const [introduction, setIntroduction] = useState(
+    //   me?.userTableInfo.introduction ?? ""
+    // );
 
-  const handleClickLogout = () => {
-    LogoutLoader;
-    logOut();
-  };
+    const handleClickLogout = () => {
+        //로더를 띄우거나 (1)
+        //화면을 천천히 사라지게
+        //transition
+        logOut();
+    };
 
-  const handleClick = () => {
-    handleOpen(false);
-  };
+    const handleClick = () => {
+        handleOpen((prev) => !prev);
+    };
+    // if (!me) return null;
+    //이 부분 때문에, 로그인 안 됐을 때 SideBar를 누를 수 있는 버튼이 없어졌었다
+    //return null 대신 스켈레톤이나 loading을 알려줄 수 잇는 거 추가하기
 
-  const [weather, setWeather] = useState<Weather["weather"] | null>(null);
-  const [tempMin, setTempMin] = useState<number | null>(null);
-  const [tempMax, setTempMax] = useState<number | null>(null);
-  const [humidity, setHumidity] = useState<number | null>(null);
-  const [temp, setTemp] = useState<number | null>(null);
+    const [weather, setWeather] = useState<Weather["weather"] | null>(null);
+    const [tempMin, setTempMin] = useState<number | null>(null);
+    const [tempMax, setTempMax] = useState<number | null>(null);
+    const [humidity, setHumidity] = useState<number | null>(null);
+    const [temp, setTemp] = useState<number | null>(null);
 
-  const handleWeatherData = (
-    weatherData: Weather["weather"],
-    temperature: number,
-    minimumTemp: number,
-    maximumTemp: number,
-    humidityLevel: number
-  ) => {
-    setWeather(weatherData);
-    setTempMin(minimumTemp);
-    setTempMax(maximumTemp);
-    setHumidity(humidityLevel);
-    setTemp(temperature);
-  };
+    const handleWeatherData = (
+        weatherData: Weather["weather"],
+        temperature: number,
+        minimumTemp: number,
+        maximumTemp: number,
+        humidityLevel: number
+    ) => {
+        setWeather(weatherData);
+        setTempMin(minimumTemp);
+        setTempMax(maximumTemp);
+        setHumidity(humidityLevel);
+        setTemp(temperature);
+    };
 
   return (
     <div className="w-[10%]">
@@ -74,28 +88,30 @@ const SideBar = ({
           handleClick={handleClick}
         >
           <SheetHeader>
-            {me && me.userTableInfo ? (
-              <>
-                <Image
-                  src={me.userTableInfo.avatar as string | StaticImport}
-                  alt="profile_btn"
-                  className="rounded-full"
-                  width={67}
-                  height={34}
-                />
-                <SheetTitle>{me.userTableInfo.nickname}</SheetTitle>
-                <div className="flex flex-col items-start">
-                  <SheetDescription>
-                    {me.userTableInfo.introduction
-                      ? me.userTableInfo.introduction
-                      : "자기소개를 추가해주세요"}
-                  </SheetDescription>
-                  <SheetDescription>@{me.userTableInfo.email}</SheetDescription>
-                </div>
-              </>
-            ) : (
-              <div>로딩중</div>
-            )}
+            {me ? (
+                            <div className="flex flex-col h-[150px]">
+                                <Image
+                                    src={me.avatar as string}
+                                    alt="profile_btn"
+                                    className="rounded-full w-[50px] h-[50px] mb-2"
+                                    width={50}
+                                    height={50}
+                                />
+                                <SheetTitle>
+                                    {me.nickname ? me.nickname : "닉네임을 추가해주세요"}
+                                </SheetTitle>
+                                <div className="flex flex-col items-start">
+                                    <SheetDescription className="">
+                                        {me.introduction ? me.introduction : "자기소개를 추가해주세요"}
+                                    </SheetDescription>
+                                    <SheetDescription>@{me.email}</SheetDescription>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="flex items-center justify-center rounded-lg h-[150px] w-[80%]">
+                                <BasicLoader isSmall={true} />
+                            </div>
+                        )}
           </SheetHeader>
 
           <Link href="/profile">

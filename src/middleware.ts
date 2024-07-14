@@ -2,6 +2,10 @@ import { updateSession } from "@/supabase/middleware";
 import { type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
+    // const cookieStore = cookies();
+    // const cookiesArray = cookieStore.getAll();
+    // console.log("cookiesArray ====>", cookiesArray);
+
     return await updateSession(request);
 }
 

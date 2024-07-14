@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/context/auth.context";
+import { useAuth } from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import { usePathname } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";

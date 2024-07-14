@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/context/auth.context";
+import { useAuth } from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import supabase from "@/supabase/client";
 import Image from "next/image";
@@ -20,16 +20,17 @@ export default function WritingPage() {
     }
   };
 
-  const addPost = async () => {
-    if (!me) return;
-    const { error } = await supabase.from("posts").insert([
-      {
-        contents: contents,
-        nickname: me.userTableInfo.nickname,
-        email: me.userTableInfo.email,
-        avatar: me.userTableInfo.avatar,
-      },
-    ]);
+    const addPost = async () => {
+        if (!me) return;
+        const { error } = await supabase.from("posts").insert([
+            {
+                contents: contents,
+                nickname: me.nickname,
+                email: me.email,
+                avatar: me.avatar,
+            },
+        ]);
+
 
     if (error instanceof Error) {
       console.error(error.message);

@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@/context/auth.context";
+import { useAuth } from "@/hooks/useAuth";
 import { emailRegex } from "@/lib/commonRegexs";
 import { showAlert } from "@/lib/openCustomAlert";
 import clsx from "clsx";
@@ -82,47 +82,54 @@ function LogInForm() {
                 isRecoverPassword && "gap-4"
               )}
             >
-              <Input type="password" placeholder="password" name="password" />
 
-              {isRecoverPassword && (
-                <Input
-                  type="password"
-                  placeholder="confirm password"
-                  name="passwordConfirm"
-                />
-              )}
+                <div className="w-[90%] flex flex-col items-center justify-center gap-10">
+                    <Input type="text" placeholder="email" name="email" />
 
-              <button
-                onClick={() => setIsRecoverPassword(true)}
-                className="w-full text-sm text-right text-gray-500"
-              >
-                Forget Password?
-              </button>
-            </div>
-          )}
+                    {isRecoverPassword ? null : (
+                        <div className={clsx("w-full flex flex-col gap-1", isRecoverPassword && "gap-4")}>
+                            <Input type="password" placeholder="password" name="password" />
 
-          {isRecoverPassword && (
-            <p className="w-full text-sm text-right text-gray-500">
-              이메일로 복구 코드를 보내드립니다
-            </p>
-          )}
-        </div>
+                            {isRecoverPassword && (
+                                <Input
+                                    type="password"
+                                    placeholder="confirm password"
+                                    name="passwordConfirm"
+                                />
+                            )}
 
-        <SubmitButton
-          className="bg-turtleGreen w-[70%] text-white rounded-lg px-4 py-2 text-foreground"
-          type="submit"
-          pendingText="진행 중..."
-          pending={isPending}
-        >
-          {isRecoverPassword ? "복구메일보내기" : "로그인하기"}
-        </SubmitButton>
-      </form>
-    </>
-  );
+                            <button
+                                type="button"
+                                onClick={() => setIsRecoverPassword(true)}
+                                className="w-full text-sm text-right text-gray-500"
+                            >
+                                Forget Password?
+                            </button>
+                        </div>
+                    )}
+
+                    {isRecoverPassword && (
+                        <p className="w-full text-sm text-right text-gray-500">
+                            이메일로 복구 코드를 보내드립니다
+                        </p>
+                    )}
+                </div>
+
+                <SubmitButton
+                    className="bg-turtleGreen w-[70%] text-white rounded-lg px-4 py-2 text-foreground"
+                    type="submit"
+                    pendingText="로딩..."
+                    pending={isPending}
+                >
+                    {isRecoverPassword ? "복구메일보내기" : "로그인하기"}
+                </SubmitButton>
+            </form>
+        </>
+    );
 }
-
 export default LogInForm;
 
+          
 // const createQueryString = useCallback(
 //     (name: string, value: string) => {
 //         const params = new URLSearchParams(searchParams.toString());
