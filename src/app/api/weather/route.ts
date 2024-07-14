@@ -7,9 +7,14 @@ export const GET = async (request: Request) => {
 
     const apiKey = process.env.OPENWEATHERMAP_API_KEY;
 
+    //126.97336 경도 long
+    //37.57547 위도 lat
+
+    //lat=44.34&lon=10.99
+
     try {
         const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&lang=kr&units=metric&appid=${apiKey}`
+            `https://api.openweathermap.org/data/2.5/weather?lat=37.57547&lon=126.97336&lang=kr&units=metric&appid=${apiKey}`
         );
         //한국, 'C로 받아오게 static 설정
         //내 위치에 따라 lon, lat 구해서 띄우고 싶은데

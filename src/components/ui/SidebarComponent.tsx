@@ -24,7 +24,7 @@ function SidebarComponent() {
             showAlert("caution", "로그인 해주세요", () => router.push("/login"), true);
         } else {
             setIsOpen((prev) => !prev);
-            console.log("왜안돼");
+            // console.log("왜안돼");
         }
     };
 
@@ -36,6 +36,7 @@ function SidebarComponent() {
                         onClick={handleSideBarClick}
                         src={me.avatar as string}
                         alt="profile"
+                        className="cursor-pointer"
                         sizes="100vw"
                     />
                 ) : (
