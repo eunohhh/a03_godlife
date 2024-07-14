@@ -36,9 +36,6 @@ const SideBar = ({
   const { me, logOut } = useAuth();
 
   const handleClickLogout = () => {
-    //로더를 띄우거나 (1)
-    //화면을 천천히 사라지게
-    //transition
     LogoutLoader;
     logOut();
   };
@@ -46,11 +43,6 @@ const SideBar = ({
   const handleClick = () => {
     handleOpen(false);
   };
-  // if (!me) return BasicLoader;
-  //이 부분 때문에, 로그인 안 됐을 때 SideBar를 누를 수 있는 버튼이 없어졌었다
-  //return null 대신 스켈레톤이나 loading을 알려줄 수 잇는 거 추가하기
-  //SideBar에서 로그아웃 눌렀을 때 로더 뜨면서 로그인 페이지로 이동됨
-  //로그아웃 상태면 메인페이지에서 좌측상단 얼굴 없어짐
 
   const [weather, setWeather] = useState<Weather["weather"] | null>(null);
   const [tempMin, setTempMin] = useState<number | null>(null);
@@ -74,10 +66,9 @@ const SideBar = ({
 
   return (
     <div className="w-[10%]">
-      {/* as Child 삭제해도 동작하는 이유? */}
       <Sheet open={isOpen}>
         <SheetTrigger asChild>{children}</SheetTrigger>
-        {/* hover시 cursor 바뀌게 수정해야 함! */}
+
         <SheetContent
           className="font-Pretendard-Regular"
           handleClick={handleClick}
