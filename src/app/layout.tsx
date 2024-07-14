@@ -8,6 +8,7 @@ import Loading from "./loading";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://a03-godlife.vercel.app"),
   title: "God Life Mate",
   description: "God Life Mate",
   generator: "Next.js",
