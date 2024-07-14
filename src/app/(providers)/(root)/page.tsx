@@ -1,4 +1,5 @@
 import { getInfinitePosts } from "@/api/getInfinitePosts";
+import { getUserFn } from "@/api/getUserFn";
 import MainPost from "@/components/MainPost";
 import CenterLogo from "@/components/ui/CenterLogo";
 import { DropdownMenuCheckboxes } from "@/components/ui/Checkbox";
@@ -23,23 +24,28 @@ async function MainPage() {
         pages: 1, // 설정한 페이지 단위 중 첫 1페이지만 가져옴
     });
 
+    await queryClient.prefetchQuery({
+        queryKey: ["user"],
+        queryFn: () => getUserFn(),
+    });
+
     const dehydratedState = dehydrate(queryClient);
 
     return (
         <>
             {/* <MainHeader /> */}
-
-            <div className="bg-turtleGreen max-w-[428px] p-2">
-                <div className="flex flex-row justify-between px-2">
-                    <SidebarComponent />
-
-                    <CenterLogo />
-
-                    <DropdownMenuCheckboxes />
-                </div>
-            </div>
             <Suspense fallback={<Loading />}>
                 <HydrationBoundary state={dehydratedState}>
+                    <div className="bg-turtleGreen max-w-[428px] p-2">
+                        <div className="flex flex-row justify-between px-2">
+                            <SidebarComponent />
+
+                            <CenterLogo />
+
+                            <DropdownMenuCheckboxes />
+                        </div>
+                    </div>
+
                     <MainPost />
                 </HydrationBoundary>
             </Suspense>
