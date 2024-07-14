@@ -5,15 +5,15 @@ type BasicLoaderProps = {
   isSmall?: boolean;
 };
 
-function BasicLoader({ isSmall = false }: BasicLoaderProps) {
+function LogoutLoader({ isSmall = false }: BasicLoaderProps) {
   return (
     <div
       className={clsx(
-        "relative w-[428px] my-0 mx-auto",
+        "relative w-[428px] my-0 mx-auto flex flex-col items-center justify-center",
         isSmall ? "h-[40vh]" : "h-dvh"
       )}
     >
-      <div className="relative aspect-square w-[96px] h-[96px] top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+      <div className="relative aspect-square w-[96px] h-[96px]">
         <Image
           className="object-contain animate-bounce"
           src="/turtle.svg"
@@ -24,8 +24,9 @@ function BasicLoader({ isSmall = false }: BasicLoaderProps) {
           unoptimized
         />
       </div>
+      <div className="mt-4 text-center text-lg font-semibold">로그아웃...</div>
     </div>
   );
 }
 
-export default BasicLoader;
+export default LogoutLoader;

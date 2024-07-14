@@ -30,11 +30,19 @@ export function ProfilePage() {
     fetchPosts();
   }, [me]);
 
+  // console.log(posts);
+
+  // max-w-md
   return (
-    <div className="max-w-[428px] mx-auto bg-white h-[138px] relative">
+    <div
+      className="max-w-[428px] mx-auto bg-white h-[138px] relative"
+      // style={{ height: "428px" }}
+    >
       {/* 헤더 섹션 */}
       <div className="bg-[#B7E6CB] h-full flex items-center justify-center">
-        <div className="font-semibold text-2xl text-white">God Life Mate</div>
+        <div className="font-MangoByeolbyeol text-2xl text-white">
+          God Life Mate
+        </div>
       </div>
 
       {/* 자기소개 섹션 */}
@@ -44,7 +52,7 @@ export function ProfilePage() {
           <div className="ml-[10px] relative">
             <div className="rounded-full overflow-hidden w-[68px] h-[68px] border-[4px] border-[#ffffff]">
               <Image
-                className="object-cover w-full h-full"
+                className="object-contain"
                 src={me?.userTableInfo.avatar as string}
                 alt="profile"
                 width={68}
@@ -80,7 +88,7 @@ export function ProfilePage() {
       </div>
 
       {/* supabase 데이터 불러오는 로직 */}
-      <div className="space-y-3">
+      <div className="space-y-3 font-Pretendard-Regular">
         {posts.length === 0 && (
           <div className="text-center">내가 쓴 글이 없습니다!</div>
         )}
