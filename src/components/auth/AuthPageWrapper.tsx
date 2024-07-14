@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 function AuthPageWrapper({ children }: { children: React.ReactNode }) {
@@ -8,7 +9,7 @@ function AuthPageWrapper({ children }: { children: React.ReactNode }) {
                 <div className="h-full w-full flex flex-col items-center justify-center gap-10">
                     <div className="w-[110px] h-[110px] flex justify-center items-center rounded-full border border-turtleGreen">
                         <Image
-                            src="/turtle.svg"
+                            src="/turtle.png"
                             alt="logo"
                             width={100}
                             height={100}

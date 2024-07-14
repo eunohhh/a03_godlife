@@ -5,18 +5,48 @@ import { Post } from "@/types/post.type";
 import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import CheerupButton from "../Cheerup";
 import { Avatar, AvatarFallback, AvatarImage } from "./Avatar";
 import { Separator } from "./Separator";
+import { deletePost } from "@/lib/deletePost";
+import { showAlert } from "@/lib/openCustomAlert";
 
 function PostCard({ post }: { post: Post }) {
-    const { me } = useAuth();
-    const pathname = usePathname();
+  const { me } = useAuth();
+  const pathname = usePathname();
+  const router = useRouter();
 
-    return (
-        <div className="post-card max-h-[200px] bg-white rounded-lg p-5 ">
+  const handleDelete = async () => {
+    console.log(post.id);
+
+    if (!me) return;
+    if (post.email !== me.userTableInfo.email) {
+      return showAlert("caution", "게시물 작성자만 삭제할 수 있어요!");
+    }
+
+    const isConfirmed = confirm("게시물을 삭제할까요?");
+    if (!isConfirmed) return;
+
+    const result = await deletePost(post.id);
+    if (result) {
+      router.refresh();
+      console.log(post.id, "삭제 성공 좀 돼라");
+    } else {
+      console.log("삭제 실패");
+      // 에러 처리
+    }
+  };
+
+  return (
+    <div className="post-card max-h-[200px] bg-white rounded-lg p-5 ">
+      <div className="flex flex-row">
+        {/* 여기에 수정삭제 */}
+
+        <div>
+          {me?.email === post.email && pathname === "/profile" && (
             <div className="flex flex-row">
+
                 {/* 여기에 수정삭제 */}
 
                 <div>
@@ -61,9 +91,9 @@ function PostCard({ post }: { post: Post }) {
                     </div>
                     <CheerupButton postId={post.id} />
                 </div>
+              </div>
             </div>
-        </div>
-    );
+  );
 }
 
 export default PostCard;

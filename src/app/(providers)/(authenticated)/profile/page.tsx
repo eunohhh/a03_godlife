@@ -28,6 +28,7 @@ export function ProfilePage() {
         fetchPosts();
     }, [me]);
 
+
     return (
         <div className="max-w-[428px] mx-auto bg-white h-[138px] relative">
             {/* 헤더 섹션 */}
@@ -39,10 +40,10 @@ export function ProfilePage() {
             <div className="flex justify-between px-4 py-2 border-b height-[150px] relative -top-11 pb-4">
                 <div className="w-[50%] items-center relative">
                     {/* 프로필 이미지 */}
-                    <div className="ml-[10px]">
+                    <div className="ml-[10px] relative">
                         <div className="rounded-full overflow-hidden w-[68px] h-[68px] border-[7px] border-white">
                             <Image
-                                className="object-cover w-full h-full"
+                                className="object-contain w-full h-full"
                                 src={me?.avatar as string}
                                 alt="profile"
                                 width={68}
@@ -51,9 +52,9 @@ export function ProfilePage() {
                             />
                         </div>
 
-                        <div className="font-bold text-lg">{me?.nickname}</div>
-                        <div className="text-gray-600">{me?.introduction}</div>
-                        <div className="text-gray-600">{me?.email}</div>
+                        <div className="font-semibold text-lg text-gray-700">{me?.nickname}</div>
+                        <div className="text-gray-600 text-sm">{me?.introduction}</div>
+                        <div className="text-gray-600 text-sm">{me?.email}</div>
                     </div>
                 </div>
                 {/* 프로필 수정 버튼 */}
@@ -72,7 +73,7 @@ export function ProfilePage() {
             </div>
 
             {/* supabase 데이터 불러오는 로직 */}
-            <div className="space-y-3">
+            <div className="space-y-3 font-Pretendard-Regular">
                 {posts === null && <BasicLoader isSmall={true} />}
                 {posts && posts.length === 0 && <div className="text-center">내가 쓴 글이 없습니다!</div>}
                 {posts &&

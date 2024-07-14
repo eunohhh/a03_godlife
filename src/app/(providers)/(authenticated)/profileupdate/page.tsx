@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
+
 const ProfileUpdatePage: React.FC = () => {
     const queryClient = useQueryClient();
     const { me } = useAuth();
@@ -77,11 +78,6 @@ const ProfileUpdatePage: React.FC = () => {
             .eq("id", me.id)
             .select();
 
-        if (updateError) {
-            console.error(updateError);
-            return;
-        }
-
         queryClient.invalidateQueries({ queryKey: ["user"] });
         // setProfileImg(data[0].avatar);
         // setNickname(data[0].nickname);
@@ -98,13 +94,13 @@ const ProfileUpdatePage: React.FC = () => {
             {/* 헤더 섹션 */}
             <div className="bg-[#B7E6CB] h-[138px] flex items-center justify-between">
                 <div className="flex-grow text-center">
-                    <div className="font-semibold text-2xl text-[#ffffff]">God Life Mate</div>
+                    <div className="font-MangoByeolbyeol text-2xl text-[#ffffff]">God Life Mate</div>
                 </div>
             </div>
             {/* submit form 시작 */}
             {/* 프로필 섹션 */}
             <form onSubmit={handleUpdateSubmit}>
-                <div className="flex justify-between mt-6 px-4">
+                <div className="flex justify-between mt-6 px-4 font-Pretendard-Regular font-semibold">
                     <button
                         type="button"
                         onClick={handleCancel}
@@ -149,22 +145,22 @@ const ProfileUpdatePage: React.FC = () => {
                 {/* 입력 섹션 */}
                 <div className="px-4 mt-4">
                     <div className="mb-4">
-                        <label className="block text-sm font-bold text-gray-700">닉네임</label>
+                        <label className="block text-sm font-bold font-Pretendard-Regular text-gray-700">닉네임</label>
                         <input
                             type="text"
                             placeholder="nickname"
                             value={nickname ?? ""}
                             onChange={(e) => setNickname(e.target.value)}
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#B7E6CB] focus:border-[#B7E6CB] sm:text-sm placeholder-gray-400 text-gray-600 text-sm"
+                            className="font-Pretendard-Regular mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#B7E6CB] focus:border-[#B7E6CB] sm:text-sm placeholder-gray-400 text-gray-600 text-sm"
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-bold text-gray-700">자기소개</label>
+                        <label className="block text-sm font-bold font-Pretendard-Regular text-gray-700">자기소개</label>
                         <input
                             value={introduction ?? ""}
                             onChange={(e) => setIntroduction(e.target.value)}
                             placeholder="20자이내로 작성해주세요"
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#B7E6CB] focus:border-[#B7E6CB] sm:text-sm placeholder-gray-400 text-gray-600 text-sm"
+                            className="font-Pretendard-Regular  mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#B7E6CB] focus:border-[#B7E6CB] sm:text-sm placeholder-gray-400 text-gray-600 text-sm"
                         ></input>
                     </div>
                 </div>
@@ -175,7 +171,7 @@ const ProfileUpdatePage: React.FC = () => {
                 <Image src="/turtle.png" alt="turtle icon" width={70} height={70} priority />
             </div>
         </div>
-    );
+  );
 };
 
 export default ProfileUpdatePage;

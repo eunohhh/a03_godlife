@@ -4,20 +4,20 @@ import LogInForm from "@/components/auth/LogInForm";
 import Link from "next/link";
 
 export default function LogInPage() {
-    return (
-        <AuthPageWrapper>
-            <LogInForm />
+  return (
+    <AuthPageWrapper>
+      <LogInForm />
 
-            <AuthPageBottom />
+      <AuthPageBottom />
 
-            <p className="text-sm text-gray-500">
-                Create account?{" "}
-                <Link href="/signup" className="text-turtleGreen">
-                    Sign up
-                </Link>
-            </p>
-        </AuthPageWrapper>
-    );
+      <p className="text-sm text-gray-500">
+        Create account?{" "}
+        <Link href="/signup" className="text-turtleGreen">
+          Sign up
+        </Link>
+      </p>
+    </AuthPageWrapper>
+  );
 }
 
 /* <h1>현재 로그인한 유저는</h1>
