@@ -1,13 +1,12 @@
 "use client";
 
-import { getUserFnClient } from "@/api/getUserFnClient";
-import { AuthContext, AuthContextValue } from "@/lib/authContextInit";
+import useMeQuery from "@/hooks/useMeQuery";
 import { showAlert } from "@/lib/openCustomAlert";
-import { Me } from "@/types/me.type";
-import { Tables } from "@/types/supabase";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Me, Users } from "@/types/me.type";
+import { Provider } from "@supabase/supabase-js";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, createContext, useEffect, useState } from "react";
 
 // export const useAuth = () => useContext(AuthContext);
 
@@ -15,17 +14,47 @@ interface AuthProviderProps {
     initialMe?: Me | undefined;
 }
 
-export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProviderProps>) {
-    const initializeMe = !initialMe ? null : (initialMe as Me);
+export type AuthContextValue = {
+    isLoggedIn: boolean;
+    isPending: boolean;
+    me: Users | null;
+    logIn: (email: string, password: string) => void;
+    logOut: () => void;
+    signUp: (name: string, email: string, password: string) => void;
+    loginWithProvider: (provider: Provider) => void;
+    resetPassword: (password: string) => void;
+    sendingResetEmail: (email: string) => void;
+    // setMeClient: (me: Me | null) => void;
+};
 
-    const {
-        data: me = initializeMe,
-        isPending: userIsPending,
-        error: userError,
-    } = useQuery({
-        queryKey: ["user"],
-        queryFn: getUserFnClient,
-    });
+const initialValue: AuthContextValue = {
+    isLoggedIn: false,
+    isPending: false,
+    me: null,
+    logIn: () => {},
+    logOut: () => {},
+    signUp: () => {},
+    loginWithProvider: () => {},
+    resetPassword: () => {},
+    sendingResetEmail: () => {},
+    // setMeClient: () => {},
+};
+
+export const AuthContext = createContext<AuthContextValue>(initialValue);
+
+export function AuthProvider({ children }: PropsWithChildren<AuthProviderProps>) {
+    // const initializeMe = !initialMe ? null : (initialMe as Me);
+
+    // const {
+    //     data: me,
+    //     isPending: userIsPending,
+    //     error: userError,
+    // } = useQuery({
+    //     queryKey: ["user"],
+    //     queryFn: getUserFnClient,
+    // });
+
+    const { data: me, isPending: userIsPending, error: userError } = useMeQuery();
 
     // console.log("tanstack query me ====>", me);
 
@@ -209,7 +238,7 @@ export function AuthProvider({ initialMe, children }: PropsWithChildren<AuthProv
     const value: AuthContextValue = {
         isLoggedIn,
         isPending,
-        me: userError ? null : (me?.userTableInfo as Tables<"users"> | null),
+        me: userError ? null : (me?.userTableInfo as Users | null),
         logIn,
         logOut,
         signUp,

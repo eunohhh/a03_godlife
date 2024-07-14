@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/hooks/useAuth";
+import useMeQuery from "@/hooks/useMeQuery";
 import { showAlert } from "@/lib/openCustomAlert";
 import supabase from "@/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
@@ -8,8 +8,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const ProfileUpdatePage: React.FC = () => {
-    const { me } = useAuth();
+const ProfileUpdatePage = () => {
+    // const { me } = useAuth();
+
+    const { data, isPending: userIsPending, error: userError } = useMeQuery();
+    const me = data?.userTableInfo;
     // console.log("플필 변경시 변경된 데이 클라이언트 ===>", me);
     const queryClient = useQueryClient();
 
