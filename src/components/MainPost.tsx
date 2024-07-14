@@ -47,7 +47,7 @@ export function MainPost() {
     }, [posts, sortBy]);
 
     return (
-        <div className="flex flex-col w-full max-w-[428px] p-2 my-2">
+        <div className="flex flex-col w-full max-w-[428px] p-2">
             <InfiniteScroll fetchNextPage={fetchNextPage} hasNextPage={hasNextPage}>
                 <div className="space-y-3">
                     {sortedPosts.map((post: Post) => (
