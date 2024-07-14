@@ -1,6 +1,4 @@
-import AuthHydrationBoundary from "@/components/auth/AuthHydrationBoundary";
-import React, { Suspense } from "react";
-import Loading from "./loading";
+import React from "react";
 
 async function ProvidersLayout({ children }: { children: React.ReactNode }) {
     // const me = await serverGetUser();
@@ -17,12 +15,15 @@ async function ProvidersLayout({ children }: { children: React.ReactNode }) {
     // console.log("me서버서버서버서버에서 ====>", me);
 
     return (
+        <>{children}</>
         // <AuthProvider initialMe={me}>
         // <AuthProvider>
-        <Suspense fallback={<Loading />}>
-            <AuthHydrationBoundary>{children}</AuthHydrationBoundary>
-        </Suspense>
+        // <Suspense fallback={<Loading />}>
+        //<AuthHydrationBoundary>{ children }</AuthHydrationBoundary> */
+
+        // </Suspense>
         // </AuthProvider>
+        //
     );
 }
 

@@ -12,7 +12,7 @@ const InfiniteScroll = ({
     hasNextPage: boolean;
     children: React.ReactNode;
 }) => {
-    const { ref, inView } = useInView({ threshold: 0 });
+    const { ref, inView } = useInView({ threshold: 1 });
 
     useEffect(() => {
         if (!(inView && hasNextPage)) return;
