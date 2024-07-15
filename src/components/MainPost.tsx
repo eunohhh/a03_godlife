@@ -16,7 +16,7 @@ export function MainPost() {
 
     const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
         queryKey: ["postsInfinite"],
-        initialPageParam: 1, //5
+        initialPageParam: 0, //5
         getNextPageParam: (lastPage: Post[], allPages: Post[][]) => {
             if (lastPage.length === 0) return null;
             return allPages.length;
