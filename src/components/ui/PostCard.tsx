@@ -1,6 +1,6 @@
 "use client";
 
-import useMeQuery from "@/hooks/useMeQuery";
+import useAuth from "@/hooks/useAuth";
 import { deletePost } from "@/lib/deletePost";
 import { showAlert } from "@/lib/openCustomAlert";
 import { Post } from "@/types/post.type";
@@ -13,17 +13,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "./Avatar";
 import { Separator } from "./Separator";
 
 function PostCard({ post }: { post: Post }) {
-    // const { me } = useAuth();
+    const { me } = useAuth();
 
-    const { data, isPending: userIsPending, error: userError } = useMeQuery();
-    const me = data?.userTableInfo;
+    // const { data, isPending: userIsPending, error: userError } = useMeQuery();
+    // const me = data?.userTableInfo;
 
     const pathname = usePathname();
     const router = useRouter();
 
     const handleDelete = async () => {
-        console.log(post.id);
-
         if (!me) return;
         if (post.email !== me.email) {
             return showAlert("caution", "게시물 작성자만 삭제할 수 있어요!");
@@ -34,29 +32,16 @@ function PostCard({ post }: { post: Post }) {
 
         const result = await deletePost(post.id);
         if (result) {
-            router.refresh();
-            console.log(post.id, "삭제 성공 좀 돼라");
+            showAlert("success", "게시물이 삭제되었어요!");
+            return router.refresh();
         } else {
-            console.log("삭제 실패");
-            // 에러 처리
+            return showAlert("error", "앗! 게시물 삭제에 실패했어요..");
         }
     };
 
     return (
-        <div className="post-card max-h-[200px] bg-white rounded-lg p-5 ">
+        <div className="post-card max-h-[200px] bg-white rounded-lg p-5">
             <div className="flex flex-row">
-                {/* 여기에 수정삭제 */}
-
-                <div>
-                    {me?.email === post.email && pathname === "/profile" && (
-                        <div className="flex flex-row">
-                            {/* 완성되면 edit 로 수정*/}
-                            <Link href={`/write`}>수정</Link>
-                            <button onClick={handleDelete}>삭제</button>
-                        </div>
-                    )}
-                </div>
-
                 <Avatar className="flex">
                     <AvatarImage src={post.avatar!} alt="@profile" />
                     <AvatarFallback>
@@ -78,6 +63,20 @@ function PostCard({ post }: { post: Post }) {
                     <div className="flex items-center">
                         <h4 className="text-sm font-medium leading-none mr-2">{post.nickname}</h4>
                         <p className="text-sm text-muted-foreground">{post.email}</p>
+
+                        {/* 여기에 수정삭제 */}
+                        <div>
+                            {me?.email === post.email && pathname === "/profile" && (
+                                <div className="flex space-x-1 ml-2">
+                                    <Link href={`/write`}>
+                                        <Image src="/write_btn.svg" alt="Edit" width={17} height={17} />
+                                    </Link>
+                                    <button onClick={handleDelete}>
+                                        <Image src="/delete_btn.svg" alt="Delete" width={17} height={17} />
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">
                         {format(new Date(post.created_at), "yyyy-MM-dd HH:mm")}

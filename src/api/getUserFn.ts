@@ -13,7 +13,7 @@ export async function getUserFn(): Promise<Me | null> {
         next: {
             tags: ["user"],
         },
-        cache: "no-store",
+        // cache: "no-store",
         headers: {
             Cookie: cookiesArray.map((cookie) => `${cookie.name}=${cookie.value}`).join(";"),
         },

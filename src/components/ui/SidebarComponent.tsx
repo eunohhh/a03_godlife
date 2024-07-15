@@ -1,6 +1,6 @@
 "use client";
 
-import useMeQuery from "@/hooks/useMeQuery";
+import useAuth from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -9,10 +9,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "./Avatar";
 import SideBar from "./SideBar";
 
 function SidebarComponent() {
-    // const { me } = useAuth();
+    const { me } = useAuth();
 
-    const { data, isPending: userIsPending, error: userError } = useMeQuery();
-    const me = data?.userTableInfo;
+    // const { data, isPending: userIsPending, error: userError } = useMeQuery();
+    // const me = data?.userTableInfo;
 
     // console.log("sidebar me ====>", me);
 

@@ -18,7 +18,6 @@ import {
 } from "./Sheet";
 
 import useAuth from "@/hooks/useAuth";
-import useMeQuery from "@/hooks/useMeQuery";
 import { Weather } from "@/types/weather";
 import BasicLoader from "./BasicLoader";
 import { Card, CardContent, CardDescription, CardTitle } from "./Card";
@@ -32,10 +31,10 @@ const SideBar = ({
     isOpen: boolean;
     handleOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-    const { logOut } = useAuth();
+    const { logOut, me } = useAuth();
 
-    const { data, isPending: userIsPending, error: userError } = useMeQuery();
-    const me = data?.userTableInfo;
+    // const { data, isPending: userIsPending, error: userError } = useMeQuery();
+    // const me = data?.userTableInfo;
     // const [profileImg, setProfileImg] = useState(
     //   me?.userTableInfo.avatar ?? "/profile_camera.svg"
     // );
