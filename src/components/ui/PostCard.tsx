@@ -4,6 +4,7 @@ import useAuth from "@/hooks/useAuth";
 import { deletePost } from "@/lib/deletePost";
 import { showAlert } from "@/lib/openCustomAlert";
 import { Post } from "@/types/post.type";
+import { useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,6 +15,7 @@ import { Separator } from "./Separator";
 
 function PostCard({ post }: { post: Post }) {
     const { me } = useAuth();
+    const queryClient = useQueryClient();
 
     // const { data, isPending: userIsPending, error: userError } = useMeQuery();
     // const me = data?.userTableInfo;
@@ -32,6 +34,7 @@ function PostCard({ post }: { post: Post }) {
 
         const result = await deletePost(post.id);
         if (result) {
+            queryClient.invalidateQueries({ queryKey: ["postsInfinite"] });
             showAlert("success", "게시물이 삭제되었어요!");
             return router.refresh();
         } else {
