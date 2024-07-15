@@ -103,11 +103,11 @@ const ProfileUpdatePage = () => {
             {/* submit form 시작 */}
             {/* 프로필 섹션 */}
             <form onSubmit={handleUpdateSubmit}>
-                <div className="flex justify-between mt-6 px-4 font-Pretendard-Regular font-semibold">
+                <div className="flex justify-between mt-6 px-4 font-Pretendard-Regular">
                     <button
                         type="button"
                         onClick={handleCancel}
-                        className="w-[93px] h-[32px] bg-white text-[#B7E6CB] font-semi-bold py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full hover:bg-[#B7E6CB] hover:text-white transition duration-300 ease-in-out flex items-center justify-center"
+                        className="w-[93px] h-[32px] bg-white text-[#B7E6CB] py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full hover:bg-[#B7E6CB] hover:text-white transition duration-300 ease-in-out flex items-center justify-center"
                     >
                         Cancel
                     </button>
