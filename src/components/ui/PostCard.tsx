@@ -14,16 +14,19 @@ import { Separator } from "./Separator";
 
 function PostCard({ post }: { post: Post }) {
   // const { me } = useAuth();
+  // const { me } = useAuth();
 
+  const { data, isPending: userIsPending, error: userError } = useMeQuery();
+  const me = data?.userTableInfo;
   const { data, isPending: userIsPending, error: userError } = useMeQuery();
   const me = data?.userTableInfo;
 
   const pathname = usePathname();
   const router = useRouter();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const handleDelete = async () => {
-    console.log(post.id);
-
     if (!me) return;
     if (post.email !== me.email) {
       return showAlert("caution", "게시물 작성자만 삭제할 수 있어요!");
@@ -31,14 +34,15 @@ function PostCard({ post }: { post: Post }) {
 
     const isConfirmed = confirm("게시물을 삭제할까요?");
     if (!isConfirmed) return;
+    const isConfirmed = confirm("게시물을 삭제할까요?");
+    if (!isConfirmed) return;
 
     const result = await deletePost(post.id);
     if (result) {
-      router.refresh();
-      console.log(post.id, "삭제 성공 좀 돼라");
+      showAlert("success", "게시물이 삭제되었어요!");
+      return router.refresh();
     } else {
-      console.log("삭제 실패");
-      // 에러 처리
+      return showAlert("error", "앗! 게시물 삭제에 실패했어요..");
     }
   };
 
