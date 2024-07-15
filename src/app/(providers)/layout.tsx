@@ -10,12 +10,15 @@ async function ProvidersLayout({ children }: { children: React.ReactNode }) {
     // });
     // const dehydratedState = dehydrate(queryClient);
 
-    // const me = await queryClient.getQueryData<Me | undefined>(["user"]);
+    // const me = queryClient.getQueryData<Me | undefined>(["user"]);
 
     // console.log("me서버서버서버서버에서 ====>", me);
 
     return (
         <>{children}</>
+        // <Suspense fallback={<Loading />}>
+        //     <HydrationBoundary state={dehydratedState}>{children}</HydrationBoundary>
+        // </Suspense>
         // <AuthProvider initialMe={me}>
         // <AuthProvider>
         // <Suspense fallback={<Loading />}>

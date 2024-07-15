@@ -3,9 +3,9 @@ import { Me } from "./../types/me.type";
 export async function getUserFnClient(): Promise<Me | null> {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`, {
         method: "GET",
-        next: {
-            tags: ["user"],
-        },
+        // next: {
+        //     tags: ["user"],
+        // },
         cache: "no-store",
     });
 

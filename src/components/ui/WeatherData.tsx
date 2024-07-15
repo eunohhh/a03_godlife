@@ -1,7 +1,7 @@
 "use client";
 
 import { Weather } from "@/types/weather";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 interface WeatherDataProps {
     onWeatherData: (
@@ -13,7 +13,7 @@ interface WeatherDataProps {
     ) => void;
 }
 
-const WeatherData: React.FC<WeatherDataProps> = ({ onWeatherData }) => {
+const WeatherData = ({ onWeatherData }: WeatherDataProps) => {
     useEffect(() => {
         const fetchWeatherData = async () => {
             const response = await fetch("/api/weather", {

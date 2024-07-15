@@ -1,11 +1,10 @@
 "use client";
 
-import useMeQuery from "@/hooks/useMeQuery";
+import useAuth from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 interface CheerupProps {
     postId: string;
@@ -18,7 +17,9 @@ interface CheerupStatus {
 }
 
 const fetchCheerupStatus = async (postId: string): Promise<CheerupStatus[] | null> => {
-    const response = await fetch(`/api/cheerup?postId=${postId}`);
+    const response = await fetch(`/api/cheerup?postId=${postId}`, {
+        cache: "no-store",
+    });
     const data = await response.json();
     if (data.error) {
         throw new Error(data.error);
@@ -41,6 +42,7 @@ const updateCheerupStatus = async ({
         headers: {
             "Content-Type": "application/json",
         },
+        cache: "no-store",
         body: JSON.stringify({ postId, isCheeruped, userId }),
     });
     const data = await response.json();
@@ -49,18 +51,18 @@ const updateCheerupStatus = async ({
     }
 };
 
-const CheerupButton: React.FC<CheerupProps> = ({ postId }) => {
-    // const { me } = useAuth();
+const CheerupButton = ({ postId }: { postId: string }) => {
+    const { me } = useAuth();
 
-    const { data: userData, isPending: userIsPending, error: userError } = useMeQuery();
-    const me = userData?.userTableInfo;
+    // const { data: userData, isPending: userIsPending, error: userError } = useMeQuery();
+    // const me = userData?.userTableInfo;
 
     const queryClient = useQueryClient();
     const router = useRouter();
 
     const { data, isLoading } = useQuery({
         queryKey: ["cheerupStatus", postId],
-        queryFn: async () => await fetchCheerupStatus(postId),
+        queryFn: () => fetchCheerupStatus(postId),
     });
 
     const cheerupCount = data?.length || 0;
