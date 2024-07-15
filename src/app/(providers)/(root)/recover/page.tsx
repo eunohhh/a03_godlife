@@ -1,11 +1,21 @@
+import { getUserFn } from "@/api/getUserFn";
 import AuthPageBottom from "@/components/auth/AuthPageBottom";
 import AuthPageWrapper from "@/components/auth/AuthPageWrapper";
 import ResetForm from "@/components/auth/ResetForm";
-import serverGetUser from "@/lib/severGetUser";
+import { Me } from "@/types/me.type";
+import { QueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 
 export default async function RecoverPage() {
-    const me = await serverGetUser();
+    const queryClient = new QueryClient();
+
+    await queryClient.prefetchQuery({
+        queryKey: ["user"],
+        queryFn: () => getUserFn(),
+    });
+    const me = queryClient.getQueryData<Me | undefined>(["user"]);
+
+    // const me = await serverGetUser();
 
     // console.log("recover 에서 받은 user =>", me);
 

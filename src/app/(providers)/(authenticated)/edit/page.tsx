@@ -1,6 +1,6 @@
 "use client";
 
-import useMeQuery from "@/hooks/useMeQuery";
+import useAuth from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -8,10 +8,10 @@ import { useState } from "react";
 
 export default function EditingPage() {
     const [contents, setContents] = useState("");
-    // const { me } = useAuth();
+    const { me } = useAuth();
 
-    const { data, isPending: userIsPending, error: userError } = useMeQuery();
-    const me = data?.userTableInfo;
+    // const { data, isPending: userIsPending, error: userError } = useMeQuery();
+    // const me = data?.userTableInfo;
     const router = useRouter();
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

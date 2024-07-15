@@ -1,8 +1,9 @@
+"use client";
 import clsx from "clsx";
 import Image from "next/image";
 
 type BasicLoaderProps = {
-  isSmall?: boolean;
+    isSmall?: boolean;
 };
 
 function BasicLoader({ isSmall = false }: BasicLoaderProps) {

@@ -1,6 +1,6 @@
 "use client";
 
-import useMeQuery from "@/hooks/useMeQuery";
+import useAuth from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import supabase from "@/supabase/client";
 import Image from "next/image";
@@ -9,10 +9,10 @@ import { useState } from "react";
 
 export default function WritingPage() {
     const [contents, setContents] = useState("");
-    // const { me } = useAuth();
+    const { me } = useAuth();
 
-    const { data, isPending: userIsPending, error: userError } = useMeQuery();
-    const me = data?.userTableInfo;
+    // const { data, isPending: userIsPending, error: userError } = useMeQuery();
+    // const me = data?.userTableInfo;
 
     const router = useRouter();
 

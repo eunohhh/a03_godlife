@@ -1,3 +1,4 @@
+"use client";
 import { getUserFnClient } from "@/api/getUserFnClient";
 import { useQuery } from "@tanstack/react-query";
 

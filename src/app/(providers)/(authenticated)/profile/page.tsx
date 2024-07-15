@@ -2,7 +2,7 @@
 
 import BasicLoader from "@/components/ui/BasicLoader";
 import PostCard from "@/components/ui/PostCard";
-import useMeQuery from "@/hooks/useMeQuery";
+import useAuth from "@/hooks/useAuth";
 import supabase from "@/supabase/client";
 import { Post } from "@/types/post.type";
 import Image from "next/image";
@@ -10,10 +10,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export function ProfilePage() {
-    // const { me } = useAuth();
+    const { me } = useAuth();
 
-    const { data, isPending: userIsPending, error: userError } = useMeQuery();
-    const me = data?.userTableInfo;
+    // const { data, isPending: userIsPending, error: userError } = useMeQuery();
+    // const me = data?.userTableInfo;
 
     const [posts, setPosts] = useState<Post[] | null>(null);
 
