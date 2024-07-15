@@ -14,10 +14,15 @@ import { Separator } from "./Separator";
 
 function PostCard({ post }: { post: Post }) {
   // const { me } = useAuth();
+  // const { me } = useAuth();
 
   const { data, isPending: userIsPending, error: userError } = useMeQuery();
   const me = data?.userTableInfo;
+  const { data, isPending: userIsPending, error: userError } = useMeQuery();
+  const me = data?.userTableInfo;
 
+  const pathname = usePathname();
+  const router = useRouter();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -27,6 +32,8 @@ function PostCard({ post }: { post: Post }) {
       return showAlert("caution", "게시물 작성자만 삭제할 수 있어요!");
     }
 
+    const isConfirmed = confirm("게시물을 삭제할까요?");
+    if (!isConfirmed) return;
     const isConfirmed = confirm("게시물을 삭제할까요?");
     if (!isConfirmed) return;
 
@@ -40,17 +47,8 @@ function PostCard({ post }: { post: Post }) {
   };
 
   return (
-    <div className="post-card max-h-[200px] bg-white rounded-lg p-5 ">
+    <div className="post-card max-h-[200px] bg-white rounded-lg p-5">
       <div className="flex flex-row">
-        <div>
-          {me?.email === post.email && pathname === "/profile" && (
-            <div className="flex flex-row">
-              <Link href={`/edit/${post.id}`}>수정</Link>
-              <button onClick={handleDelete}>삭제</button>
-            </div>
-          )}
-        </div>
-
         <Avatar className="flex">
           <AvatarImage src={post.avatar!} alt="@profile" />
           <AvatarFallback>
@@ -74,6 +72,30 @@ function PostCard({ post }: { post: Post }) {
               {post.nickname}
             </h4>
             <p className="text-sm text-muted-foreground">{post.email}</p>
+
+            {/* 여기에 수정삭제 */}
+            <div>
+              {me?.email === post.email && pathname === "/profile" && (
+                <div className="flex space-x-1 ml-2">
+                  <Link href={`/write`}>
+                    <Image
+                      src="/write_btn.svg"
+                      alt="Edit"
+                      width={17}
+                      height={17}
+                    />
+                  </Link>
+                  <button onClick={handleDelete}>
+                    <Image
+                      src="/delete_btn.svg"
+                      alt="Delete"
+                      width={17}
+                      height={17}
+                    />
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
           <p className="text-xs text-muted-foreground mt-2">
             {format(new Date(post.created_at), "yyyy-MM-dd HH:mm")}
