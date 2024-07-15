@@ -27,15 +27,15 @@ const nextConfig = {
         ],
         // minimumCacheTTL: 1,
     },
-    compress: false,
-    webpack(webpackConfig) {
-        return {
-            ...webpackConfig,
-            optimization: {
-                minimize: false,
-            },
-        };
-    },
+    // compress: false,
+    // webpack(webpackConfig) {
+    //     return {
+    //         ...webpackConfig,
+    //         optimization: {
+    //             minimize: false,
+    //         },
+    //     };
+    // },
     // experimental: { forceSwcTransforms: true },
 };
 
