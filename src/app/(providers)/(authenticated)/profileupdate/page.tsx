@@ -1,6 +1,6 @@
 "use client";
 
-import useMeQuery from "@/hooks/useMeQuery";
+import useAuth from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import supabase from "@/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
@@ -9,10 +9,10 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const ProfileUpdatePage = () => {
-    // const { me } = useAuth();
+    const { me } = useAuth();
 
-    const { data, isPending: userIsPending, error: userError } = useMeQuery();
-    const me = data?.userTableInfo;
+    // const { data, isPending: userIsPending, error: userError } = useMeQuery();
+    // const me = data?.userTableInfo;
     // console.log("플필 변경시 변경된 데이 클라이언트 ===>", me);
     const queryClient = useQueryClient();
 
@@ -103,11 +103,11 @@ const ProfileUpdatePage = () => {
             {/* submit form 시작 */}
             {/* 프로필 섹션 */}
             <form onSubmit={handleUpdateSubmit}>
-                <div className="flex justify-between mt-6 px-4 font-Pretendard-Regular font-semibold">
+                <div className="flex justify-between mt-6 px-4 font-Pretendard-Regular">
                     <button
                         type="button"
                         onClick={handleCancel}
-                        className="w-[93px] h-[32px] bg-white text-[#B7E6CB] font-semi-bold py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full hover:bg-[#B7E6CB] hover:text-white transition duration-300 ease-in-out flex items-center justify-center"
+                        className="w-[93px] h-[32px] bg-white text-[#B7E6CB] py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full hover:bg-[#B7E6CB] hover:text-white transition duration-300 ease-in-out flex items-center justify-center"
                     >
                         Cancel
                     </button>

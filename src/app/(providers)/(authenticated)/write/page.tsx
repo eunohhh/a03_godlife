@@ -1,22 +1,24 @@
 "use client";
 
-import useMeQuery from "@/hooks/useMeQuery";
+import useAuth from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import supabase from "@/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function WritingPage() {
     const [contents, setContents] = useState("");
-    // const { me } = useAuth();
+    const { me } = useAuth();
+    const queryClient = useQueryClient();
 
-    const { data, isPending: userIsPending, error: userError } = useMeQuery();
-    const me = data?.userTableInfo;
+    // const { data, isPending: userIsPending, error: userError } = useMeQuery();
+    // const me = data?.userTableInfo;
 
     const router = useRouter();
 
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleContentsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setContents(e.target.value);
 
         if (contents.length > 280) {
@@ -38,25 +40,26 @@ export default function WritingPage() {
         if (error instanceof Error) {
             console.error(error.message);
         } else {
-            return showAlert("success", "게시물이 등록되었습니다.", () => router.push("/"));
+            return showAlert("success", "게시물이 등록되었어요!", () => router.push("/"));
         }
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handlePostSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!contents) {
-            return showAlert("caution", "게시글을 먼저 입력해주세요.");
+            return showAlert("caution", "게시글을 입력해주세요.");
         }
 
         addPost();
+        queryClient.invalidateQueries({ queryKey: ["postsInfinite"] });
     };
 
     //min-h-[860px]
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-50 font-Pretendard-Regular">
             <form
-                onSubmit={handleSubmit}
+                onSubmit={handlePostSubmit}
                 className="bg-white p-6 pt-[60px] rounded-lg shadow-lg w-full max-w-[428px] h-dvh flex flex-col"
             >
                 <div className="flex justify-between items-center mb-4">
@@ -78,7 +81,7 @@ export default function WritingPage() {
                     className="w-full p-2 mb-4 border-none outline-none resize-none flex-grow"
                     placeholder="무슨 일이 일어나고 있나요?"
                     maxLength={280}
-                    onChange={handleChange}
+                    onChange={handleContentsChange}
                 ></textarea>
                 <div className="flex justify-between items-center mt-4 mb-4">
                     <div className="text-turtleGreen font-semi-bold">{contents.length}/280</div>

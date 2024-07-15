@@ -2,7 +2,7 @@
 
 import BasicLoader from "@/components/ui/BasicLoader";
 import PostCard from "@/components/ui/PostCard";
-import useMeQuery from "@/hooks/useMeQuery";
+import useAuth from "@/hooks/useAuth";
 import supabase from "@/supabase/client";
 import { Post } from "@/types/post.type";
 import Image from "next/image";
@@ -10,10 +10,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export function ProfilePage() {
-    // const { me } = useAuth();
+    const { me } = useAuth();
 
-    const { data, isPending: userIsPending, error: userError } = useMeQuery();
-    const me = data?.userTableInfo;
+    // const { data, isPending: userIsPending, error: userError } = useMeQuery();
+    // const me = data?.userTableInfo;
 
     const [posts, setPosts] = useState<Post[] | null>(null);
 
@@ -36,17 +36,19 @@ export function ProfilePage() {
         <div className="max-w-[428px] mx-auto bg-white h-[138px] relative">
             {/* 헤더 섹션 */}
             <div className="bg-[#B7E6CB] h-full flex items-center justify-center">
-                <div className="font-semibold text-2xl text-white">God Life Mate</div>
+                <Link href={"/"}>
+                    <div className="font-MangoByeolbyeol text-2xl text-white">God Life Mate</div>
+                </Link>
             </div>
 
             {/* 자기소개 섹션 */}
-            <div className="flex justify-between px-4 py-2 border-b height-[150px] relative -top-11 pb-4">
+            <div className="flex justify-between px-4 py-2 border-b relative -top-8 pb-4 font-Pretendard-Regular">
                 <div className="w-[50%] items-center relative">
                     {/* 프로필 이미지 */}
                     <div className="ml-[10px] relative">
-                        <div className="rounded-full overflow-hidden w-[68px] h-[68px] border-[7px] border-white">
+                        <div className="rounded-full overflow-hidden w-[68px] h-[68px] border-[5px] border-white">
                             <Image
-                                className="object-contain w-full h-full"
+                                className="object-cover w-full h-full"
                                 src={me?.avatar as string}
                                 alt="profile"
                                 width={68}
@@ -55,7 +57,7 @@ export function ProfilePage() {
                             />
                         </div>
 
-                        <div className="font-semibold text-lg text-gray-700">{me?.nickname}</div>
+                        <div className="font-semibold text-lg text-gray-700 mt-2">{me?.nickname}</div>
                         <div className="text-gray-600 text-sm">{me?.introduction}</div>
                         <div className="text-gray-600 text-sm">{me?.email}</div>
                     </div>
@@ -68,7 +70,7 @@ export function ProfilePage() {
                         </button>
                     </Link>
                     <Link href="/profileupdate">
-                        <button className="w-[93px] h-[32px] bg-transparent text-[#B7E6CB] text-sm font-semi-bold py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full transition duration-300 ease-in-out flex items-center justify-center hover:bg-[#B7E6CB] hover:text-white">
+                        <button className="w-[93px] h-[32px] bg-transparent text-[#B7E6CB] text-xs font-semi-bold py-1 px-3 border-[1.3px] border-[#B7E6CB] rounded-full transition duration-300 ease-in-out flex items-center justify-center hover:bg-[#B7E6CB] hover:text-white">
                             Edit profile
                         </button>
                     </Link>

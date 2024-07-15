@@ -1,20 +1,45 @@
 "use client";
 
-import useMeQuery from "@/hooks/useMeQuery";
+import useAuth from "@/hooks/useAuth";
+import { editPost } from "@/lib/editPost";
 import { showAlert } from "@/lib/openCustomAlert";
+import supabase from "@/supabase/client";
+import { Post } from "@/types/post.type";
+import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function EditingPage() {
+export default function EditingPage({ params }: { params: { id: string } }) {
+    console.log(params);
     const [contents, setContents] = useState("");
-    // const { me } = useAuth();
+    const [post, setPost] = useState<Post[] | null>(null);
+    const { me } = useAuth();
+    const queryClient = useQueryClient();
 
-    const { data, isPending: userIsPending, error: userError } = useMeQuery();
-    const me = data?.userTableInfo;
+    // const { data, isPending: userIsPending, error: userError } = useMeQuery();
+    // const me = data?.userTableInfo;
     const router = useRouter();
 
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    useEffect(() => {
+        const fetchContents = async () => {
+            const { data, error } = await supabase
+                .from("posts")
+                .select("*")
+                .eq("id", params.id)
+                .maybeSingle();
+
+            if (error) {
+                console.error(error.message);
+            } else {
+                setPost(data);
+                setContents(data.contents);
+            }
+        };
+        fetchContents();
+    }, [params.id]);
+
+    const handleContentsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setContents(e.target.value);
 
         if (contents.length > 280) {
@@ -22,41 +47,27 @@ export default function EditingPage() {
         }
     };
 
-    //   const addPost = async () => {
-    //     if (!me) return;
-    //     const { error } = await supabase.from("posts").insert([
-    //       {
-    //         contents: contents,
-    //         nickname: me.userTableInfo.nickname,
-    //         email: me.userTableInfo.email,
-    //         avatar: me.userTableInfo.avatar,
-    //       },
-    //     ]);
-
-    //     if (error instanceof Error) {
-    //       console.error(error.message);
-    //     } else {
-    //       return showAlert("success", "게시물이 등록되었습니다.", () =>
-    //         router.push("/")
-    //       );
-    //     }
-    //   };
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!contents) {
-            return showAlert("caution", "게시글을 먼저 입력해주세요.");
+            return showAlert("caution", "게시글을 입력해주세요.");
         }
 
-        // addPost();
+        const result = await editPost(params.id, contents);
+        if (result) {
+            queryClient.invalidateQueries({ queryKey: ["postsInfinite"] });
+            return showAlert("success", "게시물이 수정되었어요!", () => router.push("/profile"));
+        } else {
+            return showAlert("error", "앗! 게시물 수정에 실패했어요..");
+        }
     };
 
     //min-h-[860px]
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-50">
             <form
-                onSubmit={handleSubmit}
+                onSubmit={handleEditSubmit}
                 className="bg-white p-6 pt-[60px] rounded-lg shadow-lg w-full max-w-[428px] h-dvh flex flex-col"
             >
                 <div className="flex justify-between items-center mb-4">
@@ -76,11 +87,11 @@ export default function EditingPage() {
                 </div>
                 <textarea
                     className="w-full p-2 mb-4 border-none outline-none resize-none flex-grow"
+                    placeholder="무슨 일이 일어나고 있나요?"
                     maxLength={280}
-                    onChange={handleChange}
-                >
-                    {contents}
-                </textarea>
+                    onChange={handleContentsChange}
+                    value={contents}
+                ></textarea>
                 <div className="flex justify-between items-center mt-4 mb-4">
                     <div className="text-turtleGreen font-semi-bold">{contents.length}/280</div>
                     <Image src="/turtle.svg" alt="logo" width={60} height={60} />
