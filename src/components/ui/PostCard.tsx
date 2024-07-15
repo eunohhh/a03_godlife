@@ -71,7 +71,7 @@ function PostCard({ post }: { post: Post }) {
                         <div>
                             {me?.email === post.email && pathname === "/profile" && (
                                 <div className="flex space-x-1 ml-2">
-                                    <Link href={`/write`}>
+                                    <Link href={`/edit/${post.id}`}>
                                         <Image src="/write_btn.svg" alt="Edit" width={17} height={17} />
                                     </Link>
                                     <button onClick={handleDelete}>
