@@ -3,6 +3,7 @@
 import useAuth from "@/hooks/useAuth";
 import { showAlert } from "@/lib/openCustomAlert";
 import supabase from "@/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -10,6 +11,7 @@ import { useState } from "react";
 export default function WritingPage() {
     const [contents, setContents] = useState("");
     const { me } = useAuth();
+    const queryClient = useQueryClient();
 
     // const { data, isPending: userIsPending, error: userError } = useMeQuery();
     // const me = data?.userTableInfo;
@@ -50,6 +52,7 @@ export default function WritingPage() {
         }
 
         addPost();
+        queryClient.invalidateQueries({ queryKey: ["postsInfinite"] });
     };
 
     //min-h-[860px]
