@@ -9,6 +9,36 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      blogs: {
+        Row: {
+          contents: string | null
+          created_at: string
+          id: string
+          image: string | null
+          nick_name: string | null
+          title: string | null
+          user_id: string | null
+        }
+        Insert: {
+          contents?: string | null
+          created_at?: string
+          id?: string
+          image?: string | null
+          nick_name?: string | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          contents?: string | null
+          created_at?: string
+          id?: string
+          image?: string | null
+          nick_name?: string | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       cheerup: {
         Row: {
           created_at: string
@@ -18,7 +48,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          id?: string
+          id: string
           postid?: string | null
           userid?: string | null
         }
@@ -29,13 +59,6 @@ export type Database = {
           userid?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "cheerup_postid_fkey"
-            columns: ["postid"]
-            isOneToOne: false
-            referencedRelation: "cheerup_likes"
-            referencedColumns: ["postid"]
-          },
           {
             foreignKeyName: "cheerup_postid_fkey"
             columns: ["postid"]
@@ -52,41 +75,288 @@ export type Database = {
           },
         ]
       }
+      Contracts: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          gather_name: string | null
+          id: string
+          place_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          gather_name?: string | null
+          id?: string
+          place_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          gather_name?: string | null
+          id?: string
+          place_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Contracts_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "userinfo"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Contracts_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "Places"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Contracts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deals: {
+        Row: {
+          content: string | null
+          createdAt: string
+          id: string
+          imageUrl: string | null
+          sellerId: string
+        }
+        Insert: {
+          content?: string | null
+          createdAt?: string
+          id?: string
+          imageUrl?: string | null
+          sellerId?: string
+        }
+        Update: {
+          content?: string | null
+          createdAt?: string
+          id?: string
+          imageUrl?: string | null
+          sellerId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deals_sellerId_fkey1"
+            columns: ["sellerId"]
+            isOneToOne: false
+            referencedRelation: "userinfo"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      likes: {
+        Row: {
+          blog_id: string
+          created_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          blog_id: string
+          created_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          blog_id?: string
+          created_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "likes_blog_id_fkey"
+            columns: ["blog_id"]
+            isOneToOne: false
+            referencedRelation: "blog_likes"
+            referencedColumns: ["blog_id"]
+          },
+          {
+            foreignKeyName: "likes_blog_id_fkey"
+            columns: ["blog_id"]
+            isOneToOne: false
+            referencedRelation: "blogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Places: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          deadline: string | null
+          gather_name: string | null
+          id: string
+          lat: number | null
+          long: number | null
+          region: string | null
+          sports_name: string | null
+          texts: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          deadline?: string | null
+          gather_name?: string | null
+          id?: string
+          lat?: number | null
+          long?: number | null
+          region?: string | null
+          sports_name?: string | null
+          texts?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          deadline?: string | null
+          gather_name?: string | null
+          id?: string
+          lat?: number | null
+          long?: number | null
+          region?: string | null
+          sports_name?: string | null
+          texts?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Places_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "userinfo"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           avatar: string | null
           contents: string | null
           created_at: string
-          email: string
+          email: string | null
           id: string
           likecount: number | null
-          nickname: string
+          nickname: string | null
         }
         Insert: {
           avatar?: string | null
           contents?: string | null
           created_at?: string
-          email: string
-          id?: string
+          email?: string | null
+          id: string
           likecount?: number | null
-          nickname: string
+          nickname?: string | null
         }
         Update: {
           avatar?: string | null
           contents?: string | null
           created_at?: string
-          email?: string
+          email?: string | null
           id?: string
           likecount?: number | null
-          nickname?: string
+          nickname?: string | null
         }
         Relationships: []
+      }
+      realtimeone: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          title?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "realtimeone_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "userinfo"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      signals: {
+        Row: {
+          created_at: string | null
+          id: number
+          signal: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          signal?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          signal?: Json | null
+        }
+        Relationships: []
+      }
+      userinfo: {
+        Row: {
+          email: string | null
+          id: string
+          profile_image: string | null
+          username: string | null
+        }
+        Insert: {
+          email?: string | null
+          id?: string
+          profile_image?: string | null
+          username?: string | null
+        }
+        Update: {
+          email?: string | null
+          id?: string
+          profile_image?: string | null
+          username?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "userinfo_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       users: {
         Row: {
           avatar: string | null
           created_at: string
-          email: string
+          email: string | null
           id: string
           introduction: string | null
           nickname: string | null
@@ -94,15 +364,15 @@ export type Database = {
         Insert: {
           avatar?: string | null
           created_at?: string
-          email: string
-          id?: string
+          email?: string | null
+          id: string
           introduction?: string | null
           nickname?: string | null
         }
         Update: {
           avatar?: string | null
           created_at?: string
-          email?: string
+          email?: string | null
           id?: string
           introduction?: string | null
           nickname?: string | null
@@ -119,11 +389,12 @@ export type Database = {
       }
     }
     Views: {
-      cheerup_likes: {
+      blog_likes: {
         Row: {
+          blog_id: string | null
           contents: string | null
-          likecount: number | null
-          postid: string | null
+          like_count: number | null
+          title: string | null
         }
         Relationships: []
       }
