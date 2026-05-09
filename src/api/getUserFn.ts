@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import type { Me } from "./../types/me.type";
 
 export async function getUserFn(): Promise<Me | null> {
-	const cookieStore = cookies();
+	const cookieStore = await cookies();
 	const cookiesArray = cookieStore.getAll();
 
 	// console.log("cookiesArray ====>", cookiesArray);
